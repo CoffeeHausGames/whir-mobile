@@ -5,6 +5,8 @@ import Footer from '../components/Footer';
 import Map from '../components/Map';
 import HomeSearch from '../components/HomeSearch';
 import { useNavigation } from 'expo-router';
+import MapView from 'react-native-maps';
+
 
 const Home = () => {
   const navigation = useNavigation();
@@ -27,8 +29,9 @@ const Home = () => {
   }, [navigation]);
 
   return (
+    
     <SafeAreaView style={styles.container}>
-      <Map />
+        <Map />
       <HomeSearch />
       <Footer />
     </SafeAreaView>
@@ -38,6 +41,10 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  map: {
+    width: '100%',
+    height: '100%'
   },
 });
 
