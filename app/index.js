@@ -1,19 +1,39 @@
-import React from 'react';
+// Home.js
+import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
+import Footer from '../components/Footer';
 import Map from '../components/Map';
+import HomeSearch from '../components/HomeSearch';
+import { useNavigation } from 'expo-router';
+import MapView from 'react-native-maps';
+
 
 const Home = () => {
-  const router = useRouter();
+  const navigation = useNavigation();
 
-  const navigateToDetail = () => {
-    // You can navigate to another screen if needed
-    router.push('Detail');
-  };
+  useEffect(() => {
+    const removeHeader = () => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    };
+
+    removeHeader();
+
+    return () => {
+      // Reset header options if the component is unmounted
+      navigation.setOptions({
+        headerShown: true,
+      });
+    };
+  }, [navigation]);
 
   return (
+    
     <SafeAreaView style={styles.container}>
-      <Map />
+        <Map />
+      <HomeSearch />
+      <Footer />
     </SafeAreaView>
   );
 };
@@ -21,6 +41,10 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  map: {
+    width: '100%',
+    height: '100%'
   },
 });
 
