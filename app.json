@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "whir-mobile",
+    "slug": "whir-mobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
