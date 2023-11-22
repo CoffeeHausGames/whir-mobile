@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc', // Set your desired border color
     paddingVertical: 10,
+    bottom: -34
   },
   button: {
     alignItems: 'center',
