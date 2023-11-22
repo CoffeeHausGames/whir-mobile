@@ -1,12 +1,11 @@
 // Home.js
 import React, { useEffect } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Footer from '../components/Footer';
 import Map from '../components/Map';
 import HomeSearch from '../components/HomeSearch';
+import DealDisplay from '../components/DealDisplay';
 import { useNavigation } from 'expo-router';
-import MapView from 'react-native-maps';
-
 
 const Home = () => {
   const navigation = useNavigation();
@@ -21,7 +20,6 @@ const Home = () => {
     removeHeader();
 
     return () => {
-      // Reset header options if the component is unmounted
       navigation.setOptions({
         headerShown: true,
       });
@@ -29,9 +27,9 @@ const Home = () => {
   }, [navigation]);
 
   return (
-    
     <SafeAreaView style={styles.container}>
-        <Map />
+      <Map />
+      <DealDisplay setSelectedBusinessLocation={() => {}} />
       <HomeSearch />
       <Footer />
     </SafeAreaView>
@@ -41,10 +39,6 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  map: {
-    width: '100%',
-    height: '100%'
   },
 });
 
