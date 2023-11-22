@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Animated } from 'react-native';
 
 const DealDisplay = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [collapsed, setCollapsed] = useState(false);
+  const translateY = new Animated.Value(0);
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -93,9 +94,21 @@ const DealDisplay = ({ setSelectedBusinessLocation }) => {
     }
   };
 
+  const toggleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.dealDisplayContainer}>
+      <ScrollView
+        contentContainerStyle={[
+          styles.dealDisplayContainer,
+          collapsed ? styles.collapsedContainer : null,
+        ]}
+      >
+        <TouchableOpacity style={styles.collapseButton} onPress={toggleCollapse}>
+            <Text style={styles.collapseButtonText}>{collapsed ? 'Expand' : 'Collapse'}</Text>
+        </TouchableOpacity>
         <Text style={styles.dealHeader}>Deals Near You</Text>
         {businesses.map((business) => (
           <View key={business.business_name}>
@@ -127,24 +140,27 @@ const DealDisplay = ({ setSelectedBusinessLocation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject, // Takes the full screen space
+    ...StyleSheet.absoluteFillObject,
     bottom: 0,
-    justifyContent: 'flex-end', // Align content at the bottom
+    justifyContent: 'flex-end',
   },
   dealDisplayContainer: {
-    width: '95%', // Take up 100% of the screen width
-    backgroundColor: 'white', // Set background color
-    borderTopLeftRadius: 20, // Add rounded corners to the top-left and top-right
+    width: '95%',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 20, // Add padding to the content
+    padding: 20,
     height: '50%',
     top: '50%',
-    left: '2.5%'
+    left: '2.5%',
   },
   dealHeader: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  collapsedContainer: {
+    height: '5%', // Adjust as needed for the collapsed state
   },
   dealButtonDisplay: {
     marginBottom: 15,
@@ -163,6 +179,18 @@ const styles = StyleSheet.create({
   dealDistance: {
     color: 'blue',
     fontStyle: 'italic',
+  },
+  collapseButton: {
+    alignSelf: 'center',
+    top: '-5%',
+    marginTop: 1,
+    backgroundColor: 'lightgray',
+    padding: 5,
+    borderRadius: 5,
+  },
+  collapseButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
   },
 });
 
