@@ -14,36 +14,28 @@ const Footer = () => {
     <View style={styles.container}>
       <Link href="/discover" asChild>
         <Pressable>
-        <Image
-          source={require('../assets/images/discover.png')}
-          style={styles.buttonImage}
-        />        
+          <Image
+            source={require('../assets/images/discover.png')}
+            style={styles.buttonImage}
+          />
         </Pressable>
       </Link>
       <Link href="/main" asChild>
         <Pressable>
-        <Image
-          source={require('../assets/images/map.png')}
-          style={styles.buttonImage}
-        />        
+          <Image
+            source={require('../assets/images/map.png')}
+            style={styles.buttonImage}
+          />
         </Pressable>
       </Link>
-
       <Link href="/profile" asChild>
         <Pressable>
-        <Image
-          source={require('../assets/images/user.png')}
-          style={styles.buttonImage}
-        />        
+          <Image
+            source={require('../assets/images/user.png')}
+            style={styles.buttonImage}
+          />
         </Pressable>
       </Link>
-
-
-
-      {/* <TouchableOpacity style={styles.button} onPress={() => navigateTo('Profile')}>
-        <Image source={require('../assets/images/user.png')} style={styles.buttonImage} />
-        <Text style={styles.buttonText}></Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -57,7 +49,9 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     paddingVertical: 30,
-    bottom: -32,
+    bottom: 0, // Set bottom to 0 to stick to the bottom
+    position: 'absolute', // Set position to 'absolute'
+    width: '100%', // Set width to 100%
   },
   button: {
     alignItems: 'center',
