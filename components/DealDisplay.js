@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
 const DealDisplay = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
-  const translateY = new Animated.Value(0);
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -99,99 +98,98 @@ const DealDisplay = ({ setSelectedBusinessLocation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        contentContainerStyle={[
-          styles.dealDisplayContainer,
-          collapsed ? styles.collapsedContainer : null,
-        ]}
-      >
-        <TouchableOpacity style={styles.collapseButton} onPress={toggleCollapse}>
-            <Text style={styles.collapseButtonText}>{collapsed ? 'Expand' : 'Collapse'}</Text>
-        </TouchableOpacity>
-        <Text style={styles.dealHeader}>Deals Near You</Text>
-        {businesses.map((business) => (
-          <View key={business.business_name}>
-            {business.deal && business.deal.length > 0 ? (
-              <View>
-                {business.deal.map((deal) => (
-                  <TouchableOpacity
-                    onPress={() => handleDealClick(business)}
-                    key={deal.id}
-                    style={styles.dealButtonDisplay}
-                  >
-                    <Text style={styles.dealTitle}>{deal.name}</Text>
-                    <Text style={styles.dealBusinessName}>{business.business_name}</Text>
-                    <Text style={styles.dealDescription}>{deal.description}</Text>
-                    <Text style={styles.dealDistance}>{formatDistance(business.distance)}m away</Text>
-                    <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            ) : (
-              <Text>No deals available for this business</Text>
+    <View style={styles.dealdisplay}>
+        <View style={styles.container}>
+        <View style={styles.header}>
+            <TouchableOpacity style={styles.collapseButton} onPress={toggleCollapse}>
+                <Text style={styles.collapseButtonText}>{collapsed ? 'Expand' : 'Collapse'}</Text>
+            </TouchableOpacity>    
+        </View>
+        <FlatList
+            data={businesses}
+            keyExtractor={(item) => item.business_name}
+            renderItem={({ item }) => (
+            <View style={styles.buttoncontainer}>
+                {item.deal && item.deal.length > 0 ? (
+                <View>
+                    {item.deal.map((deal) => (
+                    <TouchableOpacity
+                        onPress={() => handleDealClick(item)}
+                        key={deal.id}
+                        style={styles.dealButtonDisplay}
+                    >
+                        <Text style={styles.dealTitle}>{deal.name}</Text>
+                        <Text style={styles.dealBusinessName}>{item.business_name}</Text>
+                        <Text style={styles.dealDescription}>{deal.description}</Text>
+                        <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
+                        <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
+                    </TouchableOpacity>
+                    ))}
+                </View>
+                ) : (
+                <Text>No deals available for this business</Text>
+                )}
+            </View>
             )}
-          </View>
-        ))}
-      </ScrollView>
+            contentContainerStyle={collapsed ? styles.collapsedContainer : null}
+        />
+        </View>    
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    bottom: 0,
-    justifyContent: 'flex-end',
-  },
-  dealDisplayContainer: {
-    width: '95%',
-    backgroundColor: 'white',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-    height: '50%',
-    top: '50%',
-    left: '2.5%',
-  },
-  dealHeader: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  collapsedContainer: {
-    height: '5%', // Adjust as needed for the collapsed state
-  },
-  dealButtonDisplay: {
-    marginBottom: 15,
-  },
-  dealTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  dealBusinessName: {
-    color: 'gray',
-    marginBottom: 5,
-  },
-  dealDescription: {
-    marginBottom: 10,
-  },
-  dealDistance: {
-    color: 'blue',
-    fontStyle: 'italic',
-  },
-  collapseButton: {
-    alignSelf: 'center',
-    top: '-5%',
-    marginTop: 1,
-    backgroundColor: 'lightgray',
-    padding: 5,
-    borderRadius: 5,
-  },
-  collapseButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
+    dealdisplay: {
+        height: '40%',
+        // width: '98%'
+    },
+    container: {
+    //   justifyContent: 'flex-end',
+    },
+    dealButtonDisplay: {
+      marginBottom: 15,
+      borderWidth: 0.5,
+      borderRadius: 10,
+      padding: 10,
+      width: '100%',
+    },
+    buttoncontainer: {
+        // width: '95%'
+    },
+    dealTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+    dealBusinessName: {
+      color: 'gray',
+      marginBottom: 5,
+    },
+    dealDescription: {
+      marginBottom: 10,
+    },
+    dealDistance: {
+      color: 'blue',
+      fontStyle: 'italic',
+    },
+    collapseButton: {
+      alignSelf: 'center',
+      margin: 6,
+      backgroundColor: 'lightgray',
+      padding: 3,
+      borderRadius: 5,
+    },
+    collapseButtonText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+    },
+    collapsedContainer: {
+      height: '50%', // Adjust as needed for the collapsed state
+    },
+    header: {
+        backgroundColor: 'white',
+        margin: 0
+    }
+  });
 
 export default DealDisplay;
