@@ -1,15 +1,13 @@
-// Home.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import Footer from '../components/Footer';
-import Discover from './Discover'; // Import the Discover component
+import Map from '../components/Map';
+import HomeSearch from '../components/HomeSearch';
+import DealDisplay from '../components/DealDisplay';
 import { useNavigation } from 'expo-router';
-import MainPage from './main';
 
-const Home = () => {
+const MainPage = () => {
   const navigation = useNavigation();
-  const [showDiscover, setShowDiscover] = useState(false);
-  const [showMainPage, setShowMainPage] = useState(true); // Add state for MainPage
 
   useEffect(() => {
     const removeHeader = () => {
@@ -29,7 +27,10 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-        <MainPage setShowMainPage={setShowMainPage}/>
+      <Map />
+      <DealDisplay setSelectedBusinessLocation={() => {}} />
+      <HomeSearch />
+      <Footer />
     </SafeAreaView>
   );
 };
@@ -37,9 +38,8 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
-    paddingBottom: 40, // Adjust the top padding to extend the SafeAreaView
+    paddingTop: 40, // Adjust the top padding to extend the SafeAreaView
   },
 });
 
-export default Home;
+export default MainPage;

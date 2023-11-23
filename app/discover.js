@@ -10,7 +10,6 @@ const Discover = () => {
     <DealDisplayFull />
     <Footer style={styles.footer}/>
     </SafeAreaView>
-
   );
 };
 
