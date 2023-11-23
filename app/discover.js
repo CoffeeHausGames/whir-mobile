@@ -1,13 +1,13 @@
 // Discover.js
 import { useEffect } from 'react';
 import Footer from '../components/Footer';
-import DealDisplay from '../components/DealDisplay';
+import DealDisplayFull from '../components/DealDisplayFull';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 
 const Discover = () => {
   return (
     <SafeAreaView style={styles.container}>
-    <DealDisplay />
+    <DealDisplayFull />
     <Footer style={styles.footer}/>
     </SafeAreaView>
 
