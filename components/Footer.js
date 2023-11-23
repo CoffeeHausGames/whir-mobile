@@ -2,11 +2,11 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
 
-const Footer = () => {
+const Footer = ({ navigateToDiscover }) => {
   return (
     <View style={styles.container}>
       {/* Home Button with Image */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={navigateToDiscover}>
         <Image
           source={require('../assets/images/discover.png')} // Adjust the path accordingly
           style={styles.buttonImage}
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#ccc', // Set your desired border color
     paddingVertical: 10,
-    bottom: -34
+    bottom: -34,
   },
   button: {
     alignItems: 'center',
