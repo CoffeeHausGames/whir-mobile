@@ -1,36 +1,49 @@
 // Footer.js
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { useNavigation, Link } from 'expo-router';
 
-const Footer = ({ navigateToDiscover }) => {
+const Footer = () => {
+  const navigation = useNavigation();
+
+  const navigateTo = (screen) => {
+    navigation.navigate(screen);
+  };
+
   return (
     <View style={styles.container}>
-      {/* Home Button with Image */}
-      <TouchableOpacity style={styles.button} onPress={navigateToDiscover}>
+      <Link href="/discover" asChild>
+        <Pressable>
         <Image
-          source={require('../assets/images/discover.png')} // Adjust the path accordingly
+          source={require('../assets/images/discover.png')}
           style={styles.buttonImage}
-        />
-        <Text style={styles.buttonText}></Text>
-      </TouchableOpacity>
+        />        
+        </Pressable>
+      </Link>
+      <Link href="/main" asChild>
+        <Pressable>
+        <Image
+          source={require('../assets/images/map.png')}
+          style={styles.buttonImage}
+        />        
+        </Pressable>
+      </Link>
 
-      {/* Search Button with Image */}
-      <TouchableOpacity style={styles.button}>
+      <Link href="/profile" asChild>
+        <Pressable>
         <Image
-          source={require('../assets/images/map.png')} // Adjust the path accordingly
+          source={require('../assets/images/user.png')}
           style={styles.buttonImage}
-        />
-        <Text style={styles.buttonText}></Text>
-      </TouchableOpacity>
+        />        
+        </Pressable>
+      </Link>
 
-      {/* Profile Button with Image */}
-      <TouchableOpacity style={styles.button}>
-        <Image
-          source={require('../assets/images/user.png')} // Adjust the path accordingly
-          style={styles.buttonImage}
-        />
+
+
+      {/* <TouchableOpacity style={styles.button} onPress={() => navigateTo('Profile')}>
+        <Image source={require('../assets/images/user.png')} style={styles.buttonImage} />
         <Text style={styles.buttonText}></Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -40,11 +53,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#fff', // Set your desired background color
+    backgroundColor: '#fff',
     borderTopWidth: 1,
-    borderTopColor: '#ccc', // Set your desired border color
-    paddingVertical: 10,
-    bottom: -34,
+    borderTopColor: '#ccc',
+    paddingVertical: 30,
+    bottom: -32,
   },
   button: {
     alignItems: 'center',
@@ -53,7 +66,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   buttonImage: {
-    width: 32, // Adjust the width and height based on your image size
+    width: 32,
     height: 32,
   },
 });
