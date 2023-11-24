@@ -3,12 +3,35 @@ import { useEffect } from 'react';
 import Footer from '../components/Footer';
 import DealDisplay from '../components/DealDisplay';
 import HorizontalButtonScroll from '../components/HorizontalButtonScroll';
+import ProfileHeader from '../components/ProfileHeader';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { useNavigation } from 'expo-router';
+
 
 const Profile = () => {
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const removeHeader = () => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    };
+
+    removeHeader();
+
+    return () => {
+      navigation.setOptions({
+        headerShown: true,
+      });
+    };
+  }, [navigation]);
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <HorizontalButtonScroll />
+      <ProfileHeader />
     <Footer style={styles.footer}/>
     </SafeAreaView>
 

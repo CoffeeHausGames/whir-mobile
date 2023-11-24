@@ -189,15 +189,15 @@ const styles = StyleSheet.create({
   },
   sampleButton: {
     padding: 12,
-    paddingLeft: 60,
-    paddingRight: 60,
+    paddingLeft: 50,
+    paddingRight: 50,
     backgroundColor: '#FF9000',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 5,
-    marginLeft: 20,
-    marginRight: 0,
+    marginLeft: 15,
+    marginRight: 15,
   },
 });
 
