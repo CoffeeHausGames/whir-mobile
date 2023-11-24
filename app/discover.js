@@ -3,9 +3,13 @@ import Footer from '../components/Footer';
 import DealDisplayFull from '../components/DealDisplayFull';
 import DealSearchBar from '../components/DealSearchBar';
 import HorizontalButtonScroll from '../components/HorizontalButtonScroll';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import DiscoverHeader from '../components/DiscoverHeader';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // Import the necessary hook
 
 const Discover = () => {
+  const navigation = useNavigation(); // Use the navigation hook
+
   const [originalDeals, setOriginalDeals] = useState([]);
   const [filteredDeals, setFilteredDeals] = useState([]);
   const [selectedButton, setSelectedButton] = useState(null);
@@ -47,8 +51,21 @@ const Discover = () => {
     setFilteredDeals(deals);
   }, []);
 
+  // Set the header to be hidden
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    });
+
+    // Clean up the subscription
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <SafeAreaView style={styles.container}>
+      <DiscoverHeader /> 
       <DealSearchBar onSearch={handleSearch} />
       <HorizontalButtonScroll onButtonPress={handleButtonPress} />
       <DealDisplayFull deals={filteredDeals} />
