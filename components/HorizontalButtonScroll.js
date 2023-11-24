@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 
 const HorizontalButtonScroll = ({ onButtonPress }) => {
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedButton, setSelectedButton] = useState('All');
 
   const handleButtonPress = (buttonText) => {
     setSelectedButton(buttonText);
-    // onButtonPress(buttonText);
-    console.log(buttonText);
+    // console.log(buttonText);
+    // onButtonPress && onButtonPress(buttonText); // Call the external callback if provided
   };
+
+  // useEffect to handle the default selection
+  useEffect(() => {
+    handleButtonPress('All'); // Select 'All' by default
+  }, []);
 
   return (
     <View style={styles.horizontalButtonContainer}>
@@ -70,6 +75,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     height: 28,
+    marginLeft: 5
   },
   button: {
     borderRadius: 20,

@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderRadius: 10,
     padding: 10,
-    width: '100%',
+    width: '92%',
+    marginLeft: 15,
   },
   buttoncontainer: {},
   dealTitle: {
