@@ -113,10 +113,17 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
               <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
               {expandedDealId === deal.id && (
                 <View style={styles.expandedContent}>
-                  <Text style={styles.expandedDescription}>{deal.description}</Text>
-                  <TouchableOpacity style={styles.sampleButton}>
-                    <Text>Sample Button</Text>
-                  </TouchableOpacity>
+                  <View style={styles.expandedDescription}>
+                    <Text>{deal.description}</Text>
+                  </View>
+                  <View style={styles.expandedButtons}>
+                    <TouchableOpacity style={styles.sampleButton}>
+                      <Text>Share</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.sampleButton}>
+                      <Text>Locate</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
             </TouchableOpacity>
@@ -172,16 +179,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   expandedDescription: {
-    marginBottom: 5,
-    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  expandedButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   sampleButton: {
-    padding: 5,
-    backgroundColor: '#3498db',
-    borderRadius: 5,
+    padding: 12,
+    paddingLeft: 40,
+    paddingRight: 40,
+    backgroundColor: '#FF9000',
+    borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 5,
+    marginLeft: 30,
+    marginRight: 30,
   },
 });
 
