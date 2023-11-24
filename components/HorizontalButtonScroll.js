@@ -1,31 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 
-const HorizontalButtonScroll = () => {
+const HorizontalButtonScroll = ({ onButtonPress }) => {
+  const [selectedButton, setSelectedButton] = useState(null);
+
+  const handleButtonPress = (buttonText) => {
+    setSelectedButton(buttonText);
+    // onButtonPress(buttonText);
+    console.log(buttonText);
+  };
+
   return (
     <View style={styles.horizontalButtonContainer}>
-        <ScrollView
+      <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollContainer}
+      >
+        <TouchableOpacity
+          style={[styles.button, selectedButton === 'All' && styles.selectedButton]}
+          onPress={() => handleButtonPress('All')}
         >
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 1</Text>
+          <Text style={styles.buttonText}>All</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 2</Text>
+        <TouchableOpacity
+          style={[styles.button, selectedButton === 'Happy Hour' && styles.selectedButton]}
+          onPress={() => handleButtonPress('Happy Hour')}
+        >
+          <Text style={styles.buttonText}>Happy Hour</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 3</Text>
+        <TouchableOpacity
+            style={[styles.button, selectedButton === 'Food' && styles.selectedButton]}  
+            onPress={() => handleButtonPress('Food')}
+        >
+            <Text style={styles.buttonText}>Food</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 4</Text>
+        <TouchableOpacity
+            style={[styles.button, selectedButton === 'Alcohol' && styles.selectedButton]}  
+            onPress={() => handleButtonPress('Alcohol')}
+        >            
+        <Text style={styles.buttonText}>Alcohol</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 5</Text>
+        <TouchableOpacity
+            style={[styles.button, selectedButton === 'Cannabis' && styles.selectedButton]}  
+            onPress={() => handleButtonPress('Cannabis')}
+        >            
+        <Text style={styles.buttonText}>Cannabis</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Button 6</Text>
+        <TouchableOpacity
+            style={[styles.button, selectedButton === 'Retail' && styles.selectedButton]}  
+            onPress={() => handleButtonPress('Retail')}
+        >            
+        <Text style={styles.buttonText}>Retail</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+            style={[styles.button, selectedButton === 'Food Trucks' && styles.selectedButton]}  
+            onPress={() => handleButtonPress('Food Trucks')}
+        >            
+        <Text style={styles.buttonText}>Food Trucks</Text>
         </TouchableOpacity>
         </ScrollView>
     </View>
@@ -35,26 +67,30 @@ const HorizontalButtonScroll = () => {
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    flexDirection: 'row', // Align buttons horizontally
+    flexDirection: 'row',
     paddingHorizontal: 10,
-    height: 25, // Set the height of the buttons
+    height: 28,
   },
   button: {
-    backgroundColor: '#3498db',
-    borderRadius: 8,
-    paddingHorizontal: 10, // Adjust padding for a smaller button
+    borderRadius: 20,
+    paddingHorizontal: 15,
     marginRight: 10,
-    justifyContent: 'center'
-
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 10, // Set a smaller font size
+    fontSize: 10,
     fontWeight: 'bold',
   },
+  selectedButton: {
+    backgroundColor: '#FF9000',
+    borderColor: '#FF9000',
+  },
   horizontalButtonContainer: {
-    marginBottom: 5
-  }
+    marginBottom: 8,
+    marginTop: 3
+  },
 });
 
 export default HorizontalButtonScroll;
