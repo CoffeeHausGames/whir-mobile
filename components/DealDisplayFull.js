@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [expandedDealId, setExpandedDealId] = useState(null);
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -64,15 +65,15 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     return 0;
   };
 
-  const handleDealClick = (business) => {
-    const businessLocation = getBusinessLocation(business);
-    if (businessLocation) {
-      setSelectedBusinessLocation(businessLocation);
-      setSelectedBusiness(business);
-    } else {
-      console.error(`Invalid location data for business: ${business.id}`);
-    }
-  };
+  // const handleDealClick = (business) => {
+  //   const businessLocation = getBusinessLocation(business);
+  //   if (businessLocation) {
+  //     setSelectedBusinessLocation(businessLocation);
+  //     setSelectedBusiness(business);
+  //   } else {
+  //     console.error(`Invalid location data for business: ${business.id}`);
+  //   }
+  // };
 
   const getBusinessLocation = (business) => {
     if (business && business.location && business.location.coordinates) {
@@ -92,35 +93,48 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     }
   };
 
+  const toggleDeal = (dealId) => {
+    setExpandedDealId((prevDealId) => (prevDealId === dealId ? null : dealId));
+  };
+
+  const renderDeal = ({ item }) => (
+    <View style={styles.buttoncontainer}>
+      {item.deal && item.deal.length > 0 ? (
+        <View>
+          {item.deal.map((deal) => (
+            <TouchableOpacity
+              key={deal.id}
+              onPress={() => toggleDeal(deal.id)}
+              style={styles.dealButtonDisplay}
+            >
+              <Text style={styles.dealTitle}>{deal.name}</Text>
+              <Text style={styles.dealBusinessName}>{item.business_name}</Text>
+              <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
+              <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
+              {expandedDealId === deal.id && (
+                <View style={styles.expandedContent}>
+                  <Text style={styles.expandedDescription}>{deal.description}</Text>
+                  <TouchableOpacity style={styles.sampleButton}>
+                    <Text>Sample Button</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        <Text>No deals available for this business</Text>
+      )}
+    </View>
+  );
+
   return (
     <View style={styles.dealdisplay}>
       <View style={styles.container}>
         <FlatList
           data={businesses}
           keyExtractor={(item) => item.business_name}
-          renderItem={({ item }) => (
-            <View style={styles.buttoncontainer}>
-              {item.deal && item.deal.length > 0 ? (
-                <View>
-                  {item.deal.map((deal) => (
-                    <TouchableOpacity
-                      onPress={() => handleDealClick(item)}
-                      key={deal.id}
-                      style={styles.dealButtonDisplay}
-                    >
-                      <Text style={styles.dealTitle}>{deal.name}</Text>
-                      <Text style={styles.dealBusinessName}>{item.business_name}</Text>
-                      <Text style={styles.dealDescription}>{deal.description}</Text>
-                      <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
-                      <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              ) : (
-                <Text>No deals available for this business</Text>
-              )}
-            </View>
-          )}
+          renderItem={renderDeal}
         />
       </View>
     </View>
@@ -139,9 +153,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '100%',
   },
-  buttoncontainer: {
-    // width: '95%'
-  },
+  buttoncontainer: {},
   dealTitle: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -150,12 +162,26 @@ const styles = StyleSheet.create({
     color: 'gray',
     marginBottom: 5,
   },
-  dealDescription: {
-    marginBottom: 10,
-  },
   dealDistance: {
     color: 'blue',
     fontStyle: 'italic',
+  },
+  expandedContent: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#f0f0f0',
+  },
+  expandedDescription: {
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  sampleButton: {
+    padding: 5,
+    backgroundColor: '#3498db',
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 5,
   },
 });
 
