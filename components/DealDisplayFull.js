@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
+
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
@@ -187,15 +188,15 @@ const styles = StyleSheet.create({
   },
   sampleButton: {
     padding: 12,
-    paddingLeft: 40,
-    paddingRight: 40,
+    paddingLeft: 60,
+    paddingRight: 60,
     backgroundColor: '#FF9000',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 5,
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 20,
+    marginRight: 0,
   },
 });
 
