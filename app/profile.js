@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Footer from '../components/Footer';
 import DealDisplay from '../components/DealDisplay';
 import HorizontalButtonScroll from '../components/HorizontalButtonScroll';
+import ProfileCard from '../components/ProfileCard';
 import ProfileHeader from '../components/ProfileHeader';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { useNavigation } from 'expo-router';
@@ -32,6 +33,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ProfileHeader />
+      <ProfileCard />
     <Footer style={styles.footer}/>
     </SafeAreaView>
 
