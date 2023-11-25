@@ -37,8 +37,8 @@ const ProfilePersonalInfo = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
+    height: 340
   },
   infoItem: {
     marginBottom: 15,
@@ -55,10 +55,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 5, // Pushes the buttons to the bottom
   },
   button: {
-    flex: 1,
+    flex: 1, // Use flex: 0.5 or adjust as needed
     backgroundColor: 'lightgray',
     borderRadius: 5,
     paddingVertical: 10,
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginLeft: 10,
+    flex: 1, // Use flex: 0.5 or adjust as needed
     backgroundColor: 'tomato',
   },
   buttonText: {
