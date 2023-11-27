@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
 
 const Map = () => {
   const [businesses, setBusinesses] = useState([]);
+  const [selectedBusiness, setSelectedBusiness] = useState(null);
 
   // Function to get the location of a business
   const getBusinessLocation = (business) => {
@@ -22,7 +23,6 @@ const Map = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          // You may need to pass any required parameters for your backend here
           body: JSON.stringify({
             latitude: 39.1077698007311,
             longitude: -94.58107416626508,
@@ -37,7 +37,6 @@ const Map = () => {
         setBusinesses(data.data);
 
         // Log the response body in the console
-        console.log('Response Body:', data);
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
       }
@@ -45,6 +44,13 @@ const Map = () => {
 
     fetchBusinesses();
   }, []); // Run this effect only once when the component mounts
+
+  const handleMarkerPress = (business) => {
+    // Set the selected business when a marker is pressed
+    setSelectedBusiness(business);
+    console.log('Selected Business:', business);
+  };
+  
 
   return (
     <View style={styles.container}>
@@ -64,11 +70,25 @@ const Map = () => {
           if (location) {
             return (
               <Marker
-                key={business.id} // Make sure to use a unique key for each marker
+                key={business.id}
                 coordinate={location}
-                title={business.name} // You can use any property of the business object here
+                title={business.name}
                 description={business.description}
-              />
+                onPress={() => handleMarkerPress(business)}
+              >
+                {/* Use Image component for custom marker */}
+                <Image
+                  source={require('../assets/images/whir_map_poi.png')}
+                  style={{ width: 21, height: 30 }}
+                />
+                {/* Callout component for popup */}
+                <Callout style={styles.callout}>
+                  <View>
+                    <Text style={styles.calloutText}>{business.name}</Text>
+                    <Text style={styles.calloutText}>{business.description}</Text>
+                  </View>
+                </Callout>
+              </Marker>
             );
           }
           return null;
@@ -91,6 +111,9 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: -35,
   },
+  calloutText: {
+    color: 'black'
+  }
 });
 
 export default Map;
