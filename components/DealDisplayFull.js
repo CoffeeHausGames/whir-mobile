@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share } from 'react-native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
@@ -14,6 +14,16 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
     'Poppins-Italic': require('../assets/fonts/Poppins-Italic.ttf')
   });
+
+  const handleShare = async (text) => {
+    try {
+      await Share.share({
+        message: text,
+      });
+    } catch (error) {
+      console.error('Error sharing:', error.message);
+    }
+  };
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -126,7 +136,10 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
                     <Text style={styles.dealDescription}>{deal.description}</Text>
                   </View>
                   <View style={styles.expandedButtons}>
-                    <TouchableOpacity style={styles.sampleButton}>
+                    <TouchableOpacity 
+                    style={styles.sampleButton}
+                    onPress={() => handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)}
+                    >
                       <Text style={styles.expandedButton}>Share</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.sampleButton}>
