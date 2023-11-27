@@ -60,8 +60,8 @@ const Map = () => {
         initialRegion={{
           latitude: 39.1077698007311,
           longitude: -94.58107416626508,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitudeDelta: 0.03,
+          longitudeDelta: 0.03,
         }}
         minZoomLevel={4}
       >
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: -35,
+    zIndex: 1
   },
   calloutContainer: {
     width: 'auto', // Set width to 'auto' to allow it to adapt based on content

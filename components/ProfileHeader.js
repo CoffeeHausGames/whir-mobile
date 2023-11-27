@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     color: '#FF9000',
   },
   headerContainer: {
-    marginTop: 50,
+    marginTop: 100,
     marginBottom: 5,
     marginLeft: 15,
   },
