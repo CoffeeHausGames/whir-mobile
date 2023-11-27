@@ -5,6 +5,7 @@ import Map from '../components/Map';
 import HomeSearch from '../components/HomeSearch';
 import DealDisplay from '../components/DealDisplay';
 import { useNavigation } from 'expo-router';
+import MainDealDisplay from '../components/MainDealDisplay';
 
 const MainPage = () => {
   const navigation = useNavigation();
@@ -28,7 +29,8 @@ const MainPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Map />
-      <DealDisplay setSelectedBusinessLocation={() => {}} />
+      {/* <DealDisplay setSelectedBusinessLocation={() => {}} /> */}
+      {/* <MainDealDisplay /> */}
       <HomeSearch />
       <Footer />
     </SafeAreaView>

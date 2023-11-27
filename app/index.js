@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
 import Footer from '../components/Footer';
 import Map from '../components/Map';
 import HomeSearch from '../components/HomeSearch';
 import DealDisplay from '../components/DealDisplay';
 import { useNavigation } from 'expo-router';
+import MainDealDisplay from '../components/MainDealDisplay';
+
 
 const MainPage = () => {
   const navigation = useNavigation();
@@ -43,7 +45,8 @@ const MainPage = () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isLightBackground ? '#FFFFFF' : '#000000' }]}>
       <Map />
-      <DealDisplay setSelectedBusinessLocation={() => {}} />
+      {/* <DealDisplay setSelectedBusinessLocation={() => {}} /> */}
+      {/* <MainDealDisplay /> */}
       <HomeSearch />
       <Footer />
     </SafeAreaView>
