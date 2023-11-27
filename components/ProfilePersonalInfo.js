@@ -6,7 +6,7 @@ const ProfilePersonalInfo = () => {
     { label: 'Name', value: 'John Doe' },
     { label: 'Email', value: 'john.doe@example.com' },
     { label: 'Phone', value: '(555) 123-4567' },
-    { label: 'Address', value: '123 Main St, Cityville' },
+    { label: 'Address', value: '1234 Main St, Cityville' },
   ];
 
   const renderPersonalInfoItem = ({ item }) => (

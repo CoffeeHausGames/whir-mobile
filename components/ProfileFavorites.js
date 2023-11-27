@@ -19,7 +19,7 @@ const ProfileFavorites = ({ setSelectedBusinessLocation }) => {
             radius: 1000,
           };
 
-          const response = await fetch('http://192.168.1.29:4444/business', {
+          const response = await fetch('http://10.8.1.245:4444/business', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
