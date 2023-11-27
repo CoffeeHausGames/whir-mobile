@@ -2,14 +2,23 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ProfileFavorites from './ProfileFavorites';
 import ProfilePersonalInfo from './ProfilePersonalInfo';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const ProfileCard = () => {
   const [selectedButton, setSelectedButton] = useState(null);
+
+  let [fontsLoaded] = useFonts({
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   const handleButtonPress = (button) => {
     setSelectedButton(button);
   };
 
+  if (!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <View style={styles.cardContainer}>
       <View style={styles.profileImageContainer}>
@@ -86,6 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Poppins-Bold'
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -104,6 +114,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
   },
 });
 
