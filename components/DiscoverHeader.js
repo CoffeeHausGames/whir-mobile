@@ -1,7 +1,17 @@
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const DiscoverHeader = () => {
+  let [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  });
+
+  if (!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <SafeAreaView style={styles.headerContainer}>
       <Text style={styles.headerText}>Discovery</Text>
@@ -12,7 +22,7 @@ const DiscoverHeader = () => {
 const styles = StyleSheet.create({
   headerText: {
     fontSize: 40,
-    // fontFamily: 'Poppins-Bold',
+    fontFamily: 'Poppins-Bold',
     fontWeight: 'bold',
     color: '#FF9000',
   },

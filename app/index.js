@@ -6,11 +6,18 @@ import HomeSearch from '../components/HomeSearch';
 import DealDisplay from '../components/DealDisplay';
 import { useNavigation } from 'expo-router';
 import MainDealDisplay from '../components/MainDealDisplay';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 
 const MainPage = () => {
   const navigation = useNavigation();
   const [isLightBackground, setIsLightBackground] = useState(true);
+
+  let [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   useEffect(() => {
     // Example: Change background color dynamically
@@ -42,6 +49,9 @@ const MainPage = () => {
     };
   }, [navigation]);
 
+  if (!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: isLightBackground ? '#FFFFFF' : '#000000' }]}>
       <Map />

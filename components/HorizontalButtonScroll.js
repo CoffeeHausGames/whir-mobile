@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const HorizontalButtonScroll = ({ onButtonPress }) => {
   const [selectedButton, setSelectedButton] = useState('All');
+
+  let [fontsLoaded] = useFonts({
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  });
 
   const handleButtonPress = (buttonText) => {
     setSelectedButton(buttonText);
@@ -15,6 +21,9 @@ const HorizontalButtonScroll = ({ onButtonPress }) => {
     handleButtonPress('All'); // Select 'All' by default
   }, []);
 
+  if (!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <View style={styles.horizontalButtonContainer}>
       <ScrollView
@@ -88,6 +97,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 10,
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
   },
   selectedButton: {
     backgroundColor: '#FF9000',
