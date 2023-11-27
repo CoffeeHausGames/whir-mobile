@@ -151,10 +151,10 @@ const ProfileFavorites = ({ setSelectedBusinessLocation }) => {
 
 const styles = StyleSheet.create({
   dealdisplay: {
-    height: 340,
+    height: 325,
   },
   container: {
-    marginTop: 30
+    marginTop: 20
   },
   dealButtonDisplay: {
     marginBottom: 15,

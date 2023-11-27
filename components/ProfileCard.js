@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: '95%',
     // height: 150,
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 110
   },
   profileImageContainer: {
     width: 100,

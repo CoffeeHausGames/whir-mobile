@@ -1,37 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { SafeAreaView, StyleSheet, View, StatusBar } from 'react-native';
-import Footer from '../components/Footer';
-import Map from '../components/Map';
-import HomeSearch from '../components/HomeSearch';
-import DealDisplay from '../components/DealDisplay';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, StatusBar, Pressable, Text, Image } from 'react-native';
 import { useNavigation } from 'expo-router';
-import MainDealDisplay from '../components/MainDealDisplay';
-import AppLoading from 'expo-app-loading';
-import { useFonts } from 'expo-font';
+import Map from '../components/Map';
+import Icon from "react-native-ico-material-design";
 
+var iconHeight = 30;
+var iconWidth = 30;
 
 const MainPage = () => {
   const navigation = useNavigation();
-  const [isLightBackground, setIsLightBackground] = useState(true);
-
-  let [fontsLoaded] = useFonts({
-    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
-    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-  });
-
-  useEffect(() => {
-    // Example: Change background color dynamically
-    const backgroundColor = isLightBackground ? '#FFFFFF' : '#000000';
-
-    // Check the background color and set the status bar text color accordingly
-    const isLight = isLightBackground ? true : false;
-
-    // Set the status bar style based on the background color
-    StatusBar.setBarStyle(isLight ? 'dark-content' : 'light-content');
-
-    // You may also set the background color dynamically
-    StatusBar.setBackgroundColor(backgroundColor);
-  }, [isLightBackground]);
 
   useEffect(() => {
     const removeHeader = () => {
@@ -49,16 +26,38 @@ const MainPage = () => {
     };
   }, [navigation]);
 
-  if (!fontsLoaded){
-    return <AppLoading/>
-  }
+  const navigateToScreen = (screen) => {
+    console.log(screen + ' has been pressed!');
+    navigation.navigate(screen);
+  };
+
   return (
-    <View style={[styles.container, { backgroundColor: isLightBackground ? '#FFFFFF' : '#000000' }]}>
+    <View style={styles.container}>
+      {/* Image at the top */}
+      {/* <View style={styles.imageContainer}>
+        <Image
+          source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')}
+          style={styles.topImage}
+        />
+      </View> */}
       <Map />
-      {/* <DealDisplay setSelectedBusinessLocation={() => {}} /> */}
-      {/* <MainDealDisplay /> */}
-      <HomeSearch />
-      <Footer />
+      <StatusBar style="light" />
+      <View style={styles.navContainer}>
+        <View style={styles.navBar}>
+          <Pressable onPress={() => navigateToScreen('discover')} style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}>
+            <Icon name="favorite-heart-button" height={iconHeight} width={iconWidth} color='gray' />
+          </Pressable>
+          <Pressable onPress={() => navigateToScreen('index')} style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}>
+            <Icon name="map-symbol" height={iconHeight} width={iconWidth} color='#FF9000' />
+          </Pressable>
+          <Pressable onPress={() => navigateToScreen('profile')} style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}>
+            <Icon name="user-shape" height={iconHeight} width={iconWidth} color='gray' />
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };
@@ -66,9 +65,27 @@ const MainPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40, // Adjust the top padding to extend the SafeAreaView
-    backgroundColor: '#ffffff'
   },
+
+  navContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    bottom: 40,
+  },
+  navBar: {
+    flexDirection: 'row',
+    backgroundColor: '#eee',
+    width: '90%',
+    height: 65,
+    justifyContent: 'space-evenly',
+    borderRadius: 40,
+    marginLeft: 20,
+    borderWidth: 5,
+    borderColor: '#FF9000'
+  },
+  IconBehave: {
+    padding: 14
+  }
 });
 
 export default MainPage;
