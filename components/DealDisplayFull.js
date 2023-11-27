@@ -12,7 +12,8 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
-    'Poppins-Italic': require('../assets/fonts/Poppins-Italic.ttf')
+    'Poppins-Medium': require('../assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf')
   });
 
   const handleShare = async (text) => {
@@ -116,6 +117,8 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     setExpandedDealId((prevDealId) => (prevDealId === dealId ? null : dealId));
   };
 
+  
+
   const renderDeal = ({ item }) => (
     <View style={styles.buttoncontainer}>
       {item.deal && item.deal.length > 0 ? (
@@ -129,8 +132,11 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
               <Text style={styles.dealTitle}>{deal.name}</Text>
               <Text style={styles.dealBusinessName}>{item.business_name}</Text>
               <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
-              <Text style={styles.dealTime}>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
-              {expandedDealId === deal.id && (
+              <Text style={styles.dealDOW}>{deal.day_of_week}</Text>
+              <Text style={styles.dealTime}>
+                {formatTime(deal.start_time)} - {formatTime(deal.end_time)}
+              </Text>              
+            {expandedDealId === deal.id && (
                 <View style={styles.expandedContent}>
                   <View style={styles.expandedDescription}>
                     <Text style={styles.dealDescription}>{deal.description}</Text>
@@ -157,6 +163,12 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     </View>
   );
 
+  const formatTime = (time) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const formattedTime = new Date(time).toLocaleString('en-US', options);
+    return formattedTime;
+  };
+
   if (!fontsLoaded){
     return <AppLoading/>
   }
@@ -175,7 +187,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
 
 const styles = StyleSheet.create({
   dealdisplay: {
-    height: '100%',
+    flex: 1,
   },
   container: {},
   dealButtonDisplay: {
@@ -200,10 +212,13 @@ const styles = StyleSheet.create({
   dealDistance: {
     color: '#FF9000',
     fontStyle: 'italic',
-    fontFamily: 'Poppins-Italic'
+    fontFamily: 'Poppins-Medium'
   },
   dealTime: {
     fontFamily: 'Poppins-Regular'
+  },
+  dealDOW: {
+    fontFamily: 'Poppins-SemiBold'
   },
   expandedContent: {
     marginTop: 10,

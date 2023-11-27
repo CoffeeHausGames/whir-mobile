@@ -64,13 +64,13 @@ const Discover = () => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <DiscoverHeader /> 
       <DealSearchBar onSearch={handleSearch} />
       <HorizontalButtonScroll onButtonPress={handleButtonPress} />
       <DealDisplayFull deals={filteredDeals} />
       <Footer style={styles.footer} />
-    </SafeAreaView>
+    </View>
   );
 };
 

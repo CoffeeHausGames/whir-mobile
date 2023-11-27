@@ -53,13 +53,13 @@ const MainPage = () => {
     return <AppLoading/>
   }
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: isLightBackground ? '#FFFFFF' : '#000000' }]}>
+    <View style={[styles.container, { backgroundColor: isLightBackground ? '#FFFFFF' : '#000000' }]}>
       <Map />
       {/* <DealDisplay setSelectedBusinessLocation={() => {}} /> */}
       {/* <MainDealDisplay /> */}
       <HomeSearch />
       <Footer />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 40, // Adjust the top padding to extend the SafeAreaView
+    backgroundColor: '#ffffff'
   },
 });
 

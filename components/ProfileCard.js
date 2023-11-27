@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ProfileFavorites from './ProfileFavorites';
 import ProfilePersonalInfo from './ProfilePersonalInfo';
@@ -6,7 +6,7 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
 const ProfileCard = () => {
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedButton, setSelectedButton] = useState('favorites');
 
   let [fontsLoaded] = useFonts({
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
@@ -16,9 +16,14 @@ const ProfileCard = () => {
     setSelectedButton(button);
   };
 
-  if (!fontsLoaded){
-    return <AppLoading/>
+  useEffect(() => {
+    // You can add additional logic here if needed when the component mounts
+  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.profileImageContainer}>
@@ -51,16 +56,17 @@ const ProfileCard = () => {
         </View>
       </View>
       <View>
-      {selectedButton === 'favorites' && <ProfileFavorites />}
-      {selectedButton === 'personalInfo' && <ProfilePersonalInfo />}
+        {selectedButton === 'favorites' && <ProfileFavorites />}
+        {selectedButton === 'personalInfo' && <ProfilePersonalInfo />}
       </View>
-
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   cardContainer: {
+    flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: '#ffffff',
@@ -74,7 +80,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     width: '95%',
     // height: 150,
-    marginTop: 20
+    marginTop: 20,
+    marginBottom: 20
   },
   profileImageContainer: {
     width: 100,

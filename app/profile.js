@@ -31,11 +31,11 @@ const Profile = () => {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ProfileHeader />
       <ProfileCard />
     <Footer style={styles.footer}/>
-    </SafeAreaView>
+    </View>
 
   );
 };
@@ -47,6 +47,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  footer: {
+    position: 'bottom'
   }
 });
 
