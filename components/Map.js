@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
 const Map = () => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  
 
   // Function to get the location of a business
   const getBusinessLocation = (business) => {
@@ -46,9 +48,8 @@ const Map = () => {
   }, []); // Run this effect only once when the component mounts
 
   const handleMarkerPress = (business) => {
-    // Set the selected business when a marker is pressed
     setSelectedBusiness(business);
-    console.log('Selected Business:', business);
+    console.log("Business info:", business);
   };
   
 
@@ -82,10 +83,15 @@ const Map = () => {
                   style={{ width: 21, height: 30 }}
                 />
                 {/* Callout component for popup */}
-                <Callout style={styles.callout}>
-                  <View>
-                    <Text style={styles.calloutText}>{business.name}</Text>
-                    <Text style={styles.calloutText}>{business.description}</Text>
+                <Callout style={{width: 150}}>
+                  <View style={styles.calloutContent}>
+                    <Text style={styles.calloutText}>{business.business_name}</Text>
+                    <Text style={styles.calloutText}>Pinned deal of the day</Text>
+                    <TouchableOpacity style={styles.businessProfileButton}>
+                      <Text>
+                        Business Profile
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </Callout>
               </Marker>
@@ -111,8 +117,26 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: -35,
   },
+  calloutContainer: {
+    width: 'auto', // Set width to 'auto' to allow it to adapt based on content
+    paddingHorizontal: 10, // Add some padding for better appearance
+  },
+  calloutContent: {
+    flex: 1,
+  },
   calloutText: {
-    color: 'black'
+    color: 'black',
+    padding: 5
+  },
+  businessProfileButton: {
+    borderWidth: 1,
+    borderRadius: 10,
+    color: '#fff',
+    textAlign: 'center',
+    padding: 2,
+    marginLeft: 2,
+    width: 112,
+    backgroundColor: 'gray'
   }
 });
 
