@@ -48,10 +48,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
-    paddingVertical: 30,
-    bottom: 0, // Set bottom to 0 to stick to the bottom
-    position: 'absolute', // Set position to 'absolute'
-    width: '100%', // Set width to 100%
+    paddingVertical: 10,
+    paddingBottom: 30,
+    // Remove bottom and position styles
+    // bottom: 0,
+    // position: 'absolute',
+    width: '100%',
+    marginTop: 0, // Add marginTop to create space
   },
   button: {
     alignItems: 'center',

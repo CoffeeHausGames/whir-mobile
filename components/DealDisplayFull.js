@@ -187,7 +187,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
 
 const styles = StyleSheet.create({
   dealdisplay: {
-    height: '100%',
+    flex: 1,
   },
   container: {},
   dealButtonDisplay: {

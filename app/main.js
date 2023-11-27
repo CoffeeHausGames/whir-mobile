@@ -27,13 +27,13 @@ const MainPage = () => {
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Map />
       {/* <DealDisplay setSelectedBusinessLocation={() => {}} /> */}
       {/* <MainDealDisplay /> */}
       <HomeSearch />
       <Footer />
-    </SafeAreaView>
+    </View>
   );
 };
 
