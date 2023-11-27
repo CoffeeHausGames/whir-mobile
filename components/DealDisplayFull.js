@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [expandedDealId, setExpandedDealId] = useState(null);
+
+  let [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+    'Poppins-Italic': require('../assets/fonts/Poppins-Italic.ttf')
+  });
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -111,18 +119,18 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
               <Text style={styles.dealTitle}>{deal.name}</Text>
               <Text style={styles.dealBusinessName}>{item.business_name}</Text>
               <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
-              <Text>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
+              <Text style={styles.dealTime}>Start Date: {deal.start_date}, End Date: {deal.end_date}</Text>
               {expandedDealId === deal.id && (
                 <View style={styles.expandedContent}>
                   <View style={styles.expandedDescription}>
-                    <Text>{deal.description}</Text>
+                    <Text style={styles.dealDescription}>{deal.description}</Text>
                   </View>
                   <View style={styles.expandedButtons}>
                     <TouchableOpacity style={styles.sampleButton}>
-                      <Text>Share</Text>
+                      <Text style={styles.expandedButton}>Share</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.sampleButton}>
-                      <Text>Locate</Text>
+                      <Text style={styles.expandedButton}>Locate</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -136,6 +144,9 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     </View>
   );
 
+  if (!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <View style={styles.dealdisplay}>
       <View style={styles.container}>
@@ -166,19 +177,28 @@ const styles = StyleSheet.create({
   dealTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
   },
   dealBusinessName: {
     color: 'gray',
     marginBottom: 5,
+    fontFamily: 'Poppins-Regular'
   },
   dealDistance: {
-    color: 'blue',
+    color: '#FF9000',
     fontStyle: 'italic',
+    fontFamily: 'Poppins-Italic'
+  },
+  dealTime: {
+    fontFamily: 'Poppins-Regular'
   },
   expandedContent: {
     marginTop: 10,
     padding: 10,
     backgroundColor: '#f0f0f0',
+  },
+  dealDescription: {
+    fontFamily: 'Poppins-Regular'
   },
   expandedDescription: {
     marginBottom: 10,
@@ -199,6 +219,9 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 15,
   },
+  expandedButton: {
+    fontFamily: 'Poppins-Regular'
+  }
 });
 
 export default DealDisplayFull;

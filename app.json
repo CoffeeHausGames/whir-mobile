@@ -2,7 +2,8 @@
   "expo": {
     "scheme": "acme",
     "web": {
-      "bundler": "metro"
+      "bundler": "metro",
+      "assetBundlePatterns": ["**/*"]
     },
     "plugins": [
       "expo-router"
