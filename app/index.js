@@ -1,14 +1,44 @@
-// App.js or another root component
-import React from 'react';
+import { useEffect } from 'react';
+import { useNavigation } from 'expo-router';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider } from './authcontext';
 import MainPage from './mapscreen';
+import Profile from './profile';
+import Discover from './discover';
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const navigation = useNavigation();
+
+
+  useEffect(() => {
+    const removeHeader = () => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    };
+
+    removeHeader();
+
+    return () => {
+      navigation.setOptions({
+        headerShown: true,
+      });
+    };
+  }, [navigation]);
+
   return (
-    <AuthProvider>
-      {/* Other components */}
-      <MainPage />
-    </AuthProvider>
+    <NavigationContainer independent={true}>
+      <AuthProvider>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={MainPage} />
+          <Stack.Screen name="Profile" component={Profile} />
+          <Stack.Screen name="Discover" component={Discover} />
+        </Stack.Navigator>
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 
