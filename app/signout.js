@@ -1,3 +1,4 @@
+// SignOutButton.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAuth } from './authcontext';
@@ -26,13 +27,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signOutButton: {
-    backgroundColor: '#ff0000', // Set your desired sign-out button color
+    backgroundColor: '#ff0000',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
-    color: '#ffffff', // Set your desired text color
+    color: '#ffffff',
     fontWeight: 'bold',
   },
 });
