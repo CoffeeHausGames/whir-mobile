@@ -29,6 +29,11 @@ const MainPage = () => {
     };
   }, [navigation]);
 
+  const navigateToScreen = (screen) => {
+    console.log(screen + ' has been pressed!');
+    navigation.navigate(screen);
+  };
+
   if (!user) {
     // If the user is not authenticated, render the SignInScreen
     return <SignIn />;
