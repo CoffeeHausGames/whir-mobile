@@ -41,15 +41,15 @@ const Profile = () => {
       <ProfileCard />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
-          <Pressable onPress={() => navigateToScreen('discover')} style={styles.IconBehave}
+          <Pressable onPress={() => navigateToScreen('Discover')} style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}>
             <Icon name="favorite-heart-button" height={iconHeight} width={iconWidth} color='gray' />
           </Pressable>
-          <Pressable onPress={() => navigateToScreen('index')} style={styles.IconBehave}
+          <Pressable onPress={() => navigateToScreen('Home')} style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}>
             <Icon name="map-symbol" height={iconHeight} width={iconWidth} color='gray' />
           </Pressable>
-          <Pressable onPress={() => navigateToScreen('profile')} style={styles.IconBehave}
+          <Pressable onPress={() => navigateToScreen('Profile')} style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}>
             <Icon name="user-shape" height={iconHeight} width={iconWidth} color='#FF9000' />
           </Pressable>

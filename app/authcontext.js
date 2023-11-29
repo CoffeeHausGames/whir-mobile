@@ -1,55 +1,55 @@
-// authcontext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore from Expo
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const loadUser = async () => {
+    // Check if the user is already authenticated (e.g., check local storage or SecureStore)
+    const checkAuthentication = async () => {
       try {
-        const userData = await AsyncStorage.getItem('user');
-        setUser(userData ? JSON.parse(userData) : null);
+        const storedUser = await SecureStore.getItemAsync('user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
       } catch (error) {
-        console.error('Error loading user data:', error);
+        console.error('Error reading user data:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    loadUser();
+    checkAuthentication();
   }, []);
 
-  const signIn = () => {
-    // Perform sign-in logic
-    const updatedUser = { authenticated: true };
-    setUser(updatedUser);
-    AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+  const signIn = (userData) => {
+    setUser(userData);
+    // Store the user data securely (e.g., using SecureStore)
+    SecureStore.setItemAsync('user', JSON.stringify(userData));
   };
 
   const signOut = () => {
-    // Perform sign-out logic
     setUser(null);
-    AsyncStorage.removeItem('user');
+    // Remove the stored user data
+    SecureStore.deleteItemAsync('user');
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        signIn,
-        signOut,
-      }}
-    >
+    <AuthContext.Provider value={{ user, isLoading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export { AuthProvider, useAuth };
