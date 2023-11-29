@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, StyleSheet } from 'react-native';
 import { useAuth } from './authcontext'; // Update the path
+import { useNavigation } from 'expo-router';
 
 const SignIn = () => {
   const { signIn } = useAuth();
@@ -8,6 +9,19 @@ const SignIn = () => {
     Email: '',
     Password: '',
   });
+
+  const navigation = useNavigation();
+
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const handleSubmit = async () => {
     console.log('Sending sign-in request:', formData);

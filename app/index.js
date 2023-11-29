@@ -33,7 +33,7 @@ const App = () => {
   return (
     <NavigationContainer independent={true}>
       <AuthProvider>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name="Home" component={MainPage} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Discover" component={Discover} />

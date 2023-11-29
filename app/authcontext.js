@@ -8,7 +8,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigation(); // Get navigation instance
+    const navigation = useNavigation(); // Get navigation instance
 
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
 
     navigation.reset({
       index: 0,
-      routes: [{ name: 'SignIn' }],
+      routes: [{ name: 'Home' }],
     });
   };
 
