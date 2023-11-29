@@ -65,13 +65,21 @@ const MainPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative', // Ensure that the child elements are positioned relative to this container
+  },
+
+  map: {
+    flex: 1,
+    ...StyleSheet.absoluteFillObject, // Take up the entire space of its container
   },
 
   navContainer: {
     position: 'absolute',
     alignItems: 'center',
     bottom: 40,
+    zIndex: 2, // Ensure that the footer is above the map (increase the zIndex)
   },
+
   navBar: {
     flexDirection: 'row',
     backgroundColor: '#eee',
@@ -81,11 +89,12 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     marginLeft: 20,
     borderWidth: 5,
-    borderColor: '#FF9000'
+    borderColor: '#FF9000',
   },
+
   IconBehave: {
-    padding: 14
-  }
+    padding: 14,
+  },
 });
 
 export default MainPage;
