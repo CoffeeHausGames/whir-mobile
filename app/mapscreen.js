@@ -50,14 +50,18 @@ const MainPage = () => {
     };
 
     removeHeader();
-    getPermissions();
+
+    // Check if the user is authenticated before getting location
+    if (user) {
+      getPermissions();
+    }
 
     return () => {
       navigation.setOptions({
         headerShown: true,
       });
     };
-  }, [navigation]);
+  }, [navigation, user]);
 
   const navigateToScreen = (screen) => {
     console.log(screen + ' has been pressed!');
