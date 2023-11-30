@@ -6,6 +6,7 @@ import { AuthProvider } from './authcontext';
 import MainPage from './mapscreen';
 import Profile from './profile';
 import Discover from './discover';
+import SignIn from './signin';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,10 +33,11 @@ const App = () => {
   return (
     <NavigationContainer independent={true}>
       <AuthProvider>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen name="Home" component={MainPage} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Discover" component={Discover} />
+          <Stack.Screen name="SignIn" component={SignIn} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>

@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
-import { View, StyleSheet, StatusBar, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, StatusBar, Pressable, Alert } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Map from '../components/Map';
 import Icon from 'react-native-ico-material-design';
-import { useAuth } from './authcontext'; // Update the path
+import { useAuth } from './authcontext';
 import SignIn from './signin';
+import * as Location from 'expo-location';
 
 var iconHeight = 30;
 var iconWidth = 30;
@@ -12,6 +13,7 @@ var iconWidth = 30;
 const MainPage = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
     const removeHeader = () => {
@@ -20,14 +22,46 @@ const MainPage = () => {
       });
     };
 
+    const getPermissions = async () => {
+      try {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+
+        if (status !== 'granted') {
+          console.log('Location permission denied');
+          Alert.alert(
+            'Location Permission Required',
+            'Please grant location permission to use this app.',
+            [
+              {
+                text: 'OK',
+                onPress: () => console.log('OK Pressed'),
+              },
+            ]
+          );
+          return;
+        }
+
+        let currentLocation = await Location.getCurrentPositionAsync({});
+        setLocation(currentLocation);
+        console.log('Location:', currentLocation);
+      } catch (error) {
+        console.error('Error getting location:', error);
+      }
+    };
+
     removeHeader();
+
+    // Check if the user is authenticated before getting location
+    if (user) {
+      getPermissions();
+    }
 
     return () => {
       navigation.setOptions({
         headerShown: true,
       });
     };
-  }, [navigation]);
+  }, [navigation, user]);
 
   const navigateToScreen = (screen) => {
     console.log(screen + ' has been pressed!');
@@ -42,28 +76,30 @@ const MainPage = () => {
   // Render the main content if the user is authenticated
   return (
     <View style={styles.container}>
-      {/* Image at the top */}
-      {/* <View style={styles.imageContainer}>
-        <Image
-          source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')}
-          style={styles.topImage}
-        />
-      </View> */}
       <Map />
       <StatusBar style="light" />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
-          <Pressable onPress={() => navigateToScreen('Discover')} style={styles.IconBehave}
-            android_ripple={{ borderless: true, radius: 50 }}>
-            <Icon name="favorite-heart-button" height={iconHeight} width={iconWidth} color='gray' />
+          <Pressable
+            onPress={() => navigateToScreen('Discover')}
+            style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}
+          >
+            <Icon name="favorite-heart-button" height={iconHeight} width={iconWidth} color="gray" />
           </Pressable>
-          <Pressable onPress={() => navigateToScreen('Home')} style={styles.IconBehave}
-            android_ripple={{ borderless: true, radius: 50 }}>
-            <Icon name="map-symbol" height={iconHeight} width={iconWidth} color='#FF9000' />
+          <Pressable
+            onPress={() => navigateToScreen('Home')}
+            style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}
+          >
+            <Icon name="map-symbol" height={iconHeight} width={iconWidth} color="#FF9000" />
           </Pressable>
-          <Pressable onPress={() => navigateToScreen('Profile')} style={styles.IconBehave}
-            android_ripple={{ borderless: true, radius: 50 }}>
-            <Icon name="user-shape" height={iconHeight} width={iconWidth} color='gray' />
+          <Pressable
+            onPress={() => navigateToScreen('Profile')}
+            style={styles.IconBehave}
+            android_ripple={{ borderless: true, radius: 50 }}
+          >
+            <Icon name="user-shape" height={iconHeight} width={iconWidth} color="gray" />
           </Pressable>
         </View>
       </View>
@@ -74,19 +110,14 @@ const MainPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: 'relative', // Ensure that the child elements are positioned relative to this container
-  },
-
-  map: {
-    flex: 1,
-    ...StyleSheet.absoluteFillObject, // Take up the entire space of its container
+    position: 'relative',
   },
 
   navContainer: {
     position: 'absolute',
     alignItems: 'center',
     bottom: 40,
-    zIndex: 2, // Ensure that the footer is above the map (increase the zIndex)
+    zIndex: 2,
   },
 
   navBar: {
