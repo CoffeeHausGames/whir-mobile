@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
   const signOut = () => {
     setUser(null);
     // Remove the stored user data
-    SecureStore.deleteItemAsynFiconc('user');
+    SecureStore.deleteItemAsync('user');
 
     navigation.reset({
       index: 0,
