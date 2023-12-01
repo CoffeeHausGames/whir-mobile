@@ -3,7 +3,6 @@ import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Icon from 'react-native-ico-material-design';
 import { useAuth } from './authcontext';
-import DealBox from '../components/merchantDealBox';
 import MerchantDashboardHeader from '../components/MerchantDealBoxHeader';
 
 var iconHeight = 30;
@@ -38,25 +37,24 @@ const MerchantDashboard = () => {
   return (
     <View style={styles.container}>
       <MerchantDashboardHeader />
-      <DealBox />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable
-            onPress={() => navigateToScreen('Discover')}
+            onPress={() => navigateToScreen('MerchantDeals')}
             style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}
           >
             <Icon name="favorite-heart-button" height={iconHeight} width={iconWidth} color="gray" />
           </Pressable>
           <Pressable
-            onPress={() => navigateToScreen('Home')}
+            onPress={() => navigateToScreen('MerchantDashboard')}
             style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}
           >
             <Icon name="map-symbol" height={iconHeight} width={iconWidth} color="#FF9000" />
           </Pressable>
           <Pressable
-            onPress={() => navigateToScreen('Profile')}
+            onPress={() => navigateToScreen('MerchantProfile')}
             style={styles.IconBehave}
             android_ripple={{ borderless: true, radius: 50 }}
           >
