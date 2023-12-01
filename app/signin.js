@@ -11,11 +11,15 @@ import {
   ScrollView,
   Animated,
   Keyboard,
+  Platform
 } from 'react-native';
 import { useAuth } from './authcontext'; // Update the path
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
+
+
+
 const SignIn = () => {
   const { signIn } = useAuth();
   const [formData, setFormData] = useState({
@@ -172,17 +176,22 @@ const SignIn = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#ffffff', // Set your desired background color
-    },
-    signInContainer: {
-      width: '80%',
-      bottom: '10%',
-      alignSelf: 'center'
-    },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+  },
+  signInContainer: {
+    width: '80%',
+    bottom: '10%',
+    alignSelf: 'center',
+    ...Platform.select({
+      android: {
+        paddingBottom: 200, // Adjust this value based on your needs
+      },
+    }),
+  },
     image: {
       width: 300,
       height: 300,
