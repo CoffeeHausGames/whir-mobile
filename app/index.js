@@ -7,6 +7,7 @@ import MainPage from './mapscreen';
 import Profile from './profile';
 import Discover from './discover';
 import SignIn from './signin';
+import SignUp from './signup';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ const App = () => {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Discover" component={Discover} />
           <Stack.Screen name="SignIn" component={SignIn} />
+          <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
