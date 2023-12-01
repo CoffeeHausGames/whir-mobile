@@ -10,12 +10,12 @@ import {
   ScrollView,
   Animated,
   Keyboard,
-  Platform
+  Platform,
+  Image
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
-
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ const SignUp = () => {
       () => {
         Animated.parallel([
           Animated.timing(signUpContainerBottom, {
-            toValue: 100,
+            toValue: 130,
             duration: 250,
             useNativeDriver: false,
           }),
@@ -105,7 +105,7 @@ const SignUp = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, backgroundColor: '#ffffff' }}>
+    <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: '#ffffff' }}>
       <ScrollView keyboardShouldPersistTaps='handled'>
         <Animated.View
           style={[
@@ -113,6 +113,10 @@ const SignUp = () => {
             { bottom: signUpContainerBottom },
           ]}
         >
+            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+            {/* Your image component goes here */}
+            <Image source={require('../assets/images/back-mobile.png')} style={styles.backImage} />
+          </TouchableOpacity>
           <Text style={styles.title}>Welcome!</Text>
           <TextInput
             style={styles.customInput}
@@ -186,9 +190,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     marginBottom: 10,
-    fontFamily: 'Poppins-Black',
+    fontFamily: 'Poppins-Bold',
     color: '#fca502',
     fontSize: 50,
     marginBottom: 1,
@@ -222,6 +225,17 @@ const styles = StyleSheet.create({
   },
   signUpNoButtonText: {
     fontFamily: 'Poppins-Regular',
+  },
+  backButton: {
+    position: 'absolute',
+    top: -170,
+    left: -40,
+    zIndex: 1, // Ensure the button is on top of other components
+  },
+  backImage: {
+    width: 60,
+    height: 60,
+    // Add any other styling for your image
   },
 });
 
