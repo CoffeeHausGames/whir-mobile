@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share } from 'react-native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-
+import * as Location from 'expo-location';
 
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
@@ -29,40 +29,44 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const userLocation = await getUserLocation();
+        const { status } = await Location.requestForegroundPermissionsAsync();
 
-        if (userLocation && userLocation.latitude !== 0 && userLocation.longitude !== 0) {
-          const formattedCoordinates = {
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude,
-            radius: 1000,
-          };
-
-          const response = await fetch('http://10.8.1.245:4444/business', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formattedCoordinates),
-          });
-
-          if (!response.ok) {
-            throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
-          }
-
-          const data = await response.json();
-
-          const businessesWithDistance = data.data.map((business) => ({
-            ...business,
-            distance: calculateDistance(userLocation, business.location.coordinates),
-          }));
-
-          const sortedBusinesses = businessesWithDistance.sort((a, b) => a.distance - b.distance);
-
-          setBusinesses(sortedBusinesses);
-        } else {
-          console.log('Please share your location in order to view businesses near you');
+        if (status !== 'granted') {
+          console.log('Location permission denied');
+          return;
         }
+
+        const location = await Location.getCurrentPositionAsync({});
+        const userLocation = { latitude: location.coords.latitude, longitude: location.coords.longitude };
+
+        const formattedCoordinates = {
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          radius: 1000,
+        };
+
+        const response = await fetch('http://10.8.1.245:4444/business', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formattedCoordinates),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        const businessesWithDistance = data.data.map((business) => ({
+          ...business,
+          distance: calculateDistance(userLocation, business.location.coordinates),
+        }));
+
+        const sortedBusinesses = businessesWithDistance.sort((a, b) => a.distance - b.distance);
+
+        setBusinesses(sortedBusinesses);
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
       }
@@ -71,53 +75,22 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     fetchBusinesses();
   }, []);
 
-  const getUserLocation = async () => {
-    // Implement logic to get the user's location in a React Native app
-    // You may use a library like expo-location or navigator.geolocation
-    // For simplicity, I'm returning a hardcoded location for now
-    return { latitude: 39.1077698007311, longitude: -94.58107416626508 };
-  };
-
   const calculateDistance = (userLocation, businessLocation) => {
-    // Implement the distance calculation logic for React Native
-    // You may use libraries like geolib or implement the Haversine formula
-    // For simplicity, I'm returning 0 for now
-    return 0;
-  };
-
-  // const handleDealClick = (business) => {
-  //   const businessLocation = getBusinessLocation(business);
-  //   if (businessLocation) {
-  //     setSelectedBusinessLocation(businessLocation);
-  //     setSelectedBusiness(business);
-  //   } else {
-  //     console.error(`Invalid location data for business: ${business.id}`);
-  //   }
-  // };
-
-  const getBusinessLocation = (business) => {
-    if (business && business.location && business.location.coordinates) {
-      const [longitude, latitude] = business.location.coordinates;
-      return { latitude, longitude };
-    }
-    return null;
-  };
-
-  const formatDistance = (distance) => {
-    if (distance >= 10) {
-      return distance.toFixed(0);
-    } else if (distance >= 0.1) {
-      return distance.toFixed(1);
-    } else {
-      return distance.toFixed(2);
-    }
+    const radlat1 = (Math.PI * userLocation.latitude) / 180;
+    const radlat2 = (Math.PI * businessLocation[1]) / 180;
+    const theta = userLocation.longitude - businessLocation[0];
+    const radtheta = (Math.PI * theta) / 180;
+    let dist =
+      Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515; // miles
+    return dist;
   };
 
   const toggleDeal = (dealId) => {
     setExpandedDealId((prevDealId) => (prevDealId === dealId ? null : dealId));
   };
-
-  
 
   const renderDeal = ({ item }) => (
     <View style={styles.buttoncontainer}>
@@ -135,16 +108,16 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
               <Text style={styles.dealDOW}>{deal.day_of_week}</Text>
               <Text style={styles.dealTime}>
                 {formatTime(deal.start_time)} - {formatTime(deal.end_time)}
-              </Text>              
-            {expandedDealId === deal.id && (
+              </Text>
+              {expandedDealId === deal.id && (
                 <View style={styles.expandedContent}>
                   <View style={styles.expandedDescription}>
                     <Text style={styles.dealDescription}>{deal.description}</Text>
                   </View>
                   <View style={styles.expandedButtons}>
                     <TouchableOpacity 
-                    style={styles.sampleButton}
-                    onPress={() => handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)}
+                      style={styles.sampleButton}
+                      onPress={() => handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)}
                     >
                       <Text style={styles.expandedButton}>Share</Text>
                     </TouchableOpacity>
@@ -167,6 +140,16 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
     const formattedTime = new Date(time).toLocaleString('en-US', options);
     return formattedTime;
+  };
+
+  const formatDistance = (distance) => {
+    if (distance >= 10) {
+      return distance.toFixed(0);
+    } else if (distance >= 0.1) {
+      return distance.toFixed(1);
+    } else {
+      return distance.toFixed(2);
+    }
   };
 
   if (!fontsLoaded){
