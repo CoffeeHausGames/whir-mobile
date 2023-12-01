@@ -140,7 +140,7 @@ const SignIn = () => {
       behavior="height"
       style={{ flex: 1, backgroundColor: '#ffffff' }}
     >
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps='handled'>
         <Animated.Image
           source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')}
           style={[styles.image, { transform: [{ scale: imageScale }] }]}

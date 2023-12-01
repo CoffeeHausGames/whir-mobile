@@ -16,6 +16,7 @@ import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
 
+
 const SignUp = () => {
   const [formData, setFormData] = useState({
     First_name: '',
@@ -28,16 +29,25 @@ const SignUp = () => {
   const headerOpacity = useRef(new Animated.Value(1)).current;
 
   let [fontsLoaded] = useFonts({
-    // ... (existing font imports)
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
+    'Poppins-Black': require('../assets/fonts/Poppins-Black.ttf'),
+    'Poppins-Medium': require('../assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf')
   });
 
   useEffect(() => {
+
+    navigation.setOptions({
+        headerShown: false,
+      });
+      
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
         Animated.parallel([
           Animated.timing(signUpContainerBottom, {
-            toValue: 170,
+            toValue: 100,
             duration: 250,
             useNativeDriver: false,
           }),
@@ -95,8 +105,8 @@ const SignUp = () => {
   }
 
   return (
-    <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: '#ffffff' }}>
-      <ScrollView>
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1, backgroundColor: '#ffffff' }}>
+      <ScrollView keyboardShouldPersistTaps='handled'>
         <Animated.View
           style={[
             styles.signUpContainer,
@@ -162,8 +172,13 @@ const styles = StyleSheet.create({
   },
   signUpContainer: {
     width: '80%',
-    alignSelf: 'center',
     marginTop: '60%',
+    alignSelf: 'center',
+    ...Platform.select({
+      android: {
+        paddingBottom: 100, // Adjust this value based on your needs
+      },
+    }),
   },
   signUpHeader: {
     alignItems: 'center',
