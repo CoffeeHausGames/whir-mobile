@@ -43,6 +43,10 @@ const SignIn = () => {
     navigation.navigate('SignUp');
   };
 
+  const handleMerchantSignInPress = () => {
+    navigation.navigate('MerchantSignIn')
+  }
+
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -184,6 +188,14 @@ const SignIn = () => {
               <Text style={styles.signUpButtonText}> Register Here</Text>
             </TouchableOpacity>
           </View>
+          <View style={styles.merchantView}>
+            <Text style={styles.merchantNoButtonText}>
+              Are you a merchant?
+            </Text>
+            <TouchableOpacity onPress={handleMerchantSignInPress} style={styles.signUpButton}>
+              <Text style={styles.merchantButtonText}> Login Here</Text>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -255,7 +267,7 @@ const styles = StyleSheet.create({
     registerView: {
       flexDirection: 'row',
       position: 'fixed',
-      bottom: '-10%'
+      bottom: '-5%'
     },
     signUpButtonText: {
       color: '#fca502',
@@ -263,6 +275,19 @@ const styles = StyleSheet.create({
     },
     signUpNoButtonText: {
       fontFamily: 'Poppins-Regular'
+    },
+    merchantButtonText: {
+      color: '#fca502',
+      fontFamily: 'Poppins-Bold'
+    },
+    merchantNoButtonText: {
+      fontFamily: 'Poppins-Regular'
+    },
+    merchantView: {
+      flexDirection: 'row',
+      position: 'fixed',
+      bottom: '-5%',
+      marginTop: 5,
     }
   });
 

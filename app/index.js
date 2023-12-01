@@ -8,6 +8,8 @@ import Profile from './profile';
 import Discover from './discover';
 import SignIn from './signin';
 import SignUp from './signup';
+import MerchantSignIn from './merchantSignIn';
+import MerchantDashboard from './merchantDashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,6 +42,8 @@ const App = () => {
           <Stack.Screen name="Discover" component={Discover} />
           <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen name="MerchantSignIn" component={MerchantSignIn} />
+          <Stack.Screen name="MerchantDashboard" component={MerchantDashboard} />
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
