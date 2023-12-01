@@ -30,9 +30,14 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     }
   };
 
-  const toggleModal = (businessInfo) => {
+  const toggleModal = async (businessInfo) => {
     setModalVisible(!modalVisible);
     setSelectedBusinessInfo(businessInfo);
+  
+    if (businessInfo) {
+      const deals = await fetchDealsForBusiness(businessInfo.id);
+      console.log('Deals for the selected business:', deals);
+    }
   };
 
   useEffect(() => {
@@ -85,6 +90,28 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
 
     fetchBusinesses();
   }, []);
+
+  const fetchDealsForBusiness = async (businessId) => {
+    try {
+      const response = await fetch(`http://10.8.1.245:4444/business/deals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ businessId }), // Include the businessId in the request body
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to fetch deals. Server response: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data.deals; // Assuming your API returns an array of deals
+    } catch (error) {
+      console.error('Error fetching deals:', error.message);
+      return [];
+    }
+  };
 
   const calculateDistance = (userLocation, businessLocation) => {
     const radlat1 = (Math.PI * userLocation.latitude) / 180;
