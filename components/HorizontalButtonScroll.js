@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import { SplashScreen } from 'expo-router';
 
 const HorizontalButtonScroll = ({ onButtonPress }) => {
   const [selectedButton, setSelectedButton] = useState('All');
@@ -22,7 +22,7 @@ const HorizontalButtonScroll = ({ onButtonPress }) => {
   }, []);
 
   if (!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen />
   }
   return (
     <View style={styles.horizontalButtonContainer}>

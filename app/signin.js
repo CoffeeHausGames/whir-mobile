@@ -15,8 +15,7 @@ import {
 import { useAuth } from './authcontext'; // Update the path
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
-
+import { SplashScreen } from 'expo-router';
 const SignIn = () => {
   const { signIn } = useAuth();
   const [formData, setFormData] = useState({
@@ -125,7 +124,7 @@ const SignIn = () => {
   };
 
   if (!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen />
   }
   return (
     <KeyboardAvoidingView

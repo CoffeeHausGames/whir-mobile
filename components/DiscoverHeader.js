@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
-
+import { SplashScreen } from 'expo-router';
 const DiscoverHeader = () => {
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
@@ -10,7 +9,7 @@ const DiscoverHeader = () => {
   });
 
   if (!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen />
   }
   return (
     <SafeAreaView style={styles.headerContainer}>
