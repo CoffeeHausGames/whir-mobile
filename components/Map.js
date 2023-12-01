@@ -19,20 +19,14 @@ const Map = ({ userLocation }) => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        if (!userLocation) {
-          return; // Don't fetch if user location is not available
-        }
-
-        const { latitude, longitude } = userLocation.coords;
-
         const response = await fetch('http://10.8.1.245:4444/business', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            latitude,
-            longitude,
+            latitude: 39.1077698007311,
+            longitude: -94.58107416626508,
           }),
         });
 
@@ -42,13 +36,15 @@ const Map = ({ userLocation }) => {
 
         const data = await response.json();
         setBusinesses(data.data);
+
+        // Log the response body in the console
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
       }
     };
 
     fetchBusinesses();
-  }, [userLocation]); // Run this effect only once when the component mounts
+  }, []); // Run this effect only once when the component mounts
 
   const handleMarkerPress = (business) => {
     setSelectedBusiness(business);
