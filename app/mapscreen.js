@@ -50,18 +50,14 @@ const MainPage = () => {
     };
 
     removeHeader();
-
-    // Check if the user is authenticated before getting location
-    if (user) {
-      getPermissions();
-    }
+    getPermissions();
 
     return () => {
       navigation.setOptions({
         headerShown: true,
       });
     };
-  }, [navigation, user]);
+  }, [navigation]);
 
   const navigateToScreen = (screen) => {
     console.log(screen + ' has been pressed!');
@@ -106,6 +102,7 @@ const MainPage = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
