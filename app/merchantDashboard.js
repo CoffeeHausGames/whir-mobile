@@ -4,6 +4,7 @@ import { useNavigation } from 'expo-router';
 import Icon from 'react-native-ico-material-design';
 import { useAuth } from './authcontext';
 import MerchantDashboardHeader from '../components/MerchantDealBoxHeader';
+import MerchantAnalytics from '../components/MerchantAnalytics';
 
 var iconHeight = 30;
 var iconWidth = 30;
@@ -37,6 +38,7 @@ const MerchantDashboard = () => {
   return (
     <View style={styles.container}>
       <MerchantDashboardHeader />
+      <MerchantAnalytics />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable
