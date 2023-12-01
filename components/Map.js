@@ -3,10 +3,9 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import MapView, { Marker, Callout } from 'react-native-maps';
 
-const Map = () => {
+const Map = ({ userLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
-  
 
   // Function to get the location of a business
   const getBusinessLocation = (business) => {
@@ -19,29 +18,7 @@ const Map = () => {
 
   useEffect(() => {
     const fetchBusinesses = async () => {
-      try {
-        const response = await fetch('http://10.8.1.245:4444/business', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            latitude: 39.1077698007311,
-            longitude: -94.58107416626508,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        setBusinesses(data.data);
-
-        // Log the response body in the console
-      } catch (error) {
-        console.error('Error fetching businesses:', error.message);
-      }
+      // ... (fetch businesses logic)
     };
 
     fetchBusinesses();
@@ -51,19 +28,28 @@ const Map = () => {
     setSelectedBusiness(business);
     console.log("Business info:", business);
   };
-  
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
-        initialRegion={{
-          latitude: 39.1077698007311,
-          longitude: -94.58107416626508,
-          latitudeDelta: 0.03,
-          longitudeDelta: 0.03,
-        }}
+        initialRegion={
+          userLocation
+            ? {
+                latitude: userLocation.coords.latitude,
+                longitude: userLocation.coords.longitude,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
+              }
+            : {
+                latitude: 39.1077698007311,
+                longitude: -94.58107416626508,
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.03,
+              }
+        }
         minZoomLevel={4}
+        showsUserLocation={true}
       >
         {/* Map through the businesses array and create markers */}
         {businesses.map((business) => {
@@ -83,14 +69,12 @@ const Map = () => {
                   style={{ width: 21, height: 30 }}
                 />
                 {/* Callout component for popup */}
-                <Callout style={{width: 150}}>
+                <Callout style={{ width: 150 }}>
                   <View style={styles.calloutContent}>
                     <Text style={styles.calloutText}>{business.business_name}</Text>
                     <Text style={styles.calloutText}>Pinned deal of the day</Text>
                     <TouchableOpacity style={styles.businessProfileButton}>
-                      <Text>
-                        Business Profile
-                      </Text>
+                      <Text>Business Profile</Text>
                     </TouchableOpacity>
                   </View>
                 </Callout>
