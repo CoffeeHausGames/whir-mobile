@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, StatusBar, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
 import { useNavigation } from 'expo-router';
-import Map from '../components/Map';
 import Icon from 'react-native-ico-material-design';
 import { useAuth } from './authcontext';
-import SignIn from './signin';
-import * as Location from 'expo-location';
-import SignOutButton from './signout';
+import DealBox from '../components/merchantDealBox';
+import MerchantDashboardHeader from '../components/MerchantDealBoxHeader';
 
 var iconHeight = 30;
 var iconWidth = 30;
 
-const MainPage = () => {
+const MerchantDashboard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const authContext = useAuth();
   const navigation = useNavigation();
-  const { user } = useAuth();
-  const [location, setLocation] = useState(null);
+
+  const navigateToScreen = (screen) => {
+    console.log(screen + ' has been pressed!');
+    navigation.navigate(screen);
+  };
 
   useEffect(() => {
     const removeHeader = () => {
@@ -23,38 +26,6 @@ const MainPage = () => {
       });
     };
 
-    // Move getPermissions inside the conditional block
-    if (user) {
-      const getPermissions = async () => {
-        try {
-          let { status } = await Location.requestForegroundPermissionsAsync();
-
-          if (status !== 'granted') {
-            console.log('Location permission denied');
-            Alert.alert(
-              'Location Permission Required',
-              'Please grant location permission to use this app.',
-              [
-                {
-                  text: 'OK',
-                  onPress: () => console.log('OK Pressed'),
-                },
-              ]
-            );
-            return;
-          }
-
-          let currentLocation = await Location.getCurrentPositionAsync({});
-          setLocation(currentLocation);
-          console.log('Location:', currentLocation);
-        } catch (error) {
-          console.error('Error getting location:', error);
-        }
-      };
-
-      getPermissions();
-    }
-
     removeHeader();
 
     return () => {
@@ -62,26 +33,12 @@ const MainPage = () => {
         headerShown: true,
       });
     };
-  }, [navigation, user]);
+  }, [navigation]);
 
-  const navigateToScreen = (screen) => {
-    console.log(screen + ' has been pressed!');
-    navigation.navigate(screen);
-  };
-
-  if (!user) {
-    // If the user is not authenticated, render the SignInScreen
-    return <SignIn />;
-  }
-
-  // Render the main content if the user is authenticated
   return (
     <View style={styles.container}>
-      <Map />
-      <StatusBar style="light" />
-      <View style={styles.panic}>
-        <SignOutButton />
-      </View>
+      <MerchantDashboardHeader />
+      <DealBox />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable
@@ -139,9 +96,6 @@ const styles = StyleSheet.create({
   IconBehave: {
     padding: 14,
   },
-  panic: {
-    top: -200
-  }
 });
 
-export default MainPage;
+export default MerchantDashboard;
