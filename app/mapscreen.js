@@ -22,42 +22,46 @@ const MainPage = () => {
       });
     };
 
-    const getPermissions = async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
+    // Move getPermissions inside the conditional block
+    if (user) {
+      const getPermissions = async () => {
+        try {
+          let { status } = await Location.requestForegroundPermissionsAsync();
 
-        if (status !== 'granted') {
-          console.log('Location permission denied');
-          Alert.alert(
-            'Location Permission Required',
-            'Please grant location permission to use this app.',
-            [
-              {
-                text: 'OK',
-                onPress: () => console.log('OK Pressed'),
-              },
-            ]
-          );
-          return;
+          if (status !== 'granted') {
+            console.log('Location permission denied');
+            Alert.alert(
+              'Location Permission Required',
+              'Please grant location permission to use this app.',
+              [
+                {
+                  text: 'OK',
+                  onPress: () => console.log('OK Pressed'),
+                },
+              ]
+            );
+            return;
+          }
+
+          let currentLocation = await Location.getCurrentPositionAsync({});
+          setLocation(currentLocation);
+          console.log('Location:', currentLocation);
+        } catch (error) {
+          console.error('Error getting location:', error);
         }
+      };
 
-        let currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation);
-        console.log('Location:', currentLocation);
-      } catch (error) {
-        console.error('Error getting location:', error);
-      }
-    };
+      getPermissions();
+    }
 
     removeHeader();
-    getPermissions();
 
     return () => {
       navigation.setOptions({
         headerShown: true,
       });
     };
-  }, [navigation]);
+  }, [navigation, user]);
 
   const navigateToScreen = (screen) => {
     console.log(screen + ' has been pressed!');
@@ -102,7 +106,6 @@ const MainPage = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
