@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import * as Location from 'expo-location';
@@ -9,6 +9,9 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [expandedDealId, setExpandedDealId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedBusinessInfo, setSelectedBusinessInfo] = useState(null);
+
 
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
@@ -25,6 +28,11 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     } catch (error) {
       console.error('Error sharing:', error.message);
     }
+  };
+
+  const toggleModal = (businessInfo) => {
+    setModalVisible(!modalVisible);
+    setSelectedBusinessInfo(businessInfo);
   };
 
   useEffect(() => {
@@ -124,8 +132,11 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
                     >
                       <Text style={styles.expandedButton}>Share</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.sampleButton}>
-                      <Text style={styles.expandedButton}>Locate</Text>
+                    <TouchableOpacity
+                      style={styles.sampleButton}
+                      onPress={() => toggleModal({ name: item.business_name })}
+                    >
+                      <Text style={styles.expandedButton}>Business Profile</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -171,6 +182,27 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
           renderItem={renderDeal}
         />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          toggleModal();
+        }}
+      >
+        <TouchableWithoutFeedback onPress={() => toggleModal()}>
+          <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback>
+        <View style={styles.modalContainer}>
+        <Text style={styles.modalText}>
+          {selectedBusinessInfo ? `${selectedBusinessInfo.name}` : 'Business Profile'}
+        </Text>
+          <TouchableOpacity style={styles.closeButton} onPress={() => toggleModal()}>
+            <Text style={styles.closeButtonText}>X</Text>
+          </TouchableOpacity>
+
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -228,8 +260,8 @@ const styles = StyleSheet.create({
   },
   sampleButton: {
     padding: 12,
-    paddingLeft: 50,
-    paddingRight: 50,
+    paddingLeft: 30,
+    paddingRight: 30,
     backgroundColor: '#FF9000',
     borderRadius: 20,
     alignItems: 'center',
@@ -246,6 +278,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'transparent', // Lower opacity
+  },
+  modalContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(200, 200, 200, 0.9)',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    height: '80%', // Take up 80% of the screen
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
+  modalText: {
+    fontSize: 15,
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular'
+  },
+  closeButton: {
+    position: 'relative',
+    marginTop: -5
+  },
+  closeButtonText: {
+    fontSize: 25,
+    fontFamily: 'Poppins-Black',
+    color: '#2D2D2D'
+  }
 });
 
 export default DealDisplayFull;
