@@ -38,6 +38,11 @@ const SignIn = () => {
     'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf')
   });
 
+  const handleSignUpPress = () => {
+    // Navigate to the SignUp component
+    navigation.navigate('SignUp');
+  };
+
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -151,6 +156,7 @@ const SignIn = () => {
           <TextInput
             style={styles.customInput}
             placeholder="Email"
+            placeholderTextColor={'gray'}
             value={formData.Email}
             onChangeText={(text) => setFormData({ ...formData, Email: text })}
             keyboardType="email-address"
@@ -161,6 +167,7 @@ const SignIn = () => {
           <TextInput
             style={styles.customInput}
             placeholder="Password"
+            placeholderTextColor={'gray'}
             value={formData.Password}
             onChangeText={(text) => setFormData({ ...formData, Password: text })}
             secureTextEntry
@@ -169,6 +176,14 @@ const SignIn = () => {
           <TouchableOpacity onPress={handleSubmit} style={styles.customButton}>
             <Text style={styles.buttonText}>Sign In</Text>
           </TouchableOpacity>
+          <View style={styles.registerView}>
+            <Text style={styles.signUpNoButtonText}>
+              Don't have an account?
+            </Text>
+            <TouchableOpacity onPress={handleSignUpPress} style={styles.signUpButton}>
+              <Text style={styles.signUpButtonText}> Register Here</Text>
+            </TouchableOpacity>
+          </View>
         </Animated.View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -188,7 +203,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     ...Platform.select({
       android: {
-        paddingBottom: 200, // Adjust this value based on your needs
+        paddingBottom: 300, // Adjust this value based on your needs
       },
     }),
   },
@@ -237,8 +252,19 @@ const styles = StyleSheet.create({
       color: '#ffffff', // Set your desired text color
       fontWeight: 'bold',
       fontFamily: 'Poppins-Bold'
-
     },
+    registerView: {
+      flexDirection: 'row',
+      position: 'fixed',
+      bottom: '-10%'
+    },
+    signUpButtonText: {
+      color: '#fca502',
+      fontFamily: 'Poppins-Bold'
+    },
+    signUpNoButtonText: {
+      fontFamily: 'Poppins-Regular'
+    }
   });
 
 export default SignIn;
