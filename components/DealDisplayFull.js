@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import * as Location from 'expo-location';
@@ -8,6 +8,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [expandedDealId, setExpandedDealId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
@@ -67,8 +68,10 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
         const sortedBusinesses = businessesWithDistance.sort((a, b) => a.distance - b.distance);
 
         setBusinesses(sortedBusinesses);
+        setLoading(false); // Set loading to false after fetching data
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
+        setLoading(false); // Set loading to false in case of an error
       }
     };
 
@@ -152,8 +155,12 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     }
   };
 
-  if (!fontsLoaded){
-    return <AppLoading/>
+  if (!fontsLoaded || loading){
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#FF9000" />
+      </View>
+    );
   }
   return (
     <View style={styles.dealdisplay}>
@@ -233,7 +240,12 @@ const styles = StyleSheet.create({
   },
   expandedButton: {
     fontFamily: 'Poppins-Regular'
-  }
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default DealDisplayFull;
