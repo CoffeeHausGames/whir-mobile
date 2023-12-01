@@ -215,9 +215,8 @@ const styles = StyleSheet.create({
     },
     title: {
       fontSize: 24,
-      fontWeight: 'bold',
       marginBottom: 10,
-      fontFamily: 'Poppins-Black',
+      fontFamily: 'Poppins-Bold',
       color: '#fca502',
       fontSize: 50,
       marginBottom: 1
