@@ -66,11 +66,10 @@ function MerchantSignIn() {
    
 
    useEffect(() => {
-
     navigation.setOptions({
-        headerShown: false,
-      });
-
+      headerShown: false,
+    });
+  
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -88,7 +87,7 @@ function MerchantSignIn() {
         ]).start();
       }
     );
-
+  
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
@@ -99,19 +98,20 @@ function MerchantSignIn() {
             useNativeDriver: false,
           }),
           Animated.timing(signInContainerBottom, {
-            toValue: 10, // Adjust the value to your preference
+            toValue: 10,
             duration: 0,
             useNativeDriver: false,
           }),
         ]).start();
       }
     );
-
+  
+    // Cleanup function
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, [imageScale, signInContainerBottom]);
+  }, [imageScale, signInContainerBottom, navigation]);  // Include navigation in the dependency array
 
 
   if (!fontsLoaded){
