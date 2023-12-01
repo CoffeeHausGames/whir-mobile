@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ProfileFavorites from './ProfileFavorites';
 import ProfilePersonalInfo from './ProfilePersonalInfo';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import { SplashScreen } from 'expo-router';
 
 const ProfileCard = () => {
   const [selectedButton, setSelectedButton] = useState('favorites');
@@ -21,7 +21,7 @@ const ProfileCard = () => {
   }, []); // Empty dependency array ensures this effect runs once when the component mounts
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <SplashScreen />;
   }
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import { SplashScreen } from 'expo-router';
 
 const ProfileHeader = () => {
   let [fontsLoaded] = useFonts({
@@ -10,7 +10,7 @@ const ProfileHeader = () => {
   });
 
   if (!fontsLoaded){
-    return <AppLoading/>
+    return <SplashScreen />
   }
   return (
     <SafeAreaView style={styles.headerContainer}>

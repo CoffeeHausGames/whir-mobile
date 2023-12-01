@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
 import { useFonts } from 'expo-font';
-import AppLoading from 'expo-app-loading';
+import { SplashScreen } from 'expo-router';
 import * as Location from 'expo-location';
 
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
