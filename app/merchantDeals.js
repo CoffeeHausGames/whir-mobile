@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Icon from 'react-native-ico-material-design';
 import { useAuth } from './authcontext';
-import DealBox from '../components/merchantDealBox';
+import MerchantDealBox from '../components/merchantDealBox';
 import MerchantDealHeader from '../components/MerchantDealHeader';
 
 var iconHeight = 30;
@@ -38,7 +38,7 @@ const MerchantDeals = () => {
   return (
     <View style={styles.container}>
       <MerchantDealHeader />
-      <DealBox />
+      <MerchantDealBox />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable

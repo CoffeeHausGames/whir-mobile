@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import { View, Button, Text, StyleSheet, FlatList, TouchableOpacity, Share } from 'react-native';
 import { useAuth } from '../app/authcontext';
 
-function merchantDealBox() {
+function MerchantDealBox() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deals, setDeals] = useState([]);
   const [selectedDeal, setSelectedDeal] = useState(null);
@@ -24,10 +24,10 @@ function merchantDealBox() {
   };
 
   const fetchDeals = () => {
-    const businessAuthToken = authContext.businessUser ? authContext.businessUser.token : null;
+    const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
 
     if (!businessAuthToken) {
-      console.error('Business user authentication token not found.');
+      console.error('Merchant user authentication token not found.');
       return;
     }
 
@@ -57,18 +57,75 @@ function merchantDealBox() {
     setSelectedDeal(deal); // Update the selected deal
   };
 
+  const handleShare = async (text) => {
+    try {
+      await Share.share({
+        message: text,
+      });
+    } catch (error) {
+      console.error('Error sharing:', error.message);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Button title="Add Deal/Event" onPress={openModal} />
       {isModalOpen && <CustomRepeatModal isOpen={isModalOpen} onClose={closeModal} />}
+
+      <FlatList
+        data={deals}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => handleDealClick(item)} style={styles.dealItem}>
+            <Text style={styles.dealTitle}>{item.name}</Text>
+            <Text style={styles.dealDescription}>{item.description}</Text>
+            <TouchableOpacity
+              style={styles.shareButton}
+              onPress={() => handleShare(`Deal: ${item.name}, Description: ${item.description}`)}
+            >
+              <Text style={styles.shareButtonText}>Share</Text>
+            </TouchableOpacity>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-
-  }
-
+    flex: 1,
+    padding: 16,
+  },
+  dealItem: {
+    backgroundColor: '#fff',
+    padding: 16,
+    marginVertical: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  dealTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 8,
+  },
+  dealDescription: {
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 12,
+  },
+  shareButton: {
+    backgroundColor: '#FF9000',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shareButtonText: {
+    color: '#fff',
+    fontFamily: 'Poppins-Regular',
+  },
 });
-export default merchantDealBox;
+
+export default MerchantDealBox;
