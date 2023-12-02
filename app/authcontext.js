@@ -1,3 +1,4 @@
+// authcontext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
@@ -6,7 +7,7 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [merchantUser, setMerchantUser] = useState(null); // Add business user state
+  const [merchantUser, setMerchantUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigation();
 
@@ -17,7 +18,7 @@ const AuthProvider = ({ children }) => {
         if (storedUser) {
           setUser(JSON.parse(storedUser));
         }
-    
+
         const storedMerchantUser = await SecureStore.getItemAsync('merchantUser');
         if (storedMerchantUser) {
           setMerchantUser(JSON.parse(storedMerchantUser));
@@ -28,7 +29,6 @@ const AuthProvider = ({ children }) => {
         setIsLoading(false);
       }
     };
-    
 
     checkAuthentication();
   }, []);
@@ -50,18 +50,25 @@ const AuthProvider = ({ children }) => {
 
   const merchantSignIn = (merchantUserData) => {
     setMerchantUser(merchantUserData);
-    SecureStore.setItemAsync('merchantUser', JSON.stringify(merchantUserData)); // Store business user data
+    SecureStore.setItemAsync('merchantUser', JSON.stringify(merchantUserData));
   };
 
   const merchantSignOut = () => {
     setMerchantUser(null);
     SecureStore.deleteItemAsync('merchantUser');
-
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Home' }],
-    });
   };
+
+  useEffect(() => {
+    if (user) {
+      navigation.navigate('Home');
+    }
+  }, [user, navigation]);
+
+  useEffect(() => {
+    if (merchantUser) {
+      navigation.navigate('MerchantDashboard');
+    }
+  }, [merchantUser, navigation]);
 
   return (
     <AuthContext.Provider value={{ user, merchantUser, isLoading, signIn, signOut, merchantSignIn, merchantSignOut }}>
