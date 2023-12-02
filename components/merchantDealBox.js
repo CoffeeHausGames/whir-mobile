@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, Text, StyleSheet, FlatList, TouchableOpacity, Share } from 'react-native';
 import { useAuth } from '../app/authcontext';
+import AddDealModal from './merchantAddDealModal';
 
 function MerchantDealBox() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,10 +68,16 @@ function MerchantDealBox() {
     }
   };
 
+  const formatTime = (time) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const formattedTime = new Date(time).toLocaleString('en-US', options);
+    return formattedTime;
+  };
+  
   return (
     <View style={styles.container}>
       <Button title="Add Deal/Event" onPress={openModal} />
-      {isModalOpen && <CustomRepeatModal isOpen={isModalOpen} onClose={closeModal} />}
+      {isModalOpen && <AddDealModal isOpen={isModalOpen} onClose={closeModal} />}
 
       <FlatList
         data={deals}
@@ -79,6 +86,10 @@ function MerchantDealBox() {
           <TouchableOpacity onPress={() => handleDealClick(item)} style={styles.dealItem}>
             <Text style={styles.dealTitle}>{item.name}</Text>
             <Text style={styles.dealDescription}>{item.description}</Text>
+            <Text style={styles.dealDescription}>{item.day_of_week}</Text>
+            <Text style={styles.dealDescription}>
+              {formatTime(item.start_time)} - {formatTime(item.end_time)}
+            </Text>
             <TouchableOpacity
               style={styles.shareButton}
               onPress={() => handleShare(`Deal: ${item.name}, Description: ${item.description}`)}
@@ -126,6 +137,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontFamily: 'Poppins-Regular',
   },
+  timeRow: {
+    flexDirection: 'row'
+  }
 });
 
 export default MerchantDealBox;
