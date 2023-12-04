@@ -131,6 +131,9 @@ function MerchantSignIn() {
       behavior="height"
       style={{ flex: 1, backgroundColor: '#ffffff' }}
     >
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Image source={require('../assets/images/back-mobile.png')} style={styles.backImage} />
+      </TouchableOpacity>
       <ScrollView keyboardShouldPersistTaps='handled'>
         <Animated.Image
           source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')}
@@ -258,7 +261,17 @@ const styles = StyleSheet.create({
         position: 'fixed',
         bottom: '-5%',
         marginTop: 5,
-      }
+      },
+      backButton: {
+        position: 'absolute',
+        top: 50,
+        zIndex: 1, // Ensure the button is on top of other components
+      },
+      backImage: {
+        width: 60,
+        height: 60,
+        // Add any other styling for your image
+      },
     });
 
 export default MerchantSignIn;
