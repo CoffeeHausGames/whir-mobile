@@ -414,10 +414,10 @@ function MerchantDealBox() {
           <Text style={styles.modalSubText}>Are you sure you want to delete this deal?</Text>
           <View style={styles.deleteButtonRow}>
             <TouchableOpacity style={styles.deleteConfirmationButton} onPress={handleConfirmDelete}>
-              <Text style={styles.deleteConfirmationButtonText}>Yes</Text>
+              <Text style={styles.deleteConfirmationButtonText}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.deleteCancelButton} onPress={handleCancelDelete}>
-              <Text style={styles.deleteConfirmationButtonText}>No</Text>
+              <Text style={styles.deleteConfirmationButtonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
 
@@ -432,6 +432,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    marginBottom: 100
   },
   dealItem: {
     backgroundColor: '#fff',
@@ -471,17 +472,19 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   editButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: 'transparent',
     padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     marginRight: 5,
+    borderWidth: 3,
+    borderColor: '#FF9000'
   },
   editButtonText: {
-    color: '#fff',
-    fontFamily: 'Poppins-Regular',
+    color: '#FF9000',
+    fontFamily: 'Poppins-Bold',
   },
   deleteButton: {
     backgroundColor: '#FF0000',
@@ -525,26 +528,26 @@ const styles = StyleSheet.create({
   },
   datePickerButton: {
     height: 40,
-    backgroundColor: 'gray',
+    backgroundColor: '#e0e0e0',
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
   },
   datePickerText: {
-    color: '#fff',
+    color: 'black',
     fontFamily: 'Poppins-Regular',
   },
   timePickerButton: {
     height: 40,
-    backgroundColor: 'gray',
+    backgroundColor: '#e0e0e0',
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 12,
   },
   timePickerText: {
-    color: '#fff',
+    color: 'black',
     fontFamily: 'Poppins-Regular',
   },
   saveEditButton: {
@@ -603,28 +606,31 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 10,
+    fontFamily: 'Poppins-Bold'
   },
   modalSubText: {
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: 'Poppins-Regular'
   },
   deleteConfirmationButton: {
     backgroundColor: '#ff0000',
     padding: 15,
     width: 100,
-    borderRadius: 5,
+    borderRadius: 8,
     marginBottom: 10,
     marginRight: 5
   },
   deleteConfirmationButtonText: {
     color: '#ffffff',
     textAlign: 'center',
+    fontFamily: 'Poppins-Regular'
   },
   deleteCancelButton: {
-    backgroundColor: '#0000ff',
+    backgroundColor: 'gray',
     padding: 15,
     width: 100,
-    borderRadius: 5,
+    borderRadius: 8,
     marginBottom: 10,
     marginLeft: 5
   },
