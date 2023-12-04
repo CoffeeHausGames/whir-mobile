@@ -9,6 +9,7 @@ import {
   Share,
   Modal,
   TextInput,
+  Image
 } from 'react-native';
 import { useAuth } from '../app/authcontext';
 import AddDealModal from './merchantAddDealModal';
@@ -267,7 +268,15 @@ function MerchantDealBox() {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Deal/Event" onPress={openModal} />
+      <TouchableOpacity
+      onPress={openModal}
+      style={styles.addButton}
+      >
+        <View style={styles.addButtonView}>
+          <Image source={require('../assets/images/white-plus-icon.png')} style={styles.plusIcon} />
+          <Text style={styles.addButtonText}>  Add Deal/Event</Text>
+        </View>
+      </TouchableOpacity>
       {isModalOpen && <AddDealModal isOpen={isModalOpen} onClose={closeModal} />}
 
       <FlatList
@@ -435,6 +444,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginBottom: 100
+  },
+  addButton: {
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: '#FF9000',
+    padding: 10,
+    width: 165
+  },
+  addButtonText: {
+    fontFamily: 'Poppins-Regular',
+    color: 'white',
+    alignSelf: 'flex-end'
   },
   dealItem: {
     backgroundColor: '#fff',
@@ -661,6 +682,14 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontFamily: 'Poppins-Regular'
+  },
+  plusIcon: {
+    width: 20,
+    height: 20,
+    position: 'relative'
+  },
+  addButtonView: {
+    flexDirection: 'row'
   }
 });
 
