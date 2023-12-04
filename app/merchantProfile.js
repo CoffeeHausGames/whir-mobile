@@ -6,6 +6,7 @@ import ProfileHeader from '../components/ProfileHeader';
 import { useNavigation } from 'expo-router';
 import Icon from "react-native-ico-material-design";
 import MerchantSignOutButton from './merchantSignOut';
+import MerchantProfileCard from '../components/merchantProfileCard';
 
 var iconHeight = 30;
 var iconWidth = 30;
@@ -38,7 +39,7 @@ const MerchantProfile = () => {
     <View style={styles.container}>
       <StatusBar style="light" />
       <ProfileHeader />
-      <MerchantSignOutButton />
+      <MerchantProfileCard />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable onPress={() => navigateToScreen('MerchantDeals')} style={styles.IconBehave}

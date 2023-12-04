@@ -9,6 +9,7 @@ import {
   Share,
   Modal,
   TextInput,
+  Image
 } from 'react-native';
 import { useAuth } from '../app/authcontext';
 import AddDealModal from './merchantAddDealModal';
@@ -267,7 +268,15 @@ function MerchantDealBox() {
 
   return (
     <View style={styles.container}>
-      <Button title="Add Deal/Event" onPress={openModal} />
+      <TouchableOpacity
+      onPress={openModal}
+      style={styles.addButton}
+      >
+        <View style={styles.addButtonView}>
+          <Image source={require('../assets/images/white-plus-icon.png')} style={styles.plusIcon} />
+          <Text style={styles.addButtonText}>  Add Deal/Event</Text>
+        </View>
+      </TouchableOpacity>
       {isModalOpen && <AddDealModal isOpen={isModalOpen} onClose={closeModal} />}
 
       <FlatList
@@ -312,39 +321,15 @@ function MerchantDealBox() {
       >
         <View style={styles.modalOverlay} />
         <View style={styles.modalContainer}>
-          <Text style={styles.modalText}>Edit Deal</Text>
-          <Text>Deal Name:</Text>
+          <Text style={styles.titleText}>Edit Deal</Text>
+          <Text style={styles.descriptionText}>Deal Name:</Text>
           <TextInput
             style={styles.input}
             value={editedDeal?.name}
             onChangeText={(text) => setEditedDeal({ ...editedDeal, name: text })}
             placeholder="Deal Name"
           />
-          <Text>Deal Description:</Text>
-          <TextInput
-            style={styles.input}
-            value={editedDeal?.description}
-            onChangeText={(text) => setEditedDeal({ ...editedDeal, description: text })}
-            placeholder="Description"
-          />
-          <Text>Deal Day of Week:</Text>
-          <View style={styles.row}>
-          <View style={styles.daySelectorContainer}>
-            {daysOfWeek.map((day) => (
-              <TouchableOpacity
-                key={day}
-                style={[
-                  styles.daySelectorButton,
-                  selectedDays.includes(day) && styles.selectedDay,
-                ]}
-                onPress={() => handleDayPress(day)}
-              >
-                <Text>{day}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-          <Text>Deal Dates:</Text>
+          <Text style={styles.descriptionText}>Deal Dates:</Text>
           <TouchableOpacity style={styles.datePickerButton} onPress={showStartDatePicker}>
             <Text style={styles.datePickerText}>
               {editedDeal.start_date ? new Date(editedDeal.start_date).toLocaleDateString() : 'Select Start Date'}
@@ -367,8 +352,26 @@ function MerchantDealBox() {
             mode="date"
             onConfirm={handleEndDateConfirm}
             onCancel={hideEndDatePicker}
-          />
-          <Text>Deal Times:</Text>
+          />      
+          <Text style={styles.descriptionText}>Deal Day of Week:</Text>
+          <View style={styles.row}>
+          <View style={styles.daySelectorContainer}>
+            {daysOfWeek.map((day) => (
+              <TouchableOpacity
+                key={day}
+                style={[
+                  styles.daySelectorButton,
+                  selectedDays.includes(day) && styles.selectedDay,
+                ]}
+                onPress={() => handleDayPress(day)}
+              >
+                <Text>{day}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
+          <Text style={styles.descriptionText}>Deal Times:</Text>
           <TouchableOpacity style={styles.timePickerButton} onPress={showStartTimePicker}>
             <Text style={styles.timePickerText}>
               {editedDeal.start_time ? new Date(editedDeal.start_time).toLocaleTimeString() : 'Select Start Time'}
@@ -392,13 +395,21 @@ function MerchantDealBox() {
             onConfirm={handleEndTimeConfirm}
             onCancel={hideEndTimePicker}
           />
-
-          <TouchableOpacity style={styles.saveEditButton} onPress={handleSaveEdit}>
-            <Text style={styles.saveEditButtonText}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelEditButton} onPress={closeEditModal}>
-            <Text style={styles.cancelEditButtonText}>Cancel</Text>
-          </TouchableOpacity>
+          <Text style={styles.descriptionText}>Deal Description:</Text>
+          <TextInput
+            style={styles.descriptionInput}
+            value={editedDeal?.description}
+            onChangeText={(text) => setEditedDeal({ ...editedDeal, description: text })}
+            placeholder="Description"
+          />
+          <View style={styles.editButtons}>
+            <TouchableOpacity style={styles.saveEditButton} onPress={handleSaveEdit}>
+              <Text style={styles.saveEditButtonText}>Save</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.cancelEditButton} onPress={closeEditModal}>
+              <Text style={styles.cancelEditButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <Modal
@@ -433,6 +444,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginBottom: 100
+  },
+  addButton: {
+    margin: 5,
+    borderRadius: 20,
+    backgroundColor: '#FF9000',
+    padding: 10,
+    width: 165
+  },
+  addButtonText: {
+    fontFamily: 'Poppins-Regular',
+    color: 'white',
+    alignSelf: 'flex-end'
   },
   dealItem: {
     backgroundColor: '#fff',
@@ -510,12 +533,12 @@ const styles = StyleSheet.create({
     padding: 20,
     height: '80%', // Set height to 80% of the screen
   },
-  modalText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-    fontFamily: 'Poppins-Bold',
+  titleText: {
+    alignSelf: 'flex-start',
+    marginBottom: 5,
+    fontFamily: 'Poppins-Black',
+    fontSize: 30,
+    color: '#FF9000'
   },
   input: {
     height: 40,
@@ -551,27 +574,32 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular',
   },
   saveEditButton: {
-    height: 40,
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#FF9000',
+    padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    flex: 1,
+    marginRight: 10,
   },
   saveEditButtonText: {
-    color: '#fff',
     fontFamily: 'Poppins-Regular',
+    color: 'white'
   },
   cancelEditButton: {
-    height: 40,
-    backgroundColor: '#FF0000',
+    backgroundColor: 'transparent',
+    padding: 12,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+    marginLeft: 10,
+    borderWidth: 3,
+    borderColor: '#FF0000'
   },
   cancelEditButtonText: {
-    color: '#fff',
     fontFamily: 'Poppins-Regular',
+    color: '#FF0000'
   },
   daySelectorContainer: {
     flexDirection: 'row',
@@ -638,6 +666,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: -8
+  },
+  editButtons: {
+    flexDirection: 'row'
+  },
+  descriptionInput: {
+    height: 80, // Adjust this value to make the description input taller
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 12,
+    paddingLeft: 10,
+    fontFamily: 'Poppins-Regular',
+    width: 350,
+  },
+  descriptionText: {
+    fontFamily: 'Poppins-Regular'
+  },
+  plusIcon: {
+    width: 20,
+    height: 20,
+    position: 'relative'
+  },
+  addButtonView: {
+    flexDirection: 'row'
   }
 });
 
