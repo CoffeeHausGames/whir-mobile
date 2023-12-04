@@ -41,6 +41,21 @@ function MerchantDealBox() {
   const [selectedDays, setSelectedDays] = useState([]);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
+
+  const showDeleteConfirmation = () => {
+    setIsDeleteConfirmationVisible(true);
+  };
+
+  const hideDeleteConfirmation = () => {
+    setIsDeleteConfirmationVisible(false);
+  };
+
+  const handleDelete = (deal) => {
+    setSelectedDeal(deal);
+    showDeleteConfirmation();
+  };
+
   const handleDayPress = (day) => {
     const isSelected = selectedDays.includes(day);
 
@@ -70,6 +85,41 @@ function MerchantDealBox() {
       // Handle the selected end time
       hideEndTimePicker();
     };
+
+    const handleConfirmDelete = () => {
+      const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
+
+      if (!businessAuthToken) {
+        console.error('Merchant user authentication token not found.');
+        return;
+      }
+    
+      fetch(`http://10.8.1.245:4444/business/deal`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `${businessAuthToken}`,
+        },
+        body: JSON.stringify({ id: selectedDeal.id }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to delete deal. Server response: ${response.statusText}`);
+          }
+          // If successful, close the delete confirmation modal and refresh the deals
+          setIsDeleteConfirmationVisible(false);
+          fetchDeals(); // Assuming fetchDeals is a function to refresh the deals
+        })
+        .catch((error) => {
+          console.error('Error deleting deal:', error.message);
+        });
+    };
+    
+    const handleCancelDelete = () => {
+      // Close the delete confirmation modal
+      setIsDeleteConfirmationVisible(false);
+    };
+    
 
   useEffect(() => {
     // Fetch deals when the component mounts
@@ -351,6 +401,28 @@ function MerchantDealBox() {
           </TouchableOpacity>
         </View>
       </Modal>
+      <Modal
+        animationIn="fadeIn"
+        animationOut="fadeOut"
+        transparent={true}
+        visible={isDeleteConfirmationVisible}
+        onRequestClose={hideDeleteConfirmation}
+      >
+        <View style={styles.deletedModalOverlay} />
+        <View style={styles.deletedModalContainer}>
+          <Text style={styles.modalText}>Confirm Delete</Text>
+          <Text style={styles.modalSubText}>Are you sure you want to delete this deal?</Text>
+          <View style={styles.deleteButtonRow}>
+            <TouchableOpacity style={styles.deleteConfirmationButton} onPress={handleConfirmDelete}>
+              <Text style={styles.deleteConfirmationButtonText}>Yes</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.deleteCancelButton} onPress={handleCancelDelete}>
+              <Text style={styles.deleteConfirmationButtonText}>No</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -512,6 +584,55 @@ const styles = StyleSheet.create({
   selectedDay: {
     backgroundColor: '#FF9000',
   },
+  deletedModalOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#00000080',
+  },
+  deletedModalContainer: {
+    position: 'absolute',
+    top: '40%',
+    left: '20%',
+    width: '60%',
+    height: '20%',
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+  },
+  modalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  modalSubText: {
+    marginBottom: 10
+  },
+  deleteConfirmationButton: {
+    backgroundColor: '#ff0000',
+    padding: 15,
+    width: 100,
+    borderRadius: 5,
+    marginBottom: 10,
+    marginRight: 5
+  },
+  deleteConfirmationButtonText: {
+    color: '#ffffff',
+    textAlign: 'center',
+  },
+  deleteCancelButton: {
+    backgroundColor: '#0000ff',
+    padding: 15,
+    width: 100,
+    borderRadius: 5,
+    marginBottom: 10,
+    marginLeft: 5
+  },
+  deleteButtonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: -8
+  }
 });
 
 export default MerchantDealBox;
