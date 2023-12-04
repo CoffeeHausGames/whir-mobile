@@ -38,7 +38,7 @@ const MerchantDeals = () => {
   return (
     <View style={styles.container}>
       <MerchantDealHeader />
-      <MerchantDealBox />
+      <MerchantDealBox authContext={authContext} />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable

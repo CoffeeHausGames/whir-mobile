@@ -80,7 +80,7 @@ function MerchantSignIn() {
             useNativeDriver: false,
           }),
           Animated.timing(signInContainerBottom, {
-            toValue: 10,
+            toValue: 25,
             duration: 250,
             useNativeDriver: false,
           }),
@@ -197,11 +197,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
       },
       title: {
-        fontSize: 24,
+        fontSize: 38,
         marginBottom: 10,
-        fontFamily: 'Poppins-Bold',
+        fontFamily: 'Poppins-Black',
         color: '#fca502',
-        fontSize: 50,
         marginBottom: 1
       },
       subtitle: {

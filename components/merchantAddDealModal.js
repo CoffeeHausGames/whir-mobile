@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
-import { Calendar } from 'expo-calendar';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useAuth } from '../app/authcontext';
 
-const AddDealModal = ({ isOpen, onClose, authContext }) => {
+const AddDealModal = ({ isOpen, onClose }) => {
   const [deal, setDeal] = useState({
     name: '',
     start_time: '',
@@ -13,6 +13,8 @@ const AddDealModal = ({ isOpen, onClose, authContext }) => {
     end_date: '',
     description: '',
   });
+  const authContext = useAuth();
+
 
   const [isStartDatePickerVisible, setStartDatePickerVisible] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisible] = useState(false);
@@ -55,7 +57,6 @@ const AddDealModal = ({ isOpen, onClose, authContext }) => {
   const [selectedDays, setSelectedDays] = useState([]);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-
   const handleDayPress = (day) => {
     const isSelected = selectedDays.includes(day);
 
@@ -71,12 +72,15 @@ const AddDealModal = ({ isOpen, onClose, authContext }) => {
   };
 
   const handleSubmit = async () => {
-    const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
-
-    if (!businessAuthToken) {
-      console.error('Merchant user authentication token not found.');
+    // Ensure authContext and authContext.merchantUser are defined
+    if (!authContext || !authContext.merchantUser) {
+      console.error('Merchant user is not authenticated.');
       return;
     }
+
+    const businessAuthToken = authContext.merchantUser.token;
+
+    console.log('Merchant user authentication token:', businessAuthToken);
 
     const formattedDeal = {
       name: deal.name,
@@ -147,88 +151,81 @@ const AddDealModal = ({ isOpen, onClose, authContext }) => {
             required
           />
         </View>
-      <View style={styles.dateRow}>
-        <View style={styles.row}>
-          <Text>Start Date</Text>
-          <TouchableOpacity style={styles.datePickerButton} onPress={showStartDatePicker}>
-            <Text style={styles.datePickerText}>
-              {deal.start_date ? new Date(deal.start_date).toLocaleDateString() : 'Select Start Date'}
-            </Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isStartDatePickerVisible}
-            mode="date"
-            onConfirm={handleStartDateConfirm}
-            onCancel={hideStartDatePicker}
-          />
-
-          <Text>End Date</Text>
-          <TouchableOpacity style={styles.datePickerButton} onPress={showEndDatePicker}>
-            <Text style={styles.datePickerText}>
-              {deal.end_date ? new Date(deal.end_date).toLocaleDateString() : 'Select End Date'}
-            </Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isEndDatePickerVisible}
-            mode="date"
-            onConfirm={handleEndDateConfirm}
-            onCancel={hideEndDatePicker}
-          />
+        <View style={styles.dateRow}>
+          <View style={styles.row}>
+            <Text>Start Date</Text>
+            <TouchableOpacity style={styles.datePickerButton} onPress={showStartDatePicker}>
+              <Text style={styles.datePickerText}>
+                {deal.start_date ? new Date(deal.start_date).toLocaleDateString() : 'Select Start Date'}
+              </Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isStartDatePickerVisible}
+              mode="date"
+              onConfirm={handleStartDateConfirm}
+              onCancel={hideStartDatePicker}
+            />
+            <Text>End Date</Text>
+            <TouchableOpacity style={styles.datePickerButton} onPress={showEndDatePicker}>
+              <Text style={styles.datePickerText}>
+                {deal.end_date ? new Date(deal.end_date).toLocaleDateString() : 'Select End Date'}
+              </Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isEndDatePickerVisible}
+              mode="date"
+              onConfirm={handleEndDateConfirm}
+              onCancel={hideEndDatePicker}
+            />
+          </View>
         </View>
-      </View>
-
-
         <View style={styles.row}>
           <Text>Day of Week</Text>
           <View style={styles.daySelectorContainer}>
-          {daysOfWeek.map((day) => (
-            <TouchableOpacity
-              key={day}
-              style={[
-                styles.daySelectorButton,
-                selectedDays.includes(day) && styles.selectedDay,
-              ]}
-              onPress={() => handleDayPress(day)}
-            >
-              <Text>{day}</Text>
-            </TouchableOpacity>
-          ))}
+            {daysOfWeek.map((day) => (
+              <TouchableOpacity
+                key={day}
+                style={[
+                  styles.daySelectorButton,
+                  selectedDays.includes(day) && styles.selectedDay,
+                ]}
+                onPress={() => handleDayPress(day)}
+              >
+                <Text>{day}</Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
-
-      <View style={styles.timeRow}>
-        <View style={styles.row}>
-          <Text>Start Time</Text>
-          <TouchableOpacity style={styles.timePickerButton} onPress={showStartTimePicker}>
-            <Text style={styles.timePickerText}>
-              {deal.start_time ? new Date(deal.start_time).toLocaleTimeString() : 'Select Start Time'}
-            </Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isStartTimePickerVisible}
-            mode="time"
-            onConfirm={handleStartTimeConfirm}
-            onCancel={hideStartTimePicker}
-          />
+        <View style={styles.timeRow}>
+          <View style={styles.row}>
+            <Text>Start Time</Text>
+            <TouchableOpacity style={styles.timePickerButton} onPress={showStartTimePicker}>
+              <Text style={styles.timePickerText}>
+                {deal.start_time ? new Date(deal.start_time).toLocaleTimeString() : 'Select Start Time'}
+              </Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isStartTimePickerVisible}
+              mode="time"
+              onConfirm={handleStartTimeConfirm}
+              onCancel={hideStartTimePicker}
+            />
+          </View>
+          <View style={styles.row}>
+            <Text>End Time</Text>
+            <TouchableOpacity style={styles.timePickerButton} onPress={showEndTimePicker}>
+              <Text style={styles.timePickerText}>
+                {deal.end_time ? new Date(deal.end_time).toLocaleTimeString() : 'Select End Time'}
+              </Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isEndTimePickerVisible}
+              mode="time"
+              onConfirm={handleEndTimeConfirm}
+              onCancel={hideEndTimePicker}
+            />
+          </View>
         </View>
-
-        <View style={styles.row}>
-          <Text>End Time</Text>
-          <TouchableOpacity style={styles.timePickerButton} onPress={showEndTimePicker}>
-            <Text style={styles.timePickerText}>
-              {deal.end_time ? new Date(deal.end_time).toLocaleTimeString() : 'Select End Time'}
-            </Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isEndTimePickerVisible}
-            mode="time"
-            onConfirm={handleEndTimeConfirm}
-            onCancel={hideEndTimePicker}
-          />
-        </View>
-      </View>
-
-
         <View style={styles.row}>
           <Text>Description</Text>
           <TextInput
@@ -239,7 +236,6 @@ const AddDealModal = ({ isOpen, onClose, authContext }) => {
             required
           />
         </View>
-
         <View style={styles.buttonContainer}>
           <Button title="Save" onPress={handleSubmit} />
           <Button title="Discard" onPress={handleCancel} />
@@ -265,7 +261,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 8,
     width: 300,
-
   },
   datePickerButton: {
     backgroundColor: '#e0e0e0',
@@ -285,16 +280,16 @@ const styles = StyleSheet.create({
   daySelectorContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    flexWrap: 'no-wrap', // Add this line to allow the buttons to wrap to the next line if there are too many to fit on one line
+    flexWrap: 'no-wrap',
   },
   daySelectorButton: {
     borderRadius: 5,
     marginHorizontal: 5,
     padding: 10,
-    backgroundColor: '#e0e0e0'
-   },
+    backgroundColor: '#e0e0e0',
+  },
   selectedDay: {
-    backgroundColor: '#FF9000', // Change to your preferred color
+    backgroundColor: '#FF9000',
   },
   timeRow: {
     flexDirection: 'row',
@@ -312,4 +307,5 @@ const styles = StyleSheet.create({
     color: '#333',
   },
 });
+
 export default AddDealModal;
