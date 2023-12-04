@@ -20,9 +20,9 @@ const HorizontalButtonScroll = ({ onButtonPress }) => {
   useEffect(() => {
     handleButtonPress('All'); // Select 'All' by default
   }, []);
-
+  
   if (!fontsLoaded){
-    return <SplashScreen />
+    return null; // Return null instead of <SplashScreen />
   }
   return (
     <View style={styles.horizontalButtonContainer}>

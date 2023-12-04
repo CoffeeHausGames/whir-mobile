@@ -18,8 +18,6 @@ import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
 
-
-
 const SignIn = () => {
   const { signIn } = useAuth();
   const [formData, setFormData] = useState({
@@ -46,7 +44,6 @@ const SignIn = () => {
   const handleMerchantSignInPress = () => {
     navigation.navigate('MerchantSignIn')
   }
-
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -136,9 +133,10 @@ const SignIn = () => {
     }
   };
 
-  if (!fontsLoaded){
-    return <SplashScreen />
+  if (!fontsLoaded) {
+    return null; // Return null instead of <SplashScreen />
   }
+
   return (
     <KeyboardAvoidingView
       behavior="height"
@@ -219,76 +217,74 @@ const styles = StyleSheet.create({
       },
     }),
   },
-    image: {
-      width: 300,
-      height: 300,
-      top: '10%',
-      alignSelf: 'center'
-    },
-    title: {
-      fontSize: 24,
-      marginBottom: 10,
-      fontFamily: 'Poppins-Bold',
-      color: '#fca502',
-      fontSize: 50,
-      marginBottom: 1
-    },
-    subtitle: {
-      fontSize: 16,
-      marginBottom: 20,
-      fontFamily: 'Poppins-Regular',
-      marginBottom: 5
-    },
-    customInput: {
-      height: 40,
-      borderColor: 'gray',
-      borderWidth: 1,
-      marginBottom: 10,
-      paddingHorizontal: 10,
-      fontFamily: 'Poppins-SemiBold',
-      
-    },
-    customButton: {
-      backgroundColor: '#fca502', // Set your desired button color
-      padding: 10,
-      borderRadius: 30,
-      alignItems: 'center',
-      width: 100,
-      paddingVertical: 15,
-      alignSelf: 'flex-end',
-      marginTop: 5,
-      
-    },
-    buttonText: {
-      color: '#ffffff', // Set your desired text color
-      fontWeight: 'bold',
-      fontFamily: 'Poppins-Bold'
-    },
-    registerView: {
-      flexDirection: 'row',
-      position: 'fixed',
-      bottom: '-5%'
-    },
-    signUpButtonText: {
-      color: '#fca502',
-      fontFamily: 'Poppins-Bold'
-    },
-    signUpNoButtonText: {
-      fontFamily: 'Poppins-Regular'
-    },
-    merchantButtonText: {
-      color: '#fca502',
-      fontFamily: 'Poppins-Bold'
-    },
-    merchantNoButtonText: {
-      fontFamily: 'Poppins-Regular'
-    },
-    merchantView: {
-      flexDirection: 'row',
-      position: 'fixed',
-      bottom: '-5%',
-      marginTop: 5,
-    }
-  });
+  image: {
+    width: 300,
+    height: 300,
+    top: '10%',
+    alignSelf: 'center'
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 10,
+    fontFamily: 'Poppins-Bold',
+    color: '#fca502',
+    fontSize: 50,
+    marginBottom: 1
+  },
+  subtitle: {
+    fontSize: 16,
+    marginBottom: 20,
+    fontFamily: 'Poppins-Regular',
+    marginBottom: 5
+  },
+  customInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    fontFamily: 'Poppins-SemiBold',
+  },
+  customButton: {
+    backgroundColor: '#fca502', // Set your desired button color
+    padding: 10,
+    borderRadius: 30,
+    alignItems: 'center',
+    width: 100,
+    paddingVertical: 15,
+    alignSelf: 'flex-end',
+    marginTop: 5,
+  },
+  buttonText: {
+    color: '#ffffff', // Set your desired text color
+    fontWeight: 'bold',
+    fontFamily: 'Poppins-Bold'
+  },
+  registerView: {
+    flexDirection: 'row',
+    position: 'fixed',
+    bottom: '-5%'
+  },
+  signUpButtonText: {
+    color: '#fca502',
+    fontFamily: 'Poppins-Bold'
+  },
+  signUpNoButtonText: {
+    fontFamily: 'Poppins-Regular'
+  },
+  merchantButtonText: {
+    color: '#fca502',
+    fontFamily: 'Poppins-Bold'
+  },
+  merchantNoButtonText: {
+    fontFamily: 'Poppins-Regular'
+  },
+  merchantView: {
+    flexDirection: 'row',
+    position: 'fixed',
+    bottom: '-5%',
+    marginTop: 5,
+  }
+});
 
 export default SignIn;
