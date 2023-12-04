@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useAuth } from '../app/authcontext';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+
 
 const AddDealModal = ({ isOpen, onClose }) => {
   const [deal, setDeal] = useState({
@@ -150,8 +152,9 @@ const AddDealModal = ({ isOpen, onClose }) => {
   return (
     <Modal visible={isOpen} animationType="slide">
       <View style={styles.container}>
+        <Text style={styles.titleText}>Add Deal/Event</Text>
         <View style={styles.row}>
-          <Text>Deal Name</Text>
+          <Text style={styles.descriptionText}>Deal Name</Text>
           <TextInput
             style={styles.input}
             value={deal.name}
@@ -162,7 +165,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
         </View>
         <View style={styles.dateRow}>
           <View style={styles.row}>
-            <Text>Start Date</Text>
+            <Text style={styles.descriptionText}>Start Date</Text>
             <TouchableOpacity style={styles.datePickerButton} onPress={showStartDatePicker}>
               <Text style={styles.datePickerText}>
                 {deal.start_date ? new Date(deal.start_date).toLocaleDateString() : 'Select Start Date'}
@@ -174,7 +177,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
               onConfirm={handleStartDateConfirm}
               onCancel={hideStartDatePicker}
             />
-            <Text>End Date</Text>
+            <Text style={styles.descriptionText}>End Date</Text>
             <TouchableOpacity style={styles.datePickerButton} onPress={showEndDatePicker}>
               <Text style={styles.datePickerText}>
                 {deal.end_date ? new Date(deal.end_date).toLocaleDateString() : 'Select End Date'}
@@ -189,7 +192,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
           </View>
         </View>
         <View style={styles.row}>
-          <Text>Day of Week</Text>
+          <Text style={styles.descriptionText}>Day of Week</Text>
           <View style={styles.daySelectorContainer}>
             {daysOfWeek.map((day) => (
               <TouchableOpacity
@@ -205,9 +208,8 @@ const AddDealModal = ({ isOpen, onClose }) => {
             ))}
           </View>
         </View>
-        <View style={styles.timeRow}>
           <View style={styles.row}>
-            <Text>Start Time</Text>
+            <Text style={styles.descriptionText}>Start Time</Text>
             <TouchableOpacity style={styles.timePickerButton} onPress={showStartTimePicker}>
               <Text style={styles.timePickerText}>
                 {deal.start_time ? new Date(deal.start_time).toLocaleTimeString() : 'Select Start Time'}
@@ -221,7 +223,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
             />
           </View>
           <View style={styles.row}>
-            <Text>End Time</Text>
+            <Text style={styles.descriptionText}>End Time</Text>
             <TouchableOpacity style={styles.timePickerButton} onPress={showEndTimePicker}>
               <Text style={styles.timePickerText}>
                 {deal.end_time ? new Date(deal.end_time).toLocaleTimeString() : 'Select End Time'}
@@ -234,11 +236,10 @@ const AddDealModal = ({ isOpen, onClose }) => {
               onCancel={hideEndTimePicker}
             />
           </View>
-        </View>
         <View style={styles.row}>
-          <Text>Description</Text>
+          <Text style={styles.descriptionText}>Description</Text>
           <TextInput
-            style={styles.input}
+            style={styles.descriptionInput}
             value={deal.description}
             onChangeText={(text) => handleChange('description', text)}
             placeholder=""
@@ -246,8 +247,12 @@ const AddDealModal = ({ isOpen, onClose }) => {
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Button title="Save" onPress={handleSubmit} />
-          <Button title="Discard" onPress={handleCancel} />
+          <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
+            <Text style={styles.saveButtonText}>Save</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cancelButton} onPress={handleCancel}>
+            <Text style={styles.cancelButtonText}>Discard</Text>
+          </TouchableOpacity>        
         </View>
       </View>
     </Modal>
@@ -263,33 +268,50 @@ const styles = StyleSheet.create({
   row: {
     marginBottom: 10,
   },
+  titleText: {
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginBottom: 25,
+    fontFamily: 'Poppins-Black',
+    fontSize: 40,
+    color: '#FF9000'
+  },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 8,
-    width: 300,
+    borderRadius: 8,
+    marginBottom: 12,
+    paddingLeft: 10,
+    fontFamily: 'Poppins-Regular',
+    width: 350
   },
   datePickerButton: {
+    height: 40,
     backgroundColor: '#e0e0e0',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 8,
+    alignItems: 'left',
+    justifyContent: 'center',
+    marginBottom: 12,
+    width: 350,
+    right: 0
   },
   datePickerText: {
-    color: '#333',
+    color: 'black',
+    fontFamily: 'Poppins-Regular',
+    marginLeft: 10
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '80%',
+    width: '90%',
     marginTop: 20,
   },
   daySelectorContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     flexWrap: 'no-wrap',
+    width: '90%'
   },
   daySelectorButton: {
     borderRadius: 5,
@@ -307,14 +329,61 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   timePickerButton: {
+    height: 40,
     backgroundColor: '#e0e0e0',
-    padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 8,
+    alignItems: 'left',
+    justifyContent: 'center',
+    marginBottom: 12,
+    width: 350,
+    right: 0
   },
   timePickerText: {
-    color: '#333',
+    color: 'black',
+    fontFamily: 'Poppins-Regular',
+    marginLeft: 10
   },
+  descriptionText: {
+    fontFamily: 'Poppins-Regular'
+  },
+  descriptionInput: {
+    height: 80, // Adjust this value to make the description input taller
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 12,
+    paddingLeft: 10,
+    fontFamily: 'Poppins-Regular',
+    width: 350,
+  },
+  cancelButton: {
+    backgroundColor: 'transparent',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    marginLeft: 10,
+    borderWidth: 3,
+    borderColor: '#FF0000'
+  },
+  saveButton: {
+    backgroundColor: '#FF9000',
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    marginRight: 10,
+  },
+  saveButtonText: {
+    fontFamily: 'Poppins-Regular',
+    color: 'white'
+  },
+  cancelButtonText: {
+    fontFamily: 'Poppins-Regular',
+    color: '#FF0000'
+  }
 });
 
 export default AddDealModal;
