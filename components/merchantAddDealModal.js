@@ -15,6 +15,15 @@ const AddDealModal = ({ isOpen, onClose }) => {
   });
   const authContext = useAuth();
 
+  const abbreviatedToFull = {
+    Sun: 'Sunday',
+    Mon: 'Monday',
+    Tue: 'Tuesday',
+    Wed: 'Wednesday',
+    Thu: 'Thursday',
+    Fri: 'Friday',
+    Sat: 'Saturday',
+  };
 
   const [isStartDatePickerVisible, setStartDatePickerVisible] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisible] = useState(false);
@@ -86,7 +95,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
       name: deal.name,
       start_time: new Date(deal.start_time).toISOString(),
       end_time: new Date(deal.end_time).toISOString(),
-      day_of_week: deal.day_of_week,
+      day_of_week: selectedDays.length > 0 ? selectedDays.map(day => abbreviatedToFull[day]).join(', ') : '',
       start_date: new Date(deal.start_date).toISOString(),
       end_date: new Date(deal.end_date).toISOString(),
       description: deal.description,
