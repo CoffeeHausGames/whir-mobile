@@ -67,25 +67,38 @@ function MerchantDealBox() {
     }
   };
   
-    const handleStartDateConfirm = (date) => {
-      // Handle the selected start date
-      hideStartDatePicker();
-    };
+  const handleStartDateConfirm = (date) => {
+    setEditedDeal({
+      ...editedDeal,
+      start_date: date, // Assuming date is in the desired format
+    });
+    hideStartDatePicker();
+  };
   
-    const handleEndDateConfirm = (date) => {
-      // Handle the selected end date
-      hideEndDatePicker();
-    };
+  const handleEndDateConfirm = (date) => {
+    setEditedDeal({
+      ...editedDeal,
+      end_date: date, // Assuming date is in the desired format
+    });
+    hideEndDatePicker();
+  };
   
-    const handleStartTimeConfirm = (date) => {
-      // Handle the selected start time
-      hideStartTimePicker();
-    };
+  const handleStartTimeConfirm = (date) => {
+    setEditedDeal({
+      ...editedDeal,
+      start_time: date, // Assuming date is in the desired format
+    });
+    hideStartTimePicker();
+  };
   
-    const handleEndTimeConfirm = (date) => {
-      // Handle the selected end time
-      hideEndTimePicker();
-    };
+  const handleEndTimeConfirm = (date) => {
+    setEditedDeal({
+      ...editedDeal,
+      end_time: date, // Assuming date is in the desired format
+    });
+    hideEndTimePicker();
+  };
+  
 
     const handleConfirmDelete = () => {
       const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
