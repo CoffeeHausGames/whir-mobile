@@ -10,7 +10,7 @@ const ProfileHeader = () => {
   });
 
   if (!fontsLoaded){
-    return <SplashScreen />
+    return null;
   }
   return (
     <SafeAreaView style={styles.headerContainer}>

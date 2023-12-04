@@ -87,7 +87,7 @@ function MerchantSignIn() {
         ]).start();
       }
     );
-  
+
     const keyboardDidHideListener = Keyboard.addListener(
       'keyboardDidHide',
       () => {
@@ -105,49 +105,28 @@ function MerchantSignIn() {
         ]).start();
       }
     );
-  
+
+    // Use SplashScreen.preventAutoHideAsync() here
+    SplashScreen.preventAutoHideAsync();
+
     // Cleanup function
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
     };
-  }, [imageScale, signInContainerBottom, navigation]);  // Include navigation in the dependency array
+  }, [imageScale, signInContainerBottom, navigation]);
 
+  // Use SplashScreen.hideAsync() here when the component unmounts
+  useEffect(() => {
+    return () => {
+      SplashScreen.hideAsync();
+    };
+  }, []);
 
-  if (!fontsLoaded){
-    return <SplashScreen />
+  if (!fontsLoaded) {
+    return null; 
   }
   return (
-    // <View style={styles.container}>
-    //   <View style={styles.signInContainer}>
-    //     <Text style={styles.title}>Welcome back!</Text>
-    //     <Text style={styles.subtitle}>Please sign in to continue</Text>
-    //     <View style={styles.inputContainer}>
-    //       <TextInput
-    //         style={styles.input}
-    //         placeholder="Email"
-    //         value={formData.Email}
-    //         onChangeText={(text) => setFormData({ ...formData, Email: text })}
-    //         keyboardType="email-address"
-    //         autoCapitalize="none"
-    //         autoCorrect={false}
-    //         required
-    //       />
-    //       <TextInput
-    //         style={styles.input}
-    //         placeholder="Password"
-    //         value={formData.Password}
-    //         onChangeText={(text) => setFormData({ ...formData, Password: text })}
-    //         secureTextEntry
-    //         required
-    //       />
-    //       <Button
-    //         title="Sign In"
-    //         onPress={handleSubmit}
-    //       />
-    //     </View>
-    //   </View>
-    // </View>
     <KeyboardAvoidingView
       behavior="height"
       style={{ flex: 1, backgroundColor: '#ffffff' }}

@@ -15,7 +15,6 @@ import {
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -26,7 +25,6 @@ const SignUp = () => {
   });
   const navigation = useNavigation();
   const signUpContainerBottom = useRef(new Animated.Value(0)).current;
-  const headerOpacity = useRef(new Animated.Value(1)).current;
 
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
@@ -37,11 +35,10 @@ const SignUp = () => {
   });
 
   useEffect(() => {
-
     navigation.setOptions({
-        headerShown: false,
-      });
-      
+      headerShown: false,
+    });
+
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -101,7 +98,7 @@ const SignUp = () => {
   };
 
   if (!fontsLoaded) {
-    return <SplashScreen />;
+    return null; // Return null instead of <SplashScreen />
   }
 
   return (
@@ -113,8 +110,7 @@ const SignUp = () => {
             { bottom: signUpContainerBottom },
           ]}
         >
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            {/* Your image component goes here */}
+          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
             <Image source={require('../assets/images/back-mobile.png')} style={styles.backImage} />
           </TouchableOpacity>
           <Text style={styles.title}>Welcome!</Text>
@@ -184,10 +180,6 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  signUpHeader: {
-    alignItems: 'center',
-    marginTop: '10%',
-  },
   title: {
     fontSize: 24,
     marginBottom: 10,
@@ -218,13 +210,6 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold',
-  },
-  signUpButtonText: {
-    color: '#fca502',
-    fontFamily: 'Poppins-Bold',
-  },
-  signUpNoButtonText: {
-    fontFamily: 'Poppins-Regular',
   },
   backButton: {
     position: 'absolute',

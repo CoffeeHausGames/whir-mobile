@@ -21,7 +21,7 @@ const ProfileCard = () => {
   }, []); // Empty dependency array ensures this effect runs once when the component mounts
 
   if (!fontsLoaded) {
-    return <SplashScreen />;
+    return null;
   }
 
   return (

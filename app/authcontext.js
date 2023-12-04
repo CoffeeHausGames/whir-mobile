@@ -56,6 +56,11 @@ const AuthProvider = ({ children }) => {
   const merchantSignOut = () => {
     setMerchantUser(null);
     SecureStore.deleteItemAsync('merchantUser');
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'Home' }],
+    });
   };
 
   useEffect(() => {
