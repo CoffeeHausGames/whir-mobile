@@ -76,6 +76,16 @@ function MerchantDealBox() {
     fetchDeals();
   }, []);
 
+  const abbreviatedToFull = {
+    Sun: 'Sunday',
+    Mon: 'Monday',
+    Tue: 'Tuesday',
+    Wed: 'Wednesday',
+    Thu: 'Thursday',
+    Fri: 'Friday',
+    Sat: 'Saturday',
+  };
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -90,8 +100,8 @@ function MerchantDealBox() {
     setEditedDeal({ ...deal });
   
     // Set selectedDays based on the days_of_week in the deal
-    const daysOfWeekInDeal = deal.day_of_week.split(',');
-    setSelectedDays(daysOfWeekInDeal);
+    const daysOfWeekInDeal = deal.day_of_week;
+    setSelectedDays(Array.isArray(daysOfWeekInDeal) ? daysOfWeekInDeal : []);
   
     setEditModalVisible(true);
   };
@@ -168,11 +178,12 @@ function MerchantDealBox() {
       name: editedDeal.name,
       start_time: new Date(editedDeal.start_time).toISOString(),
       end_time: new Date(editedDeal.end_time).toISOString(),
-      day_of_week: editedDeal.day_of_week,
+      day_of_week: selectedDays.length > 0 ? selectedDays.map(day => abbreviatedToFull[day]).join(', ') : '',
       start_date: new Date(editedDeal.start_date).toISOString(),
       end_date: new Date(editedDeal.end_date).toISOString(),
       description: editedDeal.description,
     };
+
 
     console.log('Updated Deal Body:', updatedDeal);
 
