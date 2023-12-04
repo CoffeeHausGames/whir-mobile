@@ -314,10 +314,16 @@ function MerchantDealBox() {
             {expandedDealId === item.id && (
               <View style={styles.expandedButtons}>
                 <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item)}>
-                  <Text style={styles.editButtonText}>Edit</Text>
+                  <View style={styles.editButtonRow}>
+                    <Image source={require('../assets/images/edit-icon-orange.png')} style={styles.editIcon} />
+                    <Text style={styles.editButtonText}>  Edit</Text>
+                  </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(item)}>
-                  <Text style={styles.deleteButtonText}>Delete</Text>
+                  <View style={styles.deleteRow}>
+                    <Image source={require('../assets/images/trash-con-white.png')} style={styles.trashIcon} />
+                    <Text style={styles.deleteButtonText}>  Delete</Text>
+                  </View>
                 </TouchableOpacity>
               </View>
             )}
@@ -703,6 +709,20 @@ const styles = StyleSheet.create({
   },
   addButtonView: {
     flexDirection: 'row'
+  },
+  editButtonRow: {
+    flexDirection: 'row',
+  },
+  editIcon: {
+    width: 18,
+    height: 18
+  },
+  deleteRow: {
+    flexDirection: 'row',
+  },
+  trashIcon: {
+    width: 18,
+    height: 18
   }
 });
 
