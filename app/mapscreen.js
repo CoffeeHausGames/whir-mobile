@@ -79,9 +79,6 @@ const MainPage = () => {
     <View style={styles.container}>
       <Map />
       <StatusBar style="light" />
-      <View style={styles.panic}>
-        <SignOutButton />
-      </View>
       <View style={styles.navContainer}>
         <View style={styles.navBar}>
           <Pressable
