@@ -1,58 +1,61 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
-import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import { vw, vh } from 'react-native-expo-viewport-units';
 import Swiper from 'react-native-swiper';
 
+
 const MerchantAnalytics = () => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('');
+
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
-        <TouchableOpacity>
-          <View style={styles.square} >
-            <Text style={styles.analyticsText}>Coming Soon!</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.square} >
-            <Text style={styles.analyticsText}>Coming Soon!</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.square} >
-            <Text style={styles.analyticsText}>Coming Soon!</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <View style={styles.square} >
-            <Text style={styles.analyticsText}>Coming Soon!</Text>
-          </View>
-        </TouchableOpacity>
+        {[1, 2, 3, 4].map((item) => (
+          <TouchableOpacity key={item} onPress={() => openModal(`Analytics Modal ${item}`)}>
+            <View style={styles.square}>
+              <Text style={styles.analyticsText}>Coming Soon! {item} </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
         <View style={styles.swiperView}>
-          <Swiper 
-            style={styles.swiperContainer} s
-            howsPagination={true} 
+          <Swiper
+            style={styles.swiperContainer}
+            showsPagination={true}
             dotStyle={styles.paginationDot}
             activeDotStyle={styles.activePaginationDot}
             loop={true}
           >
-            <TouchableOpacity>
-              <View style={styles.swiperItem}>
-                <Text style={styles.swiperText}>Gallery Item 1</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.swiperItem}>
-                <Text style={styles.swiperText}>Gallery Item 2</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.swiperItem}>
-                <Text style={styles.swiperText}>Gallery Item 3</Text>
-              </View>
-            </TouchableOpacity>
+            {[1, 2, 3].map((item) => (
+              <TouchableOpacity key={item} onPress={() => openModal(`Gallery Item ${item}`)}>
+                <View style={styles.swiperItem}>
+                  <Text style={styles.swiperText}>Gallery Item {item}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
           </Swiper>
         </View>
 
+        {/* Modal */}
+        <Modal visible={modalVisible} transparent animationType="slide">
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalText}>{selectedItem}</Text>
+              <TouchableOpacity onPress={closeModal}>
+                <Text style={styles.closeButton}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </ScrollView>
   );
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
   square: {
     width: vw(45),
     height: vh(20),
-    backgroundColor: 'lightgray', // Set your desired color
+    backgroundColor: 'lightgray',
     margin: 7,
     borderRadius: 10,
     borderWidth: 3,
@@ -77,14 +80,14 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontFamily: 'Poppins-Regular',
     fontSize: 20,
-    marginTop: '40%', // Adjust the margin or use paddingTop to center the text vertically
+    marginTop: '40%',
   },
   swiperText: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 20
+    fontSize: 20,
   },
   swiperView: {
-    marginTop: 10, // Adjust the marginTop for the desired gap
+    marginTop: 10,
   },
   swiperContainer: {
     height: vh(20),
@@ -105,17 +108,38 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 4,
     margin: 3,
-    marginBottom: -25
+    marginBottom: -25,
   },
   activePaginationDot: {
-    backgroundColor: '#FF9000', // Change this color for the active dot
+    backgroundColor: '#FF9000',
     width: 8,
     height: 8,
     borderRadius: 6,
     margin: 3,
-    marginBottom: -25
+    marginBottom: -25,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: vw(80),
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalText: {
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  closeButton: {
+    fontSize: 16,
+    color: 'blue',
+    marginTop: 10,
   },
 });
-
 
 export default MerchantAnalytics;
