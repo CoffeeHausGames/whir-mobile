@@ -16,6 +16,7 @@ const Discover = () => {
   const [selectedButton, setSelectedButton] = useState(null);
   const [searchText, setSearchText] = useState('');
 
+
     const handleSearch = (text) => {
     setSearchText(text);
   };

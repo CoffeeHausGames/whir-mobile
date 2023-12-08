@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback, Image } from 'react-native';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
 import * as Location from 'expo-location';
@@ -11,6 +11,22 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedBusinessInfo, setSelectedBusinessInfo] = useState(null);
+  const [favoritedDeals, setFavoritedDeals] = useState([]);
+
+  const toggleHeart = (dealId) => {
+    setFavoritedDeals((prevFavoritedDeals) => {
+      if (prevFavoritedDeals.includes(dealId)) {
+        return prevFavoritedDeals.filter((id) => id !== dealId);
+      } else {
+        return [...prevFavoritedDeals, dealId];
+      }
+    });
+  };
+
+  const isDealFavorited = (dealId) => {
+    return favoritedDeals.includes(dealId);
+  };
+
 
 
   let [fontsLoaded] = useFonts({
@@ -336,7 +352,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Poppins-Black',
     color: '#2D2D2D'
-  }
+  },
 });
 
 export default DealDisplayFull;
