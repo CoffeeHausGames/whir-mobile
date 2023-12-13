@@ -6,7 +6,7 @@ import Icon from 'react-native-ico-material-design';
 import { useAuth } from './authcontext';
 import SignIn from './signin';
 import * as Location from 'expo-location';
-import SignOutButton from './signout';
+
 
 var iconHeight = 30;
 var iconWidth = 30;

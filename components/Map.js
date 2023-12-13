@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import MapView, { Marker, Callout } from 'react-native-maps';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, ImageBackground } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 const Map = ({ userLocation }) => {
+  const mapViewRef = useRef(null);
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Function to get the location of a business
   const getBusinessLocation = (business) => {
     if (business && business.location && business.location.coordinates) {
       const [longitude, latitude] = business.location.coordinates;
@@ -36,24 +36,44 @@ const Map = ({ userLocation }) => {
 
         const data = await response.json();
         setBusinesses(data.data);
-
-        // Log the response body in the console
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
       }
     };
 
     fetchBusinesses();
-  }, []); // Run this effect only once when the component mounts
+  }, []);
 
   const handleMarkerPress = (business) => {
     setSelectedBusiness(business);
-    console.log("Business info:", business);
+    setIsModalVisible(true);
+
+    const location = getBusinessLocation(business);
+
+    if (location) {
+      mapViewRef.current.animateToRegion({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleBackdropPress = () => {
+    if (isModalVisible) {
+      handleCloseModal();
+    }
   };
 
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapViewRef}
         style={styles.map}
         initialRegion={
           userLocation
@@ -73,7 +93,6 @@ const Map = ({ userLocation }) => {
         minZoomLevel={4}
         showsUserLocation={true}
       >
-        {/* Map through the businesses array and create markers */}
         {businesses.map((business) => {
           const location = getBusinessLocation(business);
           if (location) {
@@ -85,27 +104,48 @@ const Map = ({ userLocation }) => {
                 description={business.description}
                 onPress={() => handleMarkerPress(business)}
               >
-                {/* Use Image component for custom marker */}
                 <Image
                   source={require('../assets/images/whir_map_poi.png')}
                   style={{ width: 21, height: 30 }}
                 />
-                {/* Callout component for popup */}
-                <Callout style={{ width: 150 }}>
-                  <View style={styles.calloutContent}>
-                    <Text style={styles.calloutText}>{business.business_name}</Text>
-                    <Text style={styles.calloutText}>Pinned deal of the day</Text>
-                    <TouchableOpacity style={styles.businessProfileButton}>
-                      <Text>Business Profile</Text>
-                    </TouchableOpacity>
-                  </View>
-                </Callout>
               </Marker>
             );
           }
           return null;
         })}
       </MapView>
+
+      {/* Backdrop TouchableOpacity */}
+      {isModalVisible && (
+        <TouchableOpacity
+          style={styles.backdrop}
+          activeOpacity={1}
+          onPress={handleBackdropPress}
+        />
+      )}
+
+      {/* Custom Modal for Business Details */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isModalVisible}
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableWithoutFeedback onPress={handleBackdropPress}>
+          <View style={styles.modalContainer}>
+            {/* Use ImageBackground for the background image */}
+            <ImageBackground
+              source={require('../assets/images/map-tile-background.png')}  // Change this to the path of your image
+              style={styles.backgroundImage}
+            >
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTextTitle}>{selectedBusiness?.business_name}</Text>
+                <Text style={styles.modalTextContent}>Pinned deal of the day</Text>
+              </View>
+            </ImageBackground>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 };
@@ -122,29 +162,45 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     bottom: -35,
-    zIndex: 1
+    zIndex: 1,
   },
-  calloutContainer: {
-    width: 'auto', // Set width to 'auto' to allow it to adapt based on content
-    paddingHorizontal: 10, // Add some padding for better appearance
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-  calloutContent: {
+  modalContainer: {
     flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
-  calloutText: {
-    color: 'black',
-    padding: 5
-  },
-  businessProfileButton: {
-    borderWidth: 1,
+  modalContent: {
+    padding: 20,
+    backgroundColor: 'transparent',
     borderRadius: 10,
-    color: '#fff',
-    textAlign: 'center',
-    padding: 2,
-    marginLeft: 2,
-    width: 112,
-    backgroundColor: 'gray'
-  }
+    width: '90%', // Adjusted to 90% width
+    height: 160,
+    marginBottom: 20,
+  },
+  modalTextTitle: {
+    fontSize: 20,
+    marginBottom: 10,
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
+  },
+  modalTextContent: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontFamily: 'Poppins-Regular',
+    color: 'white',
+  },
+  backgroundImage: {
+    alignItems: 'center',
+    width: 340,
+    borderRadius: 30, // Adjusted to 10 for rounded corners
+    overflow: 'hidden', // This ensures the image doesn't bleed beyond the rounded corners
+    marginBottom: 120
+  },
 });
 
 export default Map;
