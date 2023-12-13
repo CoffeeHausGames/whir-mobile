@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 const Map = ({ userLocation }) => {
@@ -133,10 +133,16 @@ const Map = ({ userLocation }) => {
       >
         <TouchableWithoutFeedback onPress={handleBackdropPress}>
           <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <Text style={styles.modalTextTitle}>{selectedBusiness?.business_name}</Text>
-              <Text style={styles.modalTextContent}>Pinned deal of the day</Text>
-            </View>
+            {/* Use ImageBackground for the background image */}
+            <ImageBackground
+              source={require('../assets/images/map-tile-background.png')}  // Change this to the path of your image
+              style={styles.backgroundImage}
+            >
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTextTitle}>{selectedBusiness?.business_name}</Text>
+                <Text style={styles.modalTextContent}>Pinned deal of the day</Text>
+              </View>
+            </ImageBackground>
           </View>
         </TouchableWithoutFeedback>
       </Modal>
@@ -164,35 +170,36 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end', // Align the modal at the bottom
+    justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    paddingBottom: 120
   },
   modalContent: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
     borderRadius: 10,
-    alignItems: 'center',
-    width: '85%', // Set the width to 90%
-    height: 160
+    width: '90%', // Adjusted to 90% width
+    height: 160,
+    marginBottom: 20,
   },
   modalTextTitle: {
-    fontSize: 16,
+    fontSize: 20,
     marginBottom: 10,
-    fontFamily: 'Poppins-Bold'
+    fontFamily: 'Poppins-Bold',
+    color: 'white',
   },
   modalTextContent: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 10,
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
+    color: 'white',
   },
-  businessProfileButton: {
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: 'gray',
-    marginTop: 10,
+  backgroundImage: {
+    alignItems: 'center',
+    width: 340,
+    borderRadius: 30, // Adjusted to 10 for rounded corners
+    overflow: 'hidden', // This ensures the image doesn't bleed beyond the rounded corners
+    marginBottom: 120
   },
 });
 
