@@ -1,3 +1,5 @@
+import { apiRequest } from '../app/networkController';
+
 useEffect(() => {
   const fetchBusinesses = async () => {
     try {
@@ -7,23 +9,19 @@ useEffect(() => {
 
       const { latitude, longitude } = userLocation.coords;
 
-      const response = await fetch('http://10.8.1.245:4444/business', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          latitude,
-          longitude,
-        }),
-      });
+      const endpoint = '/business';
+      const method = 'POST';
+      const requestData = {
+        latitude,
+        longitude,
+      };
+      const response = await apiRequest(endpoint, method, requestData);
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
+        throw new Error(`Failed to fetch businesses. Server response: ${response.status}`);
       }
 
-      const data = await response.json();
-      setBusinesses(data.data);
+      setBusinesses(response.data);
     } catch (error) {
       console.error('Error fetching businesses:', error.message);
     }

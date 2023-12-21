@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { apiRequest } from '../app/networkController';
 
 
 const ProfileFavorites = ({ setSelectedBusinessLocation }) => {
@@ -19,21 +20,15 @@ const ProfileFavorites = ({ setSelectedBusinessLocation }) => {
             radius: 1000,
           };
 
-          const response = await fetch('http://10.8.1.245:4444/business', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formattedCoordinates),
-          });
+          const endpoint = '/business';
+          const method = 'POST';
+          const response = await apiRequest(endpoint, method, formattedCoordinates);
 
           if (!response.ok) {
-            throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
+            throw new Error(`Failed to fetch businesses. Server response: ${response.status}`);
           }
 
-          const data = await response.json();
-
-          const businessesWithDistance = data.data.map((business) => ({
+          const businessesWithDistance = response.data.map((business) => ({
             ...business,
             distance: calculateDistance(userLocation, business.location.coordinates),
           }));

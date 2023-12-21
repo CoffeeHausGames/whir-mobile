@@ -1,6 +1,6 @@
 // This file is used to make API requests to the server.
 
-const BASE_URL = 'http://10.0.2.2:4444'; // Assuming you are using an Android emulator. Use 'http://localhost:4444' for iOS.
+const BASE_URL = 'http://192.168.1.21:4444'; // Assuming you are using an Android emulator. Use 'http://localhost:4444' for iOS.
 
 const VERSION = '/v1';
 
@@ -17,15 +17,8 @@ const VERSION = '/v1';
  */
 
 // TODO probably don't need includeCredentials as we could include them every time with no issues not sure what the standard is here
-
-export function apiRequest(endpoint, method, data = null, headers = {}, includeCredentials = false) {
-  // Check cookie-consent in local storage
-  let cookieConsent = 'false'; // Default to 'false'
-
-  //TODO This needs to be set for when it is not localhost to localhost
-  // if (typeof localStorage !== 'undefined') {
-  //   cookieConsent = localStorage.getItem('cookie-consent');
-  // }
+export function apiRequest(endpoint, method, data = null, headers = {}) {
+  let cookieConsent = 'false'; // On moile it won't use cookies so default to 'false'
 
   const options = {
     method,
@@ -36,20 +29,12 @@ export function apiRequest(endpoint, method, data = null, headers = {}, includeC
     },
   };
 
-  if (includeCredentials && cookieConsent !== 'false') {
-    console.log("include creds")
-    options.credentials = 'include';
-  }
-
   if (data) {
     options.body = JSON.stringify(data);
   }
 
   return fetch(`${BASE_URL}${VERSION}${endpoint}`, options)
     .then(response => {
-      if (!response.ok) {
-        throw response;
-      }
       return response.json().then(data => ({
         data: data.data,
         status: response.status,
@@ -61,19 +46,18 @@ export function apiRequest(endpoint, method, data = null, headers = {}, includeC
 }
 
 export function apiRequestWithAuthRetry(endpoint, method, data = null, headers = {}, token = null) {
-  return apiRequest(endpoint, method, data, headers, true)
-    .catch((error) => {
+  if (!token) {
+    console.error('Authentication token not found.');
+    return;
+  }
+
+  headers.Authorization = `${token}`;
+  return apiRequest(endpoint, method, data, headers)
+    .then((response) => {
       // If the status code indicates an authentication issue, retry with the authentication header
-      if (error.status >= 401 && error.status <= 403) {
-        if (!token) {
-          console.error('Business user authentication token not found.');
-          return;
-        }
-
-        headers.Authorization = `${token}`;
-        console.log(token);
-
-        return apiRequest(endpoint, method, data, headers, false);
+      if (!response.ok && response.status >= 401 && response.status <= 403) {
+        return apiRequest(endpoint, method, data, headers);
       }
+      return response;
     });
 }

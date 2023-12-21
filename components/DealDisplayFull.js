@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback, Image } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 import * as Location from 'expo-location';
+import { apiRequest} from '../app/networkController';
 
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
@@ -75,21 +75,15 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
           radius: 1000,
         };
 
-        const response = await fetch('http://10.8.1.245:4444/business', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formattedCoordinates),
-        });
+        const endpoint = '/business';
+        const method = 'POST';
+        const response = await apiRequest(endpoint, method, formattedCoordinates);
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
+          throw new Error(`Failed to fetch businesses. Server response: ${response.status}`);
         }
 
-        const data = await response.json();
-
-        const businessesWithDistance = data.data.map((business) => ({
+        const businessesWithDistance = response.data.map((business) => ({
           ...business,
           distance: calculateDistance(userLocation, business.location.coordinates),
         }));
@@ -109,20 +103,16 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
 
   const fetchDealsForBusiness = async (businessId) => {
     try {
-      const response = await fetch(`http://10.8.1.245:4444/business/deals`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ businessId }), // Include the businessId in the request body
-      });
+      const endpoint = '/business/deals';
+      const method = 'POST';
+      const requestData = { businessId };
+      const response = await apiRequest(endpoint, method, requestData);
   
       if (!response.ok) {
-        throw new Error(`Failed to fetch deals. Server response: ${response.statusText}`);
+        throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }
   
-      const data = await response.json();
-      return data.deals; // Assuming your API returns an array of deals
+      return response.deals; // Assuming your API returns an array of deals
     } catch (error) {
       console.error('Error fetching deals:', error.message);
       return [];

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
+import { apiRequest } from '../app/networkController';
 
 const Map = ({ userLocation }) => {
   const mapViewRef = useRef(null);
@@ -19,23 +20,21 @@ const Map = ({ userLocation }) => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-        const response = await fetch('http://10.8.1.245:4444/business', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            latitude: 39.1077698007311,
-            longitude: -94.58107416626508,
-          }),
-        });
+
+        const endpoint = '/business';
+        const method = 'POST';
+        // TODO don't hardcode this
+        const requestData = {
+          latitude: 39.1077698007311,
+          longitude: -94.58107416626508,
+        };
+        const response = await apiRequest(endpoint, method, requestData);
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch businesses. Server response: ${response.statusText}`);
+          throw new Error(`Failed to fetch businesses. Server response: ${response.st}`);
         }
 
-        const data = await response.json();
-        setBusinesses(data.data);
+        setBusinesses(response.data);
       } catch (error) {
         console.error('Error fetching businesses:', error.message);
       }
