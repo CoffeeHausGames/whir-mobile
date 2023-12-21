@@ -14,6 +14,7 @@ import {
 import { useAuth } from '../app/authcontext';
 import AddDealModal from './merchantAddDealModal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { apiRequestWithAuthRetry } from '../app/networkController';
 
 function MerchantDealBox() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -100,25 +101,22 @@ function MerchantDealBox() {
   };
   
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
       const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
 
       if (!businessAuthToken) {
         console.error('Merchant user authentication token not found.');
         return;
       }
-    
-      fetch(`http://10.8.1.245:4444/business/deal`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${businessAuthToken}`,
-        },
-        body: JSON.stringify({ id: selectedDeal.id }),
-      })
+
+      const endpoint = '/business/deal';
+      const method = 'DELETE';
+      const data = { id: selectedDeal.id };
+      const token = `${businessAuthToken}`;
+      apiRequestWithAuthRetry(endpoint, method, data, undefined, token)
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`Failed to delete deal. Server response: ${response.statusText}`);
+            throw new Error(`Failed to delete deal. Server response: ${response.status}`);
           }
           // If successful, close the delete confirmation modal and refresh the deals
           setIsDeleteConfirmationVisible(false);
@@ -176,7 +174,7 @@ function MerchantDealBox() {
     fetchDeals();
   };
 
-  const fetchDeals = () => {
+  const fetchDeals = async () => {
     const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
 
     if (!businessAuthToken) {
@@ -184,21 +182,16 @@ function MerchantDealBox() {
       return;
     }
 
-    fetch('http://10.8.1.245:4444/business/deal', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `${businessAuthToken}`,
-      },
-    })
+    const endpoint = '/business/deal';
+    const method = 'GET';
+    const token = `${businessAuthToken}`;
+
+    apiRequestWithAuthRetry(endpoint, method, undefined, undefined, token)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Failed to fetch deals. Server response: ${response.statusText}`);
+          throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
         }
-        return response.json();
-      })
-      .then((data) => {
-        setDeals(data.data); // Set deals directly from response.data.data
+        setDeals(response.data);
       })
       .catch((error) => {
         console.error('Error fetching deals:', error.message);
@@ -250,15 +243,10 @@ function MerchantDealBox() {
 
 
     console.log('Updated Deal Body:', updatedDeal);
-
-    fetch(`http://10.8.1.245:4444/business/deal`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `${businessAuthToken}`,
-      },
-      body: JSON.stringify(updatedDeal),
-    })
+    const endpoint = '/business/deal';
+    const method = 'PUT';
+    const token = `${businessAuthToken}`;
+    apiRequestWithAuthRetry(endpoint, method, updatedDeal, undefined, token)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Failed to update deal. Server response: ${response.statusText}`);

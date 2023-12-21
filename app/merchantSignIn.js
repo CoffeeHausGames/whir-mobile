@@ -17,6 +17,7 @@ import {
   } from 'react-native';
   import { SplashScreen } from 'expo-router';
   import { useFonts } from 'expo-font';
+  import { apiRequest } from '../app/networkController';
 
 
 
@@ -42,17 +43,12 @@ function MerchantSignIn() {
     console.log('Sending business sign-in request:', formData);
 
     try {
-      const response = await fetch('http://10.8.1.245:4444/business/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const endpoint = '/business/login';
+      const method = 'POST';
+      const response = await apiRequest(endpoint, method, formData);
 
       if (response.ok) {
-        const responseData = await response.json();
-        const merchantUser = { ...responseData.data, authenticated: true };
+        const merchantUser = { ...response.data, authenticated: true };
         console.log('Business authenticated successfully');
         merchantSignIn(merchantUser);
         navigation.navigate('MerchantDashboard');

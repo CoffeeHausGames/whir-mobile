@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useAuth } from '../app/authcontext';
-import { KeyboardAvoidingView, Platform } from 'react-native';
-
+import { apiRequestWithAuthRetry } from '../app/networkController';
 
 const AddDealModal = ({ isOpen, onClose }) => {
   const [deal, setDeal] = useState({
@@ -104,21 +103,14 @@ const AddDealModal = ({ isOpen, onClose }) => {
     };
 
     try {
-      const response = await fetch('http://10.8.1.245:4444/business/deal', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${businessAuthToken}`,
-        },
-        body: JSON.stringify(formattedDeal),
-      });
+      const endpoint = '/business/deal';
+      const method = 'POST';
+      const token = `${businessAuthToken}`;
+      const response = await apiRequestWithAuthRetry(endpoint, method, formattedDeal, undefined, token)
 
       if (!response.ok) {
-        throw new Error(`Failed to add deal. Server response: ${response.statusText}`);
+        throw new Error(`Failed to add deal. Server response: ${response.status}`);
       }
-
-      const data = await response.json();
-      console.log(data);
 
       setDeal({
         name: '',

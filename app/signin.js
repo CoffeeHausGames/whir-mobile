@@ -16,7 +16,7 @@ import {
 import { useAuth } from './authcontext'; // Update the path
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
+import { apiRequest } from '../app/networkController';
 
 const SignIn = () => {
   const { signIn } = useAuth();
@@ -93,26 +93,22 @@ const SignIn = () => {
     console.log('Sending sign-in request:', formData);
 
     try {
-      const response = await fetch('http://10.8.1.245:4444/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const endpoint = '/users/login';
+      const method = 'POST';
+      const requestData = formData;
+      const response = await apiRequest(endpoint, method, requestData);
 
       if (response.ok) {
-        const responseData = await response.json();
 
         // Replace the following line with the check you use to distinguish business users
-        if (responseData.data.userType === 'business') {
+        if (response.data.userType === 'business') {
           // Handle business user sign-in
           console.log('Business User Authentication Successful');
           // Business user sign-in logic
         } else {
           // Handle regular user sign-in
           console.log('User Authentication Successful');
-          const user = { ...responseData.data, authenticated: true };
+          const user = { ...response.data, authenticated: true };
           // Assuming you have a function to update the authentication status in your context
           signIn(user);
 

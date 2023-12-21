@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
+import { apiRequest } from '../app/networkController';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -75,13 +76,9 @@ const SignUp = () => {
     console.log('Sending sign-up request:', formData);
 
     try {
-      const response = await fetch('http://10.8.1.245:4444/users/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const endpoint = '/users/signup';
+      const method = 'POST';
+      const response = await apiRequest(endpoint, method, formData);
 
       if (response.ok) {
         console.log('User registered successfully');
