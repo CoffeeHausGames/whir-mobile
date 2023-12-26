@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndicator, Modal, TouchableWithoutFeedback, Image, Animated } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import { apiRequest} from '../app/networkController';
@@ -12,6 +12,19 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedBusinessInfo, setSelectedBusinessInfo] = useState(null);
   const [favoritedDeals, setFavoritedDeals] = useState([]);
+  const [selectedDealId, setSelectedDealId] = useState(null);
+  const bounceValue = new Animated.Value(0);
+
+  const startBounceAnimation = () => {
+    bounceValue.setValue(1.5);
+  
+    Animated.timing(bounceValue, {
+      toValue: 1,
+      duration: 300, // Adjust the duration as needed
+      useNativeDriver: false,
+    }).start();
+  };
+
 
   const toggleHeart = (dealId) => {
     setFavoritedDeals((prevFavoritedDeals) => {
@@ -137,31 +150,33 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   };
 
   const renderDeal = ({ item }) => (
-    <View style={styles.buttoncontainer}>
-      {item.deal && item.deal.length > 0 ? (
-        <View>
-          {item.deal.map((deal) => (
-            <TouchableOpacity
-              key={deal.id}
-              onPress={() => toggleDeal(deal.id)}
-              style={styles.dealButtonDisplay}
-            >
-              <Text style={styles.dealTitle}>{deal.name}</Text>
+    <TouchableOpacity
+      key={item.business_name}
+      onPress={() => toggleDeal(item.deal && item.deal[0].id)}
+      style={styles.dealButtonDisplay}
+    >
+      <View style={styles.buttonContainer}>
+        <View style={styles.dealInfoContainer}>
+          {item.deal && item.deal.length > 0 && (
+            <>
+              <Text style={styles.dealTitle}>{item.deal[0].name}</Text>
               <Text style={styles.dealBusinessName}>{item.business_name}</Text>
               <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
-              <Text style={styles.dealDOW}>{deal.day_of_week}</Text>
+              <Text style={styles.dealDOW}>{item.deal[0].day_of_week}</Text>
               <Text style={styles.dealTime}>
-                {formatTime(deal.start_time)} - {formatTime(deal.end_time)}
+                {formatTime(item.deal[0].start_time)} - {formatTime(item.deal[0].end_time)}
               </Text>
-              {expandedDealId === deal.id && (
+              {expandedDealId === item.deal[0].id && (
                 <View style={styles.expandedContent}>
                   <View style={styles.expandedDescription}>
-                    <Text style={styles.dealDescription}>{deal.description}</Text>
+                    <Text style={styles.dealDescription}>{item.deal[0].description}</Text>
                   </View>
                   <View style={styles.expandedButtons}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                       style={styles.sampleButton}
-                      onPress={() => handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)}
+                      onPress={() =>
+                        handleShare(`Deal: ${item.deal[0].name}, Business: ${item.business_name}`)
+                      }
                     >
                       <Text style={styles.expandedButton}>Share</Text>
                     </TouchableOpacity>
@@ -174,13 +189,28 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
                   </View>
                 </View>
               )}
-            </TouchableOpacity>
-          ))}
+            </>
+          )}
         </View>
-      ) : (
-        <Text>No deals available for this business</Text>
-      )}
-    </View>
+        <TouchableOpacity
+          onPress={() => {
+            toggleHeart(item.deal && item.deal[0].id);
+            startBounceAnimation();
+          }}
+          style={styles.heartContainer}
+        >
+          <Image
+            source={
+              isDealFavorited(item.deal && item.deal[0].id)
+                ? require('../assets/images/heart-fill.png')
+                : require('../assets/images/heart-nofill.png')
+            }
+            style={styles.dealImage}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 
   const formatTime = (time) => {
@@ -227,13 +257,12 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={styles.modalContainer}>
-        <Text style={styles.modalText}>
-          {selectedBusinessInfo ? `${selectedBusinessInfo.name}` : 'Business Profile'}
-        </Text>
+          <Text style={styles.modalText}>
+            {selectedBusinessInfo ? `${selectedBusinessInfo.name}` : 'Business Profile'}
+          </Text>
           <TouchableOpacity style={styles.closeButton} onPress={() => toggleModal()}>
             <Text style={styles.closeButtonText}>X</Text>
           </TouchableOpacity>
-
         </View>
       </Modal>
     </View>
@@ -342,6 +371,22 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Poppins-Black',
     color: '#2D2D2D'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    position: 'relative', // Add relative positioning
+  },
+  heartContainer: {
+    position: 'absolute',
+    right: 10, // Adjust the right value as needed
+    top: 5, // Adjust the top value as needed
+    zIndex: 1, // Ensure the heart is rendered above other elements
+  },
+  dealImage: {
+    width: 25,
+    height: 25,
   },
 });
 
