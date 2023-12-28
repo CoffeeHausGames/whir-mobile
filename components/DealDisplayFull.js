@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList, Share, ActivityIndi
 import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import { apiRequest} from '../app/networkController';
+import BusinessProfileModal from './BusinessProfileModal';
 
 
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
@@ -155,13 +156,14 @@ const fetchBusinessDetails = async (businessId) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }
-
-      return response.deals; // Assuming your API returns an array of deals
+  
+      return response.data; // Return response.data directly
     } catch (error) {
       console.error('Error fetching deals:', error.message);
       return [];
     }
   };
+  
 
   const calculateDistance = (userLocation, businessLocation) => {
     const radlat1 = (Math.PI * userLocation.latitude) / 180;
@@ -181,68 +183,73 @@ const fetchBusinessDetails = async (businessId) => {
   };
 
   const renderDeal = ({ item }) => (
-    <TouchableOpacity
-      key={item.business_name}
-      onPress={() => toggleDeal(item.deal && item.deal[0].id)}
-      style={styles.dealButtonDisplay}
-    >
-      <View style={styles.buttonContainer}>
-        <View style={styles.dealInfoContainer}>
-          {item.deal && item.deal.length > 0 && (
-            <>
-              <Text style={styles.dealTitle}>{item.deal[0].name}</Text>
-              <Text style={styles.dealBusinessName}>{item.business_name}</Text>
-              <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
-              <Text style={styles.dealDOW}>{item.deal[0].day_of_week}</Text>
-              <Text style={styles.dealTime}>
-                {formatTime(item.deal[0].start_time)} - {formatTime(item.deal[0].end_time)}
-              </Text>
-              {expandedDealId === item.deal[0].id && (
-                <View style={styles.expandedContent}>
-                  <View style={styles.expandedDescription}>
-                    <Text style={styles.dealDescription}>{item.deal[0].description}</Text>
+    <View style={styles.dealContainer}>
+      {item.deal && item.deal.length > 0 && (
+        item.deal.map((deal) => (
+          <TouchableOpacity
+            key={deal.id}
+            onPress={() => toggleDeal(deal.id)}
+            style={styles.dealButtonDisplay}
+          >
+            <View style={styles.buttonContainer}>
+              <View style={styles.dealInfoContainer}>
+                <Text style={styles.dealTitle}>{deal.name}</Text>
+                <Text style={styles.dealBusinessName}>{item.business_name}</Text>
+                <Text style={styles.dealDistance}>{formatDistance(item.distance)}m away</Text>
+                <Text style={styles.dealDOW}>{deal.day_of_week}</Text>
+                <Text style={styles.dealTime}>
+                  {formatTime(deal.start_time)} - {formatTime(deal.end_time)}
+                </Text>
+                {expandedDealId === deal.id && (
+                  <View style={styles.expandedContent}>
+                    <View style={styles.expandedDescription}>
+                      <Text style={styles.dealDescription}>{deal.description}</Text>
+                    </View>
+                    <View style={styles.expandedButtons}>
+                      <TouchableOpacity
+                        style={styles.sampleButton}
+                        onPress={() =>
+                          handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)
+                        }
+                      >
+                        <Text style={styles.expandedButton}>Share</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.sampleButton}
+                        onPress={() => toggleModal({ id: item._id })}
+                      >
+                        <Text style={styles.expandedButton}>Business Profile</Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={styles.expandedButtons}>
-                    <TouchableOpacity
-                      style={styles.sampleButton}
-                      onPress={() =>
-                        handleShare(`Deal: ${item.deal[0].name}, Business: ${item.business_name}`)
-                      }
-                    >
-                      <Text style={styles.expandedButton}>Share</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.sampleButton}
-                      onPress={() => toggleModal({ id: item._id })}
-                    >
-                      <Text style={styles.expandedButton}>Business Profile</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-            </>
-          )}
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            toggleHeart(item.deal && item.deal[0].id);
-            startBounceAnimation();
-          }}
-          style={styles.heartContainer}
-        >
-          <Image
-            source={
-              isDealFavorited(item.deal && item.deal[0].id)
-                ? require('../assets/images/heart-fill.png')
-                : require('../assets/images/heart-nofill.png')
-            }
-            style={styles.dealImage}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-      </View>
-    </TouchableOpacity>
+                )}
+              </View>
+              <TouchableOpacity
+                onPress={() => {
+                  toggleHeart(deal.id);
+                  startBounceAnimation();
+                }}
+                style={styles.heartContainer}
+              >
+                <Image
+                  source={
+                    isDealFavorited(deal.id)
+                      ? require('../assets/images/heart-fill.png')
+                      : require('../assets/images/heart-nofill.png')
+                  }
+                  style={styles.dealImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        ))
+      )}
+    </View>
   );
+  
+  
+  
 
   const formatTime = (time) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
@@ -287,30 +294,11 @@ const fetchBusinessDetails = async (businessId) => {
         <TouchableWithoutFeedback onPress={() => toggleModal()}>
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
-        <View style={styles.modalContainer}>
-          <Text style={styles.modalTitle}>
-            {selectedBusinessDetails ? selectedBusinessDetails.business_name : 'Business Profile'}
-          </Text>
-          <Text style={styles.modalText}>
-            <Text style={styles.modalLabel}>Address:</Text>{' '}
-            {selectedBusinessDetails.address && (
-              <>
-                <Text>{selectedBusinessDetails.address.street},</Text>
-                <Text>{selectedBusinessDetails.address.city},</Text>
-                <Text>{selectedBusinessDetails.address.state},</Text>
-                <Text>{selectedBusinessDetails.address.postalCode}</Text>
-              </>
-            )}
-          </Text>
-          <FlatList
-          data={businesses}
-          keyExtractor={(item) => item.business_name}
-          renderItem={renderDeal}
-          />
-          <TouchableOpacity style={styles.closeButton} onPress={() => toggleModal()}>
-            <Text style={styles.closeButtonText}>done</Text>
-          </TouchableOpacity>
-        </View>
+        <BusinessProfileModal
+          businessDetails={selectedBusinessDetails}
+          onClose={() => toggleModal()}
+          renderDeal={renderDeal} // Pass renderDeal as a prop
+        />
       </Modal>
     </View>
   );
