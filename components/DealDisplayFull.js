@@ -4,6 +4,7 @@ import { useFonts } from 'expo-font';
 import * as Location from 'expo-location';
 import { apiRequest} from '../app/networkController';
 
+
 const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
@@ -66,8 +67,34 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     if (businessInfo) {
       const deals = await fetchDealsForBusiness(businessInfo.id);
       console.log('Deals for the selected business:', deals);
+  
+      // Fetch additional business details based on business ID
+      const businessDetails = await fetchBusinessDetails(businessInfo.id);
+      console.log('Business details:', businessDetails);
     }
   };
+  
+// Add a new function to fetch business details
+const fetchBusinessDetails = async (businessId) => {
+  try {
+    const endpoint = `/business/profile/${businessId}`;
+    console.log('Fetching business details. Endpoint:', endpoint); // Log the endpoint
+    const method = 'GET';
+    const response = await apiRequest(endpoint, method);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch business details. Server response: ${response.status}`);
+    }
+
+
+    return response.data; // Assuming your API returns business details as an object
+  } catch (error) {
+    console.error('Error fetching business details:', error.message);
+    return null;
+  }
+};
+
+  
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -124,7 +151,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }
-  
+      
       return response.deals; // Assuming your API returns an array of deals
     } catch (error) {
       console.error('Error fetching deals:', error.message);
@@ -182,7 +209,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.sampleButton}
-                      onPress={() => toggleModal({ name: item.business_name })}
+                      onPress={() => toggleModal({ id: item._id })}
                     >
                       <Text style={styles.expandedButton}>Business Profile</Text>
                     </TouchableOpacity>
