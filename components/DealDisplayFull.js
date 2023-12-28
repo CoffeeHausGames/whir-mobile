@@ -12,6 +12,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedBusinessInfo, setSelectedBusinessInfo] = useState(null);
+  const [selectedBusinessDetails, setSelectedBusinessDetails] = useState({});
   const [favoritedDeals, setFavoritedDeals] = useState([]);
   const [selectedDealId, setSelectedDealId] = useState(null);
   const bounceValue = new Animated.Value(0);
@@ -74,11 +75,12 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     }
   };
   
+  
 // Add a new function to fetch business details
 const fetchBusinessDetails = async (businessId) => {
   try {
     const endpoint = `/business/profile/${businessId}`;
-    console.log('Fetching business details. Endpoint:', endpoint); // Log the endpoint
+    console.log('Fetching business details. Endpoint:', endpoint);
     const method = 'GET';
     const response = await apiRequest(endpoint, method);
 
@@ -86,13 +88,15 @@ const fetchBusinessDetails = async (businessId) => {
       throw new Error(`Failed to fetch business details. Server response: ${response.status}`);
     }
 
-
-    return response.data; // Assuming your API returns business details as an object
+    const businessDetails = response.data;
+    setSelectedBusinessDetails(businessDetails); // Update state with business details
+    return businessDetails;
   } catch (error) {
     console.error('Error fetching business details:', error.message);
     return null;
   }
 };
+
 
   
 
@@ -151,7 +155,7 @@ const fetchBusinessDetails = async (businessId) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }
-      
+
       return response.deals; // Assuming your API returns an array of deals
     } catch (error) {
       console.error('Error fetching deals:', error.message);
@@ -284,11 +288,27 @@ const fetchBusinessDetails = async (businessId) => {
           <View style={styles.modalOverlay} />
         </TouchableWithoutFeedback>
         <View style={styles.modalContainer}>
-          <Text style={styles.modalText}>
-            {selectedBusinessInfo ? `${selectedBusinessInfo.name}` : 'Business Profile'}
+          <Text style={styles.modalTitle}>
+            {selectedBusinessDetails ? selectedBusinessDetails.business_name : 'Business Profile'}
           </Text>
+          <Text style={styles.modalText}>
+            <Text style={styles.modalLabel}>Address:</Text>{' '}
+            {selectedBusinessDetails.address && (
+              <>
+                <Text>{selectedBusinessDetails.address.street},</Text>
+                <Text>{selectedBusinessDetails.address.city},</Text>
+                <Text>{selectedBusinessDetails.address.state},</Text>
+                <Text>{selectedBusinessDetails.address.postalCode}</Text>
+              </>
+            )}
+          </Text>
+          <FlatList
+          data={businesses}
+          keyExtractor={(item) => item.business_name}
+          renderItem={renderDeal}
+          />
           <TouchableOpacity style={styles.closeButton} onPress={() => toggleModal()}>
-            <Text style={styles.closeButtonText}>X</Text>
+            <Text style={styles.closeButtonText}>done</Text>
           </TouchableOpacity>
         </View>
       </Modal>
@@ -309,6 +329,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '92%',
     marginLeft: 15,
+    backgroundColor: '#f0f0f0'
   },
   buttoncontainer: {},
   dealTitle: {
@@ -334,8 +355,10 @@ const styles = StyleSheet.create({
   },
   expandedContent: {
     marginTop: 10,
+    marginLeft: 8,
     padding: 10,
     backgroundColor: '#f0f0f0',
+    width: '90%'
   },
   dealDescription: {
     fontFamily: 'Poppins-Regular'
@@ -381,22 +404,32 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     height: '80%', // Take up 80% of the screen
-    flexDirection: 'row',
+    flexDirection: 'column', // Stack children vertically
     justifyContent: 'space-between',
-
+  },
+  modalTitle: {
+    fontSize: 25,
+    textAlign: 'flex-start',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 10,
+    marginTop: 10
   },
   modalText: {
-    fontSize: 15,
-    textAlign: 'center',
-    fontFamily: 'Poppins-Regular'
+    fontFamily: 'Poppins-Regular',
+    bottom: 0,
+  },
+  modalLabel: {
+    fontFamily: 'Poppins-Bold',
   },
   closeButton: {
-    position: 'relative',
-    marginTop: -5
+    position: 'absolute',
+    marginTop: 10,
+    paddingRight: 15,
+    alignSelf: 'flex-end'
   },
   closeButtonText: {
-    fontSize: 25,
-    fontFamily: 'Poppins-Black',
+    fontSize: 16,
+    fontFamily: 'Poppins-Regular',
     color: '#2D2D2D'
   },
   buttonContainer: {
