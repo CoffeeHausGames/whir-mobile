@@ -14,8 +14,6 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
       const requestData = { businessId };
       const response = await apiRequest(endpoint, method, requestData);
 
-      console.log('API Response:', response);
-
       if (!response.ok) {
         throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }

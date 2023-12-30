@@ -77,7 +77,7 @@ const MainPage = () => {
   // Render the main content if the user is authenticated
   return (
     <View style={styles.container}>
-      <Map />
+      <Map userLocation={location} /> 
       <StatusBar style="light" />
       <View style={styles.navContainer}>
         <View style={styles.navBar}>

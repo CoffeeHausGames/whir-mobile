@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { apiRequest } from '../app/networkController';
+import * as Location from 'expo-location';
+import * as Animatable from 'react-native-animatable';  // Import Animatable
 
 const Map = ({ userLocation }) => {
   const mapViewRef = useRef(null);
@@ -20,14 +22,14 @@ const Map = ({ userLocation }) => {
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
-
         const endpoint = '/business';
         const method = 'POST';
-        // TODO don't hardcode this
+
         const requestData = {
-          latitude: 39.1077698007311,
-          longitude: -94.58107416626508,
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
         };
+
         const response = await apiRequest(endpoint, method, requestData);
 
         if (!response.ok) {
@@ -40,8 +42,10 @@ const Map = ({ userLocation }) => {
       }
     };
 
-    fetchBusinesses();
-  }, []);
+    if (userLocation) {
+      fetchBusinesses();
+    }
+  }, [userLocation]);
 
   const handleMarkerPress = (business) => {
     setSelectedBusiness(business);
@@ -69,26 +73,31 @@ const Map = ({ userLocation }) => {
     }
   };
 
+  // Updated loading container with animation
+  if (!userLocation) {
+    return (
+      <Animatable.View
+        animation="rubberBand"
+        duration={2500}
+        style={styles.loadingContainer}
+        iterationCount="infinite"
+      >
+        <Image style={styles.image} source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')} />
+      </Animatable.View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <MapView
         ref={mapViewRef}
         style={styles.map}
-        initialRegion={
-          userLocation
-            ? {
-                latitude: userLocation.coords.latitude,
-                longitude: userLocation.coords.longitude,
-                latitudeDelta: 0.03,
-                longitudeDelta: 0.03,
-              }
-            : {
-                latitude: 39.1077698007311,
-                longitude: -94.58107416626508,
-                latitudeDelta: 0.03,
-                longitudeDelta: 0.03,
-              }
-        }
+        initialRegion={{
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
+          latitudeDelta: 0.03,
+          longitudeDelta: 0.03,
+        }}
         minZoomLevel={4}
         showsUserLocation={true}
       >
@@ -114,7 +123,6 @@ const Map = ({ userLocation }) => {
         })}
       </MapView>
 
-      {/* Backdrop TouchableOpacity */}
       {isModalVisible && (
         <TouchableOpacity
           style={styles.backdrop}
@@ -123,7 +131,6 @@ const Map = ({ userLocation }) => {
         />
       )}
 
-      {/* Custom Modal for Business Details */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -132,9 +139,8 @@ const Map = ({ userLocation }) => {
       >
         <TouchableWithoutFeedback onPress={handleBackdropPress}>
           <View style={styles.modalContainer}>
-            {/* Use ImageBackground for the background image */}
             <ImageBackground
-              source={require('../assets/images/map-tile-background.png')}  // Change this to the path of your image
+              source={require('../assets/images/map-tile-background.png')}
               style={styles.backgroundImage}
             >
               <View style={styles.modalContent}>
@@ -177,7 +183,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'transparent',
     borderRadius: 10,
-    width: '90%', // Adjusted to 90% width
+    width: '90%',
     height: 160,
     marginBottom: 20,
   },
@@ -196,10 +202,19 @@ const styles = StyleSheet.create({
   backgroundImage: {
     alignItems: 'center',
     width: 340,
-    borderRadius: 30, // Adjusted to 10 for rounded corners
-    overflow: 'hidden', // This ensures the image doesn't bleed beyond the rounded corners
-    marginBottom: 120
+    borderRadius: 30,
+    overflow: 'hidden',
+    marginBottom: 120,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 180,
+    height: 180
+  }
 });
 
 export default Map;
