@@ -76,14 +76,19 @@ const Map = ({ userLocation }) => {
   // Updated loading container with animation
   if (!userLocation) {
     return (
-      <Animatable.View
-        animation="rubberBand"
-        duration={2500}
+      <ImageBackground
+        source={require('../assets/images/background1.png')}
         style={styles.loadingContainer}
-        iterationCount="infinite"
       >
-        <Image style={styles.image} source={require('../assets/images/Whir-Logo-V2-Square-Stacked.png')} />
-      </Animatable.View>
+        <Animatable.View
+          animation="rubberBand"
+          duration={2500}
+          style={styles.animationContainer}
+          iterationCount="infinite"
+        >
+          <Image style={styles.image} source={require('../assets/images/Whir-Logo-V3-Square-Stacked.png')} />
+        </Animatable.View>
+      </ImageBackground>
     );
   }
 
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginBottom: 120,
   },
-  loadingContainer: {
+  animationContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -214,7 +219,12 @@ const styles = StyleSheet.create({
   image: {
     width: 180,
     height: 180
-  }
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default Map;
