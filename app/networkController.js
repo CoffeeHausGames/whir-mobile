@@ -1,6 +1,6 @@
 // This file is used to make API requests to the server.
 
-const BASE_URL = process.env.BASE_URL; // Assuming you are using an Android emulator. Use 'http://localhost:4444' for iOS.
+const BASE_URL = 'http://192.168.1.21:4444'; // Assuming you are using an Android emulator. Use 'http://localhost:4444' for iOS.
 
 const VERSION = '/v1';
 
