@@ -105,9 +105,9 @@ const DealDisplay = ({ setSelectedBusinessLocation }) => {
             keyExtractor={(item) => item.business_name}
             renderItem={({ item }) => (
             <View style={styles.buttoncontainer}>
-                {item.deal && item.deal.length > 0 ? (
+                {item.deals && item.deals.length > 0 ? (
                 <View>
-                    {item.deal.map((deal) => (
+                    {item.deals.map((deal) => (
                     <TouchableOpacity
                         onPress={() => handleDealClick(item)}
                         key={deal.id}

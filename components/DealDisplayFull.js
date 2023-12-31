@@ -184,8 +184,8 @@ const fetchBusinessDetails = async (businessId) => {
 
   const renderDeal = ({ item }) => (
     <View style={styles.dealContainer}>
-      {item.deal && item.deal.length > 0 && (
-        item.deal.map((deal) => (
+      {item.deals && item.deals.length > 0 && (
+        item.deals.map((deal) => (
           <TouchableOpacity
             key={deal.id}
             onPress={() => toggleDeal(deal.id)}

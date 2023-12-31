@@ -16,7 +16,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
       if (!response.ok) {
         throw new Error(`Failed to fetch business info. Server response: ${response.status}`);
       }
-      setBusinessDeals(response.data.deal);
+      setBusinessDeals(response.data.deals);
     } catch (error) {
       console.error('Error fetching business info:', error.message);
     }
@@ -118,7 +118,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
       <FlatList
         style={{ flex: 1 }}
         data={businessDeals}
-        keyExtractor={(item) => item._id} // Change key extractor to item._id
+        keyExtractor={(item) => item.id} // Change key extractor to item._id
         renderItem={renderDeal}
       />
       <TouchableOpacity style={styles.closeButton} onPress={onClose}>
