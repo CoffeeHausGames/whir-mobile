@@ -216,7 +216,7 @@ const fetchBusinessDetails = async (businessId) => {
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={styles.sampleButton}
-                        onPress={() => toggleModal({ id: item._id })}
+                        onPress={() => toggleModal({ id: item.id })}
                       >
                         <Text style={styles.expandedButton}>Business Profile</Text>
                       </TouchableOpacity>

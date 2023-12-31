@@ -23,8 +23,8 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
   };
 
   useEffect(() => {
-    if (businessDetails && businessDetails._id) {
-      fetchDealsForBusiness(businessDetails._id);
+    if (businessDetails && businessDetails.id) {
+      fetchDealsForBusiness(businessDetails.id);
     }
   }, [businessDetails]);
 
