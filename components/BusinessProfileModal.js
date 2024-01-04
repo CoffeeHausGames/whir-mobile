@@ -9,26 +9,22 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
 
   const fetchDealsForBusiness = async (businessId) => {
     try {
-      const endpoint = '/business/deals';
-      const method = 'POST';
-      const requestData = { businessId };
-      const response = await apiRequest(endpoint, method, requestData);
-
-      console.log('API Response:', response);
+      const endpoint = `/business/profile/${businessId}`; // Use the businessId in the URL
+      const method = 'GET';
+      const response = await apiRequest(endpoint, method);
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
+        throw new Error(`Failed to fetch business info. Server response: ${response.status}`);
       }
-
-      setBusinessDeals(response.data); // Use response.data directly
+      setBusinessDeals(response.data.deals);
     } catch (error) {
-      console.error('Error fetching deals:', error.message);
+      console.error('Error fetching business info:', error.message);
     }
   };
 
   useEffect(() => {
-    if (businessDetails && businessDetails._id) {
-      fetchDealsForBusiness(businessDetails._id);
+    if (businessDetails && businessDetails.id) {
+      fetchDealsForBusiness(businessDetails.id);
     }
   }, [businessDetails]);
 
@@ -48,16 +44,60 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
 
   const renderDeal = ({ item }) => (
     <View style={styles.newDealContainer}>
-      <TouchableOpacity
-        onPress={() => toggleDeal(item.id)}
-        style={styles.buttonContainer}
-      >
+      <TouchableOpacity onPress={() => toggleDeal(item.id)} style={styles.buttonContainer}>
         <View style={styles.dealInfoContainer}>
           <Text style={styles.dealTitle}>{item.name}</Text>
+          <Text style={styles.dealDescription}>{item.description}</Text>
+          <Text style={styles.dealDOW}>{item.day_of_week}</Text>
+          <Text style={styles.dealTime}>
+          {formatTime(item.start_time)} - {formatTime(item.end_time)}
+          </Text>
         </View>
+        <TouchableOpacity onPress={() => toggleHeart(item.id)}>
+          <Image
+            source={
+              favoritedDeals.includes(item.id)
+                ? require('../assets/images/heart-fill.png')
+                : require('../assets/images/heart-nofill.png')
+            }
+            style={styles.favoriteIcon}
+          />
+        </TouchableOpacity>
       </TouchableOpacity>
+      {/* Expanded Content */}
+      {expandedDealId === item.id && (
+        <View style={styles.expandedContent}>
+          <View style={styles.expandedDescription}>
+            <Text style={styles.dealDescription}>{item.description}</Text>
+          </View>
+          <View style={styles.expandedButtons}>
+            <TouchableOpacity
+              style={styles.sampleButton}
+              onPress={() => handleShare(`Deal: ${item.name}`)}
+            >
+              <Text style={styles.expandedButton}>Share</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
+  
+  const formatTime = (time) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    const formattedTime = new Date(time).toLocaleString('en-US', options);
+    return formattedTime;
+  };
+
+  const formatDistance = (distance) => {
+    if (distance >= 10) {
+      return distance.toFixed(0);
+    } else if (distance >= 0.1) {
+      return distance.toFixed(1);
+    } else {
+      return distance.toFixed(2);
+    }
+  };
 
   return (
     <View style={styles.modalContainer}>
@@ -78,7 +118,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
       <FlatList
         style={{ flex: 1 }}
         data={businessDeals}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id} // Change key extractor to item._id
         renderItem={renderDeal}
       />
       <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -111,7 +151,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontFamily: 'Poppins-Regular',
-    bottom: 0,
+    marginBottom: 10,
   },
   modalLabel: {
     fontFamily: 'Poppins-Bold',
@@ -132,7 +172,8 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     padding: 10,
     marginBottom: 10,
-    borderRadius: 5,
+    borderRadius: 10,
+    backgroundColor: "#f0f0f0"
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -145,7 +186,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+    fontFamily: 'Poppins-Bold',
+  },
+  dealDescription: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontFamily: 'Poppins-Regular',
+  },
+  dealTime: {
+    fontSize: 14,
+    color: '#777',
+    fontFamily: 'Poppins-Regular',
+  },
+  favoriteIcon: {
+    width: 25,
+    height: 25,
+    // Add other styles as needed
   },
 });
+
 
 export default BusinessProfileModal;

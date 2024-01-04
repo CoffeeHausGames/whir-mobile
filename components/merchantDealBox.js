@@ -159,7 +159,7 @@ function MerchantDealBox() {
   };
 
   const openEditModal = (deal) => {
-    setEditedDeal({ ...deal });
+    setEditedDeal({ ...deals });
   
     // Set selectedDays based on the days_of_week in the deal
     const daysOfWeekInDeal = deal.day_of_week;
