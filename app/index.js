@@ -12,6 +12,15 @@ import MerchantSignIn from './merchantSignIn';
 import MerchantDashboard from './merchantDashboard';
 import MerchantProfile from './merchantProfile';
 import MerchantDeals from './merchantDeals';
+import SettingsScreen from './UserSettings/UserSettings';
+import AccountSettings from './UserSettings/UserAccountSettings';
+import UserNotificationSettings from './UserSettings/UserNotificationSettings';
+import UserPrivacySettings from './UserSettings/UserPrivacySettings';
+import UserSecuritySettings from './UserSettings/UserSecuritySettings';
+import UserAppearanceSettings from './UserSettings/UserAppearanceSettings';
+import UserLanguageSettings from './UserSettings/UserLangSettings';
+import UserAccessibilitySettings from './UserSettings/UserAccessibilitySettings';
+import UserGeneralSettings from './UserSettings/UserGeneralSettings';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +57,16 @@ const App = () => {
           <Stack.Screen name="MerchantDashboard" component={MerchantDashboard} />
           <Stack.Screen name="MerchantProfile" component={MerchantProfile} />
           <Stack.Screen name="MerchantDeals" component={MerchantDeals} />
+          <Stack.Screen name="UserSettings" component={SettingsScreen} />
+          <Stack.Screen name="UserAccountSettings" component={AccountSettings} />
+          <Stack.Screen name="UserNotificationSettings" component={UserNotificationSettings} />
+          <Stack.Screen name="UserPrivacySettings" component={UserPrivacySettings} />
+          <Stack.Screen name="UserSecuritySettings" component={UserSecuritySettings} />
+          <Stack.Screen name="UserAppearanceSettings" component={UserAppearanceSettings} />
+          <Stack.Screen name="UserLanguageSettings" component={UserLanguageSettings} />
+          <Stack.Screen name="UserAccessabilitySettings" component={UserAccessibilitySettings} />
+          <Stack.Screen name="UserGeneralSettings" component={UserGeneralSettings} />
+
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
