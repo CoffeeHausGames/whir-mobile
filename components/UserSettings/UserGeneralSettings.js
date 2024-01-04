@@ -1,9 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
+
 
 const UserGeneralSettings = () => {
+  const navigation = useNavigation();
+
   const [receiveNotifications, setReceiveNotifications] = useState(true);
   const [autoUpdate, setAutoUpdate] = useState(false);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const handleReceiveNotificationsToggle = () => {
     setReceiveNotifications(!receiveNotifications);
@@ -21,7 +32,7 @@ const UserGeneralSettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>General Settings</Text>
+      <DynamicSettingsHeader pageTitle="General" />
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Receive Notifications</Text>
         <Switch value={receiveNotifications} onValueChange={handleReceiveNotificationsToggle} />

@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
 const UserLanguageSettings = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
+
   const [language, setLanguage] = useState('en'); // Default language: English
   const [region, setRegion] = useState('us'); // Default region: United States
 
@@ -22,7 +32,7 @@ const UserLanguageSettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Language and Region Settings</Text>
+      <DynamicSettingsHeader pageTitle="Language & Region" />
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Language</Text>
         <Picker

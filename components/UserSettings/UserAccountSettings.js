@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useAuth } from '../authcontext';
+import { useAuth } from '../../app/authcontext';
 import { vw } from 'react-native-expo-viewport-units';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
 const AccountSettings = () => {
+  const navigation = useNavigation();
+
   const { user } = useAuth();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const personalInfoData = [
     { label: 'Name', value: user?.name || 'John Doe' },
@@ -22,6 +32,7 @@ const AccountSettings = () => {
 
   return (
     <View style={styles.container}>
+      <DynamicSettingsHeader pageTitle="Account" />
       <FlatList
         data={personalInfoData}
         keyExtractor={(item) => item.label}

@@ -12,15 +12,15 @@ import MerchantSignIn from './merchantSignIn';
 import MerchantDashboard from './merchantDashboard';
 import MerchantProfile from './merchantProfile';
 import MerchantDeals from './merchantDeals';
-import SettingsScreen from './UserSettings/UserSettings';
-import AccountSettings from './UserSettings/UserAccountSettings';
-import UserNotificationSettings from './UserSettings/UserNotificationSettings';
-import UserPrivacySettings from './UserSettings/UserPrivacySettings';
-import UserSecuritySettings from './UserSettings/UserSecuritySettings';
-import UserAppearanceSettings from './UserSettings/UserAppearanceSettings';
-import UserLanguageSettings from './UserSettings/UserLangSettings';
-import UserAccessibilitySettings from './UserSettings/UserAccessibilitySettings';
-import UserGeneralSettings from './UserSettings/UserGeneralSettings';
+import SettingsScreen from './UserSettings';
+import AccountSettings from '../components/UserSettings/UserAccountSettings';
+import UserNotificationSettings from '../components/UserSettings/UserNotificationSettings';
+import UserPrivacySettings from '../components/UserSettings/UserPrivacySettings';
+import UserSecuritySettings from '../components/UserSettings/UserSecuritySettings';
+import UserAppearanceSettings from '../components/UserSettings/UserAppearanceSettings';
+import UserLanguageSettings from '../components/UserSettings/UserLangSettings';
+import UserAccessibilitySettings from '../components/UserSettings/UserAccessibilitySettings';
+import UserGeneralSettings from '../components/UserSettings/UserGeneralSettings';
 
 const Stack = createNativeStackNavigator();
 

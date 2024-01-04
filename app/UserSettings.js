@@ -1,7 +1,8 @@
 // Import necessary modules
-import React from 'react';
+import React, { useEffect } from 'react'; // Import useEffect from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from 'expo-router';
+import SettingsHeader from '../components/UserSettings/SettingsHeader';
 
 // Sample data for settings categories
 const settingsCategories = [
@@ -13,13 +14,18 @@ const settingsCategories = [
   'Security Settings',
   'Language and Region',
   'Accessibility',
-
 ];
 
 // Settings component
 const Settings = () => {
   const navigation = useNavigation();
 
+  // Use useEffect to set headerShown to false when the component mounts
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []); // The empty dependency array ensures that this effect runs only once when the component mounts
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -32,6 +38,7 @@ const Settings = () => {
 
   return (
     <View style={styles.container}>
+      <SettingsHeader />
       <FlatList
         data={settingsCategories}
         keyExtractor={(item) => item}
@@ -80,12 +87,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   item: {
-    padding: 20,
+    paddingVertical: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 20,
+    fontFamily: 'Poppins-Regular'
   },
 });
 

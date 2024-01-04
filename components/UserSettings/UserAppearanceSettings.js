@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
 const UserAppearanceSettings = () => {
+  const navigation = useNavigation();
+
   const [appearanceSettings, setAppearanceSettings] = useState({
     darkMode: false,
     themeColor: 'blue', // You can customize the available theme colors
   });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const handleToggleSwitch = (setting) => {
     setAppearanceSettings((prevSettings) => ({
@@ -24,7 +34,7 @@ const UserAppearanceSettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Appearance Settings</Text>
+      <DynamicSettingsHeader pageTitle="Appearance" />
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Dark Mode</Text>
         <Switch

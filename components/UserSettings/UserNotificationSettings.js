@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
-const UserSecuritySettings = () => {
-  const [securitySettings, setSecuritySettings] = useState({
-    enableTwoFactorAuth: false,
-    fingerprintUnlock: true,
-    changePasswordOnLogin: false,
+const UserNotificationSettings = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
+
+  const [notificationSettings, setNotificationSettings] = useState({
+    pushNotifications: true,
+    emailNotifications: false,
+    inAppNotifications: true,
   });
 
   const handleToggleSwitch = (setting) => {
-    setSecuritySettings((prevSettings) => ({
+    setNotificationSettings((prevSettings) => ({
       ...prevSettings,
       [setting]: !prevSettings[setting],
     }));
@@ -17,26 +27,26 @@ const UserSecuritySettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Security Settings</Text>
+      <DynamicSettingsHeader pageTitle="Notifications" />
       <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Enable Two-Factor Authentication</Text>
+        <Text style={styles.settingText}>Push Notifications</Text>
         <Switch
-          value={securitySettings.enableTwoFactorAuth}
-          onValueChange={() => handleToggleSwitch('enableTwoFactorAuth')}
+          value={notificationSettings.pushNotifications}
+          onValueChange={() => handleToggleSwitch('pushNotifications')}
         />
       </View>
       <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Fingerprint Unlock</Text>
+        <Text style={styles.settingText}>Email Notifications</Text>
         <Switch
-          value={securitySettings.fingerprintUnlock}
-          onValueChange={() => handleToggleSwitch('fingerprintUnlock')}
+          value={notificationSettings.emailNotifications}
+          onValueChange={() => handleToggleSwitch('emailNotifications')}
         />
       </View>
       <View style={styles.settingItem}>
-        <Text style={styles.settingText}>Change Password on Login</Text>
+        <Text style={styles.settingText}>In-App Notifications</Text>
         <Switch
-          value={securitySettings.changePasswordOnLogin}
-          onValueChange={() => handleToggleSwitch('changePasswordOnLogin')}
+          value={notificationSettings.inAppNotifications}
+          onValueChange={() => handleToggleSwitch('inAppNotifications')}
         />
       </View>
       <TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save Settings')}>
@@ -79,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserSecuritySettings;
+export default UserNotificationSettings;

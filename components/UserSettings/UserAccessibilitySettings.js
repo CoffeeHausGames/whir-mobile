@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
 const UserAccessibilitySettings = () => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
   const [fontSize, setFontSize] = useState('medium');
   const [highContrast, setHighContrast] = useState(false);
   const [screenReader, setScreenReader] = useState(false);
@@ -27,7 +35,7 @@ const UserAccessibilitySettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Accessibility Settings</Text>
+      <DynamicSettingsHeader pageTitle="Accessability" />
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Font Size</Text>
         <View style={styles.switchContainer}>

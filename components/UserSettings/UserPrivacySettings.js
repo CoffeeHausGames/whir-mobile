@@ -1,7 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import DynamicSettingsHeader from './DynamicSettingsHeader';
+import { useNavigation } from 'expo-router';
 
 const UserPrivacySettings = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
+
   const [privacySettings, setPrivacySettings] = useState({
     showOnlineStatus: true,
     showProfilePicture: true,
@@ -17,7 +27,7 @@ const UserPrivacySettings = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Privacy Settings</Text>
+      <DynamicSettingsHeader pageTitle="Privacy" />
       <View style={styles.settingItem}>
         <Text style={styles.settingText}>Show Online Status</Text>
         <Switch
