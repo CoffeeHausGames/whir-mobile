@@ -66,7 +66,6 @@ const App = () => {
           <Stack.Screen name="UserLanguageSettings" component={UserLanguageSettings} />
           <Stack.Screen name="UserAccessabilitySettings" component={UserAccessibilitySettings} />
           <Stack.Screen name="UserGeneralSettings" component={UserGeneralSettings} />
-
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>
