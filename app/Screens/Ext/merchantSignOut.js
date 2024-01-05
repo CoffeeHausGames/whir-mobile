@@ -1,9 +1,9 @@
-// MerchantSignOutButton.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAuth } from '../../authcontext';
 
 const MerchantSignOutButton = () => {
+  // Access the merchantSignOut function from the authentication context
   const { merchantSignOut } = useAuth();
 
   const handleMerchantSignOut = () => {

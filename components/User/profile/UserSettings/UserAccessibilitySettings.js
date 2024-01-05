@@ -30,7 +30,6 @@ const UserAccessibilitySettings = () => {
     console.log('Font Size:', fontSize);
     console.log('High Contrast:', highContrast);
     console.log('Screen Reader:', screenReader);
-    // Add logic to save accessibility settings
   };
 
   return (

@@ -5,7 +5,6 @@ import { apiRequest } from '../../../app/networkController';
 
 const MerchantPinned = ({ setSelectedBusinessLocation }) => {
   const [businesses, setBusinesses] = useState([]);
-  const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [expandedDealId, setExpandedDealId] = useState(null);
 
   useEffect(() => {
@@ -48,28 +47,14 @@ const MerchantPinned = ({ setSelectedBusinessLocation }) => {
   }, []);
 
   const getUserLocation = async () => {
-    // Implement logic to get the user's location in a React Native app
-    // You may use a library like expo-location or navigator.geolocation
-    // For simplicity, I'm returning a hardcoded location for now
+    // View getUserLocation from the User side mapscreen
     return { latitude: 39.1077698007311, longitude: -94.58107416626508 };
   };
 
   const calculateDistance = (userLocation, businessLocation) => {
-    // Implement the distance calculation logic for React Native
-    // You may use libraries like geolib or implement the Haversine formula
-    // For simplicity, I'm returning 0 for now
+    // use distance from User side, will eventually be calculated on the server side
     return 0;
   };
-
-  // const handleDealClick = (business) => {
-  //   const businessLocation = getBusinessLocation(business);
-  //   if (businessLocation) {
-  //     setSelectedBusinessLocation(businessLocation);
-  //     setSelectedBusiness(business);
-  //   } else {
-  //     console.error(`Invalid location data for business: ${business.id}`);
-  //   }
-  // };
 
   const getBusinessLocation = (business) => {
     if (business && business.location && business.location.coordinates) {

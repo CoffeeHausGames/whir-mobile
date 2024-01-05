@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 
 const ProfileHeader = () => {
   let [fontsLoaded] = useFonts({

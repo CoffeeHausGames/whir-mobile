@@ -32,14 +32,14 @@ const SettingsHeader = () => {
 
 const styles = StyleSheet.create({
   headerView: {
-    flex: 1, // Add this line to make the text push to the right
-    justifyContent: 'center', // Align the text to the bottom of the container
-    alignItems: 'flex-end', // Align the text to the right of the container
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   backView: {
-    flex: 1, // Add this line to make the text push to the right
-    justifyContent: 'center', // Align the text to the bottom of the container
-    alignItems: 'flex-start', // Align the text to the right of the container
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   headerText: {
     fontSize: 40,

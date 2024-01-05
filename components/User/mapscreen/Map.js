@@ -2,8 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, TouchableWithoutFeedback, ImageBackground } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { apiRequest } from '../../../app/networkController';
-import * as Location from 'expo-location';
-import * as Animatable from 'react-native-animatable';  // Import Animatable
+import * as Animatable from 'react-native-animatable';
 
 const Map = ({ userLocation }) => {
   const mapViewRef = useRef(null);
@@ -11,6 +10,7 @@ const Map = ({ userLocation }) => {
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  // Function to extract latitude and longitude from business location
   const getBusinessLocation = (business) => {
     if (business && business.location && business.location.coordinates) {
       const [longitude, latitude] = business.location.coordinates;
@@ -19,6 +19,7 @@ const Map = ({ userLocation }) => {
     return null;
   };
 
+  // useEffect to fetch businesses when userLocation changes
   useEffect(() => {
     const fetchBusinesses = async () => {
       try {
@@ -67,6 +68,7 @@ const Map = ({ userLocation }) => {
     setIsModalVisible(false);
   };
 
+  // Function to handle backdrop press (close modal)
   const handleBackdropPress = () => {
     if (isModalVisible) {
       handleCloseModal();

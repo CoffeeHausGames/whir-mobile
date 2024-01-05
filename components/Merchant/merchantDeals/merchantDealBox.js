@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  Button,
   Text,
   StyleSheet,
   FlatList,
@@ -17,6 +16,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { apiRequestWithAuthRetry } from '../../../app/networkController';
 
 function MerchantDealBox() {
+  // State variables for managing modal visibility, deals, selected deal, and expanded deal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deals, setDeals] = useState([]);
   const [selectedDeal, setSelectedDeal] = useState(null);
@@ -25,39 +25,48 @@ function MerchantDealBox() {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editedDeal, setEditedDeal] = useState({});
 
+  // State variables and functions for managing date and time pickers
   const [isStartDatePickerVisible, setStartDatePickerVisible] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisible] = useState(false);
   const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false);
   const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false);
 
+  // Function to show date and time pickers
   const showStartDatePicker = () => setStartDatePickerVisible(true);
   const showEndDatePicker = () => setEndDatePickerVisible(true);
   const showStartTimePicker = () => setStartTimePickerVisible(true);
   const showEndTimePicker = () => setEndTimePickerVisible(true);
 
+  // Functions to hide date and time pickers
   const hideStartDatePicker = () => setStartDatePickerVisible(false);
   const hideEndDatePicker = () => setEndDatePickerVisible(false);
   const hideStartTimePicker = () => setStartTimePickerVisible(false);
   const hideEndTimePicker = () => setEndTimePickerVisible(false);
 
+  // State variables and function for managing selected days of the week
   const [selectedDays, setSelectedDays] = useState([]);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  // State variable for showing/hiding delete confirmation modal
   const [isDeleteConfirmationVisible, setIsDeleteConfirmationVisible] = useState(false);
 
+  // Function to show delete confirmation modal
   const showDeleteConfirmation = () => {
     setIsDeleteConfirmationVisible(true);
   };
 
+  // Function to hide delete confirmation modal
   const hideDeleteConfirmation = () => {
     setIsDeleteConfirmationVisible(false);
   };
 
+  // Function to handle deal deletion
   const handleDelete = (deal) => {
     setSelectedDeal(deal);
     showDeleteConfirmation();
   };
 
+  // Function to handle day selection
   const handleDayPress = (day) => {
     const isSelected = selectedDays.includes(day);
 
@@ -68,10 +77,11 @@ function MerchantDealBox() {
     }
   };
   
+  // Functions to handle date and time picker confirmations
   const handleStartDateConfirm = (date) => {
     setEditedDeal({
       ...editedDeal,
-      start_date: date, // Assuming date is in the desired format
+      start_date: date,
     });
     hideStartDatePicker();
   };
@@ -79,7 +89,7 @@ function MerchantDealBox() {
   const handleEndDateConfirm = (date) => {
     setEditedDeal({
       ...editedDeal,
-      end_date: date, // Assuming date is in the desired format
+      end_date: date,
     });
     hideEndDatePicker();
   };
@@ -87,7 +97,7 @@ function MerchantDealBox() {
   const handleStartTimeConfirm = (date) => {
     setEditedDeal({
       ...editedDeal,
-      start_time: date, // Assuming date is in the desired format
+      start_time: date,
     });
     hideStartTimePicker();
   };
@@ -95,13 +105,14 @@ function MerchantDealBox() {
   const handleEndTimeConfirm = (date) => {
     setEditedDeal({
       ...editedDeal,
-      end_time: date, // Assuming date is in the desired format
+      end_time: date,
     });
     hideEndTimePicker();
   };
   
-
+  // Function to confirm and delete a deal
     const handleConfirmDelete = async () => {
+      // Obtain authentication token from the context
       const businessAuthToken = authContext.merchantUser ? authContext.merchantUser.token : null;
 
       if (!businessAuthToken) {
@@ -120,7 +131,7 @@ function MerchantDealBox() {
           }
           // If successful, close the delete confirmation modal and refresh the deals
           setIsDeleteConfirmationVisible(false);
-          fetchDeals(); // Assuming fetchDeals is a function to refresh the deals
+          fetchDeals();
         })
         .catch((error) => {
           console.error('Error deleting deal:', error.message);
@@ -138,6 +149,7 @@ function MerchantDealBox() {
     fetchDeals();
   }, []);
 
+  // Mapping of abbreviated days to full day names
   const abbreviatedToFull = {
     Sun: 'Sunday',
     Mon: 'Monday',
@@ -198,6 +210,7 @@ function MerchantDealBox() {
       });
   };
 
+  // Function to handle deal click and toggle expand/collapse
   const handleDealClick = (dealId) => {
     console.log('Deal clicked:', dealId);
     // Toggle expand/collapse for the selected deal
@@ -291,14 +304,6 @@ function MerchantDealBox() {
             <Text style={styles.dealDescription}>
               {formatTime(item.start_time)} - {formatTime(item.end_time)}
             </Text>
-            {/* <TouchableOpacity
-              style={styles.shareButton}
-              onPress={() => handleShare(`Deal: ${item.name}, Description: ${item.description}`)}
-            >
-              <Text style={styles.shareButtonText}>Share</Text>
-            </TouchableOpacity> */}
-
-            {/* Add "Edit" and "Delete" buttons with conditional rendering based on expansion */}
             {expandedDealId === item.id && (
               <View style={styles.expandedButtons}>
                 <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(item)}>
@@ -538,7 +543,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
-    height: '80%', // Set height to 80% of the screen
+    height: '80%',
   },
   titleText: {
     alignSelf: 'flex-start',
@@ -678,7 +683,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   descriptionInput: {
-    height: 80, // Adjust this value to make the description input taller
+    height: 80,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,

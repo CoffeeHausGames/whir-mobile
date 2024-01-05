@@ -1,5 +1,4 @@
-// Import necessary modules
-import React, { useEffect } from 'react'; // Import useEffect from 'react'
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from 'expo-router';
 import SettingsHeader from '../../../components/User/profile/UserSettings/SettingsHeader';

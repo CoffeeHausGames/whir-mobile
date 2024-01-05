@@ -1,11 +1,12 @@
-// SignOutButton.js
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAuth } from '../../authcontext';
 
 const SignOutButton = () => {
+  // Access the signOut function from the authentication context
   const { signOut } = useAuth();
 
+  // Handler for the sign-out action
   const handleSignOut = () => {
     // Call the signOut function to sign the user out
     signOut();

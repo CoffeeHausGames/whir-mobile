@@ -9,7 +9,7 @@ const UserAppearanceSettings = () => {
 
   const [appearanceSettings, setAppearanceSettings] = useState({
     darkMode: false,
-    themeColor: 'blue', // You can customize the available theme colors
+    themeColor: 'blue',
   });
 
   useEffect(() => {
@@ -52,7 +52,6 @@ const UserAppearanceSettings = () => {
           <Picker.Item label="Blue" value="blue" />
           <Picker.Item label="Green" value="green" />
           <Picker.Item label="Red" value="red" />
-          {/* Add more theme color options as needed */}
         </Picker>
       </View>
       <TouchableOpacity style={styles.saveButton} onPress={() => console.log('Save Settings')}>

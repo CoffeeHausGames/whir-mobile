@@ -27,7 +27,6 @@ const UserGeneralSettings = () => {
   const handleSaveSettings = () => {
     console.log('Receive Notifications:', receiveNotifications);
     console.log('Auto Update:', autoUpdate);
-    // Add logic to save general settings
   };
 
   return (

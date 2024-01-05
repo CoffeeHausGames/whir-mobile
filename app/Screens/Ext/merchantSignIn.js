@@ -2,12 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../authcontext';
 import {
-    View,
     Text,
     TextInput,
     TouchableOpacity,
     Image,
-    Alert,
     StyleSheet,
     KeyboardAvoidingView,
     ScrollView,
@@ -40,6 +38,7 @@ function MerchantSignIn() {
   });
 
   const handleSubmit = async () => {
+    // Handle business sign-in request
     console.log('Sending business sign-in request:', formData);
 
     try {
@@ -65,7 +64,8 @@ function MerchantSignIn() {
     navigation.setOptions({
       headerShown: false,
     });
-  
+    
+    // Handle keyboard visibility and animation
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -105,7 +105,6 @@ function MerchantSignIn() {
     // Use SplashScreen.preventAutoHideAsync() here
     SplashScreen.preventAutoHideAsync();
 
-    // Cleanup function
     return () => {
       keyboardDidShowListener.remove();
       keyboardDidHideListener.remove();
@@ -185,7 +184,7 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       ...Platform.select({
         android: {
-          paddingBottom: 300, // Adjust this value based on your needs
+          paddingBottom: 300,
         },
       }),
     },
@@ -218,7 +217,7 @@ const styles = StyleSheet.create({
         
       },
       customButton: {
-        backgroundColor: '#fca502', // Set your desired button color
+        backgroundColor: '#fca502',
         padding: 10,
         borderRadius: 30,
         alignItems: 'center',
@@ -229,7 +228,7 @@ const styles = StyleSheet.create({
         
       },
       buttonText: {
-        color: '#ffffff', // Set your desired text color
+        color: '#ffffff',
         fontWeight: 'bold',
         fontFamily: 'Poppins-Bold'
       },
@@ -261,12 +260,11 @@ const styles = StyleSheet.create({
       backButton: {
         position: 'absolute',
         top: 50,
-        zIndex: 1, // Ensure the button is on top of other components
+        zIndex: 1,
       },
       backImage: {
         width: 60,
         height: 60,
-        // Add any other styling for your image
       },
     });
 

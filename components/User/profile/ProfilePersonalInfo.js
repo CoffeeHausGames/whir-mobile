@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, TouchableWithoutFeedback, Image } from 'react-native';
-import { useAuth } from '../../../app/authcontext'; // Import the useAuth hook
+import { View, Text, StyleSheet, FlatList, Modal, TouchableWithoutFeedback } from 'react-native';
+import { useAuth } from '../../../app/authcontext';
 import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
 
 
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     height: 340,
-    width: '100%', // Set the width to 100%
+    width: '100%',
     marginTop: 20,
   },
   infoItem: {

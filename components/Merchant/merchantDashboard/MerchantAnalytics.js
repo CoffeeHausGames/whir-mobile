@@ -45,7 +45,6 @@ const MerchantAnalytics = () => {
           </Swiper>
         </View>
 
-        {/* Modal */}
         <Modal visible={modalVisible} transparent animationType="slide">
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>

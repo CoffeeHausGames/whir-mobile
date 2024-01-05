@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useAuth } from '../../../app/authcontext'; // Import the useAuth hook
-import MerchantSignOutButton from '../../../app/Screens/Ext/merchantSignOut';
+import { useAuth } from '../../../app/authcontext';
 
 const MerchantInfo = () => {
   const { merchantSignOut, user } = useAuth(); // Get the signOut function and user data from the context
@@ -22,7 +21,6 @@ const MerchantInfo = () => {
 
   const handleMerchantSignOut = () => {
     merchantSignOut();
-    // Add any additional logic or navigation after signing out
   };
 
   return (

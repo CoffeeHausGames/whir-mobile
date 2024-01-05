@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 
 const HorizontalButtonScroll = ({ onButtonPress }) => {
   const [selectedButton, setSelectedButton] = useState('All');
@@ -12,8 +11,6 @@ const HorizontalButtonScroll = ({ onButtonPress }) => {
 
   const handleButtonPress = (buttonText) => {
     setSelectedButton(buttonText);
-    // console.log(buttonText);
-    // onButtonPress && onButtonPress(buttonText); // Call the external callback if provided
   };
 
   // useEffect to handle the default selection
@@ -22,7 +19,7 @@ const HorizontalButtonScroll = ({ onButtonPress }) => {
   }, []);
   
   if (!fontsLoaded){
-    return null; // Return null instead of <SplashScreen />
+    return null;
   }
   return (
     <View style={styles.horizontalButtonContainer}>

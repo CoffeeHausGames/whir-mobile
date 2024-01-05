@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
+
 const MerchantDealHeader = () => {
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),

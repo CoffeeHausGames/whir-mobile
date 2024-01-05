@@ -48,28 +48,15 @@ const ProfileFavorites = ({ setSelectedBusinessLocation }) => {
   }, []);
 
   const getUserLocation = async () => {
-    // Implement logic to get the user's location in a React Native app
-    // You may use a library like expo-location or navigator.geolocation
-    // For simplicity, I'm returning a hardcoded location for now
+    // Use UserLocation method from mapscreen
     return { latitude: 39.1077698007311, longitude: -94.58107416626508 };
   };
 
   const calculateDistance = (userLocation, businessLocation) => {
-    // Implement the distance calculation logic for React Native
-    // You may use libraries like geolib or implement the Haversine formula
-    // For simplicity, I'm returning 0 for now
+    // Use distance calculation from User side, will eventually be done on the server side
     return 0;
   };
 
-  // const handleDealClick = (business) => {
-  //   const businessLocation = getBusinessLocation(business);
-  //   if (businessLocation) {
-  //     setSelectedBusinessLocation(businessLocation);
-  //     setSelectedBusiness(business);
-  //   } else {
-  //     console.error(`Invalid location data for business: ${business.id}`);
-  //   }
-  // };
 
   const getBusinessLocation = (business) => {
     if (business && business.location && business.location.coordinates) {

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Icon from 'react-native-ico-material-design';
 import { useAuth } from '../../authcontext';
@@ -10,12 +10,10 @@ var iconHeight = 30;
 var iconWidth = 30;
 
 const MerchantDeals = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const authContext = useAuth();
   const navigation = useNavigation();
 
   const navigateToScreen = (screen) => {
-    console.log(screen + ' has been pressed!');
     navigation.navigate(screen);
   };
 

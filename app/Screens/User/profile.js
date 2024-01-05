@@ -1,6 +1,5 @@
-// Profile.js
 import { useEffect } from 'react';
-import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
+import { View, StyleSheet, StatusBar, Pressable } from 'react-native';
 import ProfileCard from '../../../components/User/profile/ProfileCard';
 import ProfileHeader from '../../../components/User/profile/ProfileHeader';
 import { useNavigation } from 'expo-router';
@@ -29,7 +28,6 @@ const Profile = () => {
   }, [navigation]);
 
   const navigateToScreen = (screen) => {
-    console.log(screen + ' has been pressed!');
     navigation.navigate(screen);
   };
 

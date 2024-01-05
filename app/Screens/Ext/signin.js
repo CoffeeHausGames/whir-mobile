@@ -4,7 +4,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
   Alert,
   StyleSheet,
   KeyboardAvoidingView,
@@ -13,7 +12,7 @@ import {
   Keyboard,
   Platform
 } from 'react-native';
-import { useAuth } from '../../authcontext'; // Update the path
+import { useAuth } from '../../authcontext';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { apiRequest } from '../../networkController';
@@ -42,6 +41,7 @@ const SignIn = () => {
   };
 
   const handleMerchantSignInPress = () => {
+    // Navigate to the MerchantSignIn component
     navigation.navigate('MerchantSignIn')
   }
 
@@ -99,7 +99,6 @@ const SignIn = () => {
       const response = await apiRequest(endpoint, method, requestData);
 
       if (response.ok) {
-
         // Replace the following line with the check you use to distinguish business users
         if (response.data.userType === 'business') {
           // Handle business user sign-in
@@ -109,13 +108,8 @@ const SignIn = () => {
           // Handle regular user sign-in
           console.log('User Authentication Successful');
           const user = { ...response.data, authenticated: true };
-          // Assuming you have a function to update the authentication status in your context
           signIn(user);
 
-          // Perform navigation to the protected route in your app
-          // For example, navigate to your home screen
-          // This depends on the navigation library you're using (e.g., React Navigation)
-          // navigation.navigate('Home');
         }
       } else {
         console.error('User authentication failed');
@@ -130,7 +124,7 @@ const SignIn = () => {
   };
 
   if (!fontsLoaded) {
-    return null; // Return null instead of <SplashScreen />
+    return null;
   }
 
   return (
@@ -209,7 +203,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     ...Platform.select({
       android: {
-        paddingBottom: 300, // Adjust this value based on your needs
+        paddingBottom: 300,
       },
     }),
   },
@@ -242,7 +236,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
   },
   customButton: {
-    backgroundColor: '#fca502', // Set your desired button color
+    backgroundColor: '#fca502',
     padding: 10,
     borderRadius: 30,
     alignItems: 'center',
@@ -252,7 +246,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   buttonText: {
-    color: '#ffffff', // Set your desired text color
+    color: '#ffffff',
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold'
   },

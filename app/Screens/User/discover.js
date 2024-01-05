@@ -38,7 +38,6 @@ const Discover = () => {
   }, [navigation]);
 
   const navigateToScreen = (screen) => {
-    console.log(screen + ' has been pressed!');
     navigation.navigate(screen);
   };
 

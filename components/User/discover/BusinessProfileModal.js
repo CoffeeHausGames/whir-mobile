@@ -9,7 +9,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
 
   const fetchDealsForBusiness = async (businessId) => {
     try {
-      const endpoint = `/business/profile/${businessId}`; // Use the businessId in the URL
+      const endpoint = `/business/profile/${businessId}`;
       const method = 'GET';
       const response = await apiRequest(endpoint, method);
 
@@ -22,16 +22,19 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
     }
   };
 
+  // Effect to fetch deals when businessDetails change
   useEffect(() => {
     if (businessDetails && businessDetails.id) {
       fetchDealsForBusiness(businessDetails.id);
     }
   }, [businessDetails]);
 
+  // Toggle function for expanding/collapsing deal details
   const toggleDeal = (dealId) => {
     setExpandedDealId((prevDealId) => (prevDealId === dealId ? null : dealId));
   };
 
+  // Toggle function for adding/removing deals from favorites
   const toggleHeart = (dealId) => {
     setFavoritedDeals((prevFavoritedDeals) => {
       if (prevFavoritedDeals.includes(dealId)) {
@@ -42,6 +45,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
     });
   };
 
+  // Render function for each deal in the FlatList
   const renderDeal = ({ item }) => (
     <View style={styles.newDealContainer}>
       <TouchableOpacity onPress={() => toggleDeal(item.id)} style={styles.buttonContainer}>
@@ -83,12 +87,14 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
     </View>
   );
   
+  // Function to format time in a readable way
   const formatTime = (time) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
     const formattedTime = new Date(time).toLocaleString('en-US', options);
     return formattedTime;
   };
 
+  // Function to format distance based on value
   const formatDistance = (distance) => {
     if (distance >= 10) {
       return distance.toFixed(0);
@@ -118,7 +124,7 @@ const BusinessProfileModal = ({ businessDetails, onClose }) => {
       <FlatList
         style={{ flex: 1 }}
         data={businessDeals}
-        keyExtractor={(item) => item.id} // Change key extractor to item._id
+        keyExtractor={(item) => item.id}
         renderItem={renderDeal}
       />
       <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -138,8 +144,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    height: '80%', // Take up 80% of the screen
-    flexDirection: 'column', // Stack children vertically
+    height: '80%',
+    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   modalTitle: {
@@ -201,7 +207,6 @@ const styles = StyleSheet.create({
   favoriteIcon: {
     width: 25,
     height: 25,
-    // Add other styles as needed
   },
 });
 

@@ -27,7 +27,6 @@ const UserLanguageSettings = () => {
   const handleSaveSettings = () => {
     console.log('Language:', language);
     console.log('Region:', region);
-    // Add logic to save language and region settings
   };
 
   return (
@@ -42,7 +41,6 @@ const UserLanguageSettings = () => {
         >
           <Picker.Item label="English" value="en" />
           <Picker.Item label="Spanish" value="es" />
-          {/* Add more language options as needed */}
         </Picker>
       </View>
       <View style={styles.settingItem}>
@@ -54,7 +52,6 @@ const UserLanguageSettings = () => {
         >
           <Picker.Item label="United States" value="us" />
           <Picker.Item label="Canada" value="ca" />
-          {/* Add more region options as needed */}
         </Picker>
       </View>
       <TouchableOpacity style={styles.saveButton} onPress={handleSaveSettings}>

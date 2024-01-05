@@ -1,11 +1,8 @@
-// Profile.js
 import { useEffect } from 'react';
-import { View, StyleSheet, StatusBar, Pressable, Text } from 'react-native';
-// import ProfileCard from '../components/ProfileCard';
+import { View, StyleSheet, StatusBar, Pressable } from 'react-native';
 import ProfileHeader from '../../../components/User/profile/ProfileHeader';
 import { useNavigation } from 'expo-router';
 import Icon from "react-native-ico-material-design";
-import MerchantSignOutButton from '../Ext/merchantSignOut';
 import MerchantProfileCard from '../../../components/Merchant/merchantProfile/merchantProfileCard';
 
 var iconHeight = 30;
@@ -31,7 +28,6 @@ const MerchantProfile = () => {
   }, [navigation]);
 
   const navigateToScreen = (screen) => {
-    console.log(screen + ' has been pressed!');
     navigation.navigate(screen);
   };
 

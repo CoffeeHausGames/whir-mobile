@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 
 const DiscoverHeader = () => {
@@ -9,7 +9,7 @@ const DiscoverHeader = () => {
   });
 
   if (!fontsLoaded) {
-    return null; // Return null instead of <SplashScreen />
+    return null;
   }
 
   return (

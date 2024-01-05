@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { Modal, View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useAuth } from '../../../app/authcontext';
 import { apiRequestWithAuthRetry } from '../../../app/networkController';
 
 const AddDealModal = ({ isOpen, onClose }) => {
+  // State to manage the input values and date/time pickers
   const [deal, setDeal] = useState({
     name: '',
     start_time: '',
@@ -14,8 +15,11 @@ const AddDealModal = ({ isOpen, onClose }) => {
     end_date: '',
     description: '',
   });
+
+  // Authentication context for obtaining merchant user details
   const authContext = useAuth();
 
+  // Mapping for abbreviated days of the week to full names
   const abbreviatedToFull = {
     Sun: 'Sunday',
     Mon: 'Monday',
@@ -26,15 +30,16 @@ const AddDealModal = ({ isOpen, onClose }) => {
     Sat: 'Saturday',
   };
 
+  // State and functions to manage visibility of date pickers
   const [isStartDatePickerVisible, setStartDatePickerVisible] = useState(false);
   const [isEndDatePickerVisible, setEndDatePickerVisible] = useState(false);
 
   const showStartDatePicker = () => setStartDatePickerVisible(true);
   const showEndDatePicker = () => setEndDatePickerVisible(true);
-
   const hideStartDatePicker = () => setStartDatePickerVisible(false);
   const hideEndDatePicker = () => setEndDatePickerVisible(false);
 
+  // Functions to handle date picker confirmations
   const handleStartDateConfirm = (date) => {
     setDeal({ ...deal, start_date: date.toISOString() });
     hideStartDatePicker();
@@ -45,15 +50,17 @@ const AddDealModal = ({ isOpen, onClose }) => {
     hideEndDatePicker();
   };
 
+  // State and functions to manage visibility of time pickers
+
   const [isStartTimePickerVisible, setStartTimePickerVisible] = useState(false);
   const [isEndTimePickerVisible, setEndTimePickerVisible] = useState(false);
 
   const showStartTimePicker = () => setStartTimePickerVisible(true);
   const showEndTimePicker = () => setEndTimePickerVisible(true);
-
   const hideStartTimePicker = () => setStartTimePickerVisible(false);
   const hideEndTimePicker = () => setEndTimePickerVisible(false);
 
+  // Functions to handle time picker confirmations
   const handleStartTimeConfirm = (date) => {
     setDeal({ ...deal, start_time: date.toISOString() });
     hideStartTimePicker();
@@ -64,9 +71,11 @@ const AddDealModal = ({ isOpen, onClose }) => {
     hideEndTimePicker();
   };
 
+  // State and function to manage selected days of the week
   const [selectedDays, setSelectedDays] = useState([]);
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  // Function to handle day selection
   const handleDayPress = (day) => {
     const isSelected = selectedDays.includes(day);
 
@@ -77,10 +86,12 @@ const AddDealModal = ({ isOpen, onClose }) => {
     }
   };
 
+  // Function to handle input changes
   const handleChange = (name, value) => {
     setDeal({ ...deal, [name]: value });
   };
 
+  // Function to handle form submission
   const handleSubmit = async () => {
     // Ensure authContext and authContext.merchantUser are defined
     if (!authContext || !authContext.merchantUser) {
@@ -90,8 +101,10 @@ const AddDealModal = ({ isOpen, onClose }) => {
 
     const businessAuthToken = authContext.merchantUser.token;
 
+    // Log the authentication token for debugging
     console.log('Merchant user authentication token:', businessAuthToken);
 
+    // Format the deal object before sending to the server
     const formattedDeal = {
       name: deal.name,
       start_time: new Date(deal.start_time).toISOString(),
@@ -103,15 +116,18 @@ const AddDealModal = ({ isOpen, onClose }) => {
     };
 
     try {
+      // Send a POST request to add the deal
       const endpoint = '/business/deal';
       const method = 'POST';
       const token = `${businessAuthToken}`;
       const response = await apiRequestWithAuthRetry(endpoint, method, formattedDeal, undefined, token)
 
+      // Check if the response is successful
       if (!response.ok) {
         throw new Error(`Failed to add deal. Server response: ${response.status}`);
       }
 
+      // Reset the deal state and close the modal on successful submission
       setDeal({
         name: '',
         start_time: '',
@@ -128,6 +144,7 @@ const AddDealModal = ({ isOpen, onClose }) => {
     }
   };
 
+  // Function to handle modal cancellation
   const handleCancel = () => {
     setDeal({
       name: '',
@@ -339,7 +356,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Regular'
   },
   descriptionInput: {
-    height: 80, // Adjust this value to make the description input taller
+    height: 80,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,

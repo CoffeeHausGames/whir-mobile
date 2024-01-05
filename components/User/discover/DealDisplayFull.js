@@ -23,12 +23,12 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
   
     Animated.timing(bounceValue, {
       toValue: 1,
-      duration: 300, // Adjust the duration as needed
+      duration: 300,
       useNativeDriver: false,
     }).start();
   };
 
-
+  // Function to toggle favorited deals
   const toggleHeart = (dealId) => {
     setFavoritedDeals((prevFavoritedDeals) => {
       if (prevFavoritedDeals.includes(dealId)) {
@@ -39,11 +39,10 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     });
   };
 
+  // Function to check if a deal is favorited
   const isDealFavorited = (dealId) => {
     return favoritedDeals.includes(dealId);
   };
-
-
 
   let [fontsLoaded] = useFonts({
     'Poppins-Regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
@@ -54,7 +53,6 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
 
   const handleShare = async (businessId, dealName, businessName, distance) => {
     try {
-      // Replace 'http://localhost:4444/v1/business/profile/' with your actual backend API endpoint
       const deepLink = `http://localhost:4444/v1/business/profile/${businessId}`;
       const message = `Deal: ${dealName}, Business: ${businessName}, Distance: ${distance}m away\n${deepLink}`;
   
@@ -66,7 +64,7 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     }
   };  
   
-
+  // Function to toggle the modal displaying business information
   const toggleModal = async (businessInfo) => {
     setModalVisible(!modalVisible);
     setSelectedBusinessInfo(businessInfo);
@@ -102,9 +100,6 @@ const fetchBusinessDetails = async (businessId) => {
     return null;
   }
 };
-
-
-  
 
   useEffect(() => {
     const fetchBusinesses = async () => {
@@ -162,14 +157,14 @@ const fetchBusinessDetails = async (businessId) => {
         throw new Error(`Failed to fetch deals. Server response: ${response.status}`);
       }
   
-      return response.data; // Return response.data directly
+      return response.data;
     } catch (error) {
       console.error('Error fetching deals:', error.message);
       return [];
     }
   };
-  
 
+  // Function to calculate distance between two locations
   const calculateDistance = (userLocation, businessLocation) => {
     const radlat1 = (Math.PI * userLocation.latitude) / 180;
     const radlat2 = (Math.PI * businessLocation[1]) / 180;
@@ -183,10 +178,12 @@ const fetchBusinessDetails = async (businessId) => {
     return dist;
   };
 
+  // Function to toggle expanded deal view
   const toggleDeal = (dealId) => {
     setExpandedDealId((prevDealId) => (prevDealId === dealId ? null : dealId));
   };
 
+  // Function to render a single deal
   const renderDeal = ({ item }) => (
     <View style={styles.dealContainer}>
       {item.deals && item.deals.length > 0 && (
@@ -252,16 +249,15 @@ const fetchBusinessDetails = async (businessId) => {
       )}
     </View>
   );
-  
-  
-  
 
+  // Function to format time
   const formatTime = (time) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
     const formattedTime = new Date(time).toLocaleString('en-US', options);
     return formattedTime;
   };
 
+  // Function to format distance
   const formatDistance = (distance) => {
     if (distance >= 10) {
       return distance.toFixed(0);
@@ -272,6 +268,7 @@ const fetchBusinessDetails = async (businessId) => {
     }
   };
 
+  // If fonts are not loaded or still loading, show loading indicator
   if (!fontsLoaded || loading){
     return (
       <View style={styles.loadingContainer}>

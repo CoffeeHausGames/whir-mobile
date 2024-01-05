@@ -17,6 +17,7 @@ import { useFonts } from 'expo-font';
 import { apiRequest } from '../../networkController';
 
 const SignUp = () => {
+  // State for user registration data
   const [formData, setFormData] = useState({
     First_name: '',
     Last_name: '',
@@ -24,6 +25,8 @@ const SignUp = () => {
     Password: '',
   });
   const navigation = useNavigation();
+
+  // Animated value for controlling the position of the sign-up container
   const signUpContainerBottom = useRef(new Animated.Value(0)).current;
 
   let [fontsLoaded] = useFonts({
@@ -39,6 +42,7 @@ const SignUp = () => {
       headerShown: false,
     });
 
+    // Keyboard event listeners for adjusting the sign-up container position
     const keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
       () => {
@@ -71,6 +75,7 @@ const SignUp = () => {
     };
   }, [signUpContainerBottom]);
 
+  // Handler for user sign-up
   const handleSignUp = async () => {
     console.log('Sending sign-up request:', formData);
 
@@ -94,7 +99,7 @@ const SignUp = () => {
   };
 
   if (!fontsLoaded) {
-    return null; // Return null instead of <SplashScreen />
+    return null;
   }
 
   return (
@@ -172,7 +177,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     ...Platform.select({
       android: {
-        paddingBottom: 100, // Adjust this value based on your needs
+        paddingBottom: 100,
       },
     }),
   },
@@ -211,12 +216,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -170,
     left: -40,
-    zIndex: 1, // Ensure the button is on top of other components
+    zIndex: 1,
   },
   backImage: {
     width: 60,
     height: 60,
-    // Add any other styling for your image
   },
 });
 

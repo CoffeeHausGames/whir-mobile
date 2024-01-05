@@ -32,14 +32,14 @@ const DynamicSettingsHeader = ({pageTitle}) => {
 
 const styles = StyleSheet.create({
   headerView: {
-    flex: 10, // Add this line to make the text push to the right
-    justifyContent: 'center', // Align the text to the bottom of the container
-    alignItems: 'flex-end', // Align the text to the right of the container
+    flex: 10,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
   backView: {
-    flex: 1, // Add this line to make the text push to the right
-    justifyContent: 'center', // Align the text to the bottom of the container
-    alignItems: 'flex-start', // Align the text to the right of the container
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   headerText: {
     fontSize: 40,
@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 5,
     marginLeft: 0,
-    flexDirection: 'row', // Use flexDirection: 'row' to align items horizontally
+    flexDirection: 'row',
     marginBottom: 40
   },
   backButton: {
     position: 'absolute',
     marginBottom: 10,
-    zIndex: 1, // Ensure the button is on top of other components
+    zIndex: 1,
     left: -15
   },
   backImage: {

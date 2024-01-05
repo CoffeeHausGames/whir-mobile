@@ -19,12 +19,12 @@ const ProfileCard = () => {
   };
 
   const handleUserSettingsPress = () => {
-    navigation.navigate('UserSettings'); // Navigate to the 'Settings' screen
+    navigation.navigate('UserSettings');
   };
 
   useEffect(() => {
-    // You can add additional logic here if needed when the component mounts
-  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+    // Add additional logic here if needed for when the component mounts
+  }, []);
 
   if (!fontsLoaded) {
     return null;
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginLeft: 10,
     width: '95%',
-    // height: 150,
     marginTop: 20,
     marginBottom: 110
   },
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   selectedButton: {
-    backgroundColor: 'lightgray', // Customize the style for the selected button
+    backgroundColor: 'lightgray',
   },
   buttonText: {
     color: 'black',

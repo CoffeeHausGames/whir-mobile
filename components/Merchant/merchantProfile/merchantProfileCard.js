@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import ProfilePersonalInfo from '../../User/profile/ProfilePersonalInfo';
 import { useFonts } from 'expo-font';
 import MerchantPinned from './merchantPinned';
 import MerchantInfo from './merchantInfo';
@@ -17,8 +16,8 @@ const MerchantProfileCard = () => {
   };
 
   useEffect(() => {
-    // You can add additional logic here if needed when the component mounts
-  }, []); // Empty dependency array ensures this effect runs once when the component mounts
+    // Add additional logic here for when the component mounts
+  }, []);
 
   if (!fontsLoaded) {
     return null;
@@ -28,7 +27,7 @@ const MerchantProfileCard = () => {
     <View style={styles.cardContainer}>
       <View style={styles.profileImageContainer}>
         <Image
-          source={require('../../../assets/images/user.png')} // Replace with your image URL
+          source={require('../../../assets/images/user.png')}
           style={styles.profileImage}
         />
       </View>
@@ -79,7 +78,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     marginLeft: 10,
     width: '95%',
-    // height: 150,
     marginTop: 20,
     marginBottom: 110
   },
@@ -116,7 +114,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   selectedButton: {
-    backgroundColor: 'lightgray', // Customize the style for the selected button
+    backgroundColor: 'lightgray',
   },
   buttonText: {
     color: 'black',
