@@ -1,4 +1,3 @@
-// authcontext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native';
