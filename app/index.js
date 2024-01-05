@@ -18,7 +18,7 @@ import UserNotificationSettings from '../components/UserSettings/UserNotificatio
 import UserPrivacySettings from '../components/UserSettings/UserPrivacySettings';
 import UserSecuritySettings from '../components/UserSettings/UserSecuritySettings';
 import UserAppearanceSettings from '../components/UserSettings/UserAppearanceSettings';
-import UserLanguageSettings from '../components/UserSettings/UserLangSettings';
+import UserLanguageSettings from '../components/UserSettings/UserLanguageSettings';
 import UserAccessibilitySettings from '../components/UserSettings/UserAccessibilitySettings';
 import UserGeneralSettings from '../components/UserSettings/UserGeneralSettings';
 
