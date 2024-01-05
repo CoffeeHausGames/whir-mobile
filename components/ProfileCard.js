@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import ProfileFavorites from './ProfileFavorites';
 import ProfilePersonalInfo from './ProfilePersonalInfo';
+import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { SplashScreen } from 'expo-router';
 
 const ProfileCard = () => {
   const [selectedButton, setSelectedButton] = useState('favorites');
+  const [isSettingsVisible, setSettingsVisible] = useState(false);
+  const navigation = useNavigation(); // Get the navigation object
 
   let [fontsLoaded] = useFonts({
     'Poppins-Bold': require('../assets/fonts/Poppins-Bold.ttf'),
@@ -14,6 +16,10 @@ const ProfileCard = () => {
 
   const handleButtonPress = (button) => {
     setSelectedButton(button);
+  };
+
+  const handleUserSettingsPress = () => {
+    navigation.navigate('UserSettings'); // Navigate to the 'Settings' screen
   };
 
   useEffect(() => {
@@ -28,10 +34,16 @@ const ProfileCard = () => {
     <View style={styles.cardContainer}>
       <View style={styles.profileImageContainer}>
         <Image
-          source={require('../assets/images/user.png')} // Replace with your image URL
+          source={require('../assets/images/user.png')}
           style={styles.profileImage}
         />
       </View>
+      <TouchableOpacity onPress={handleUserSettingsPress} style={styles.modalButton}>
+        <Image
+          source={require('../assets/images/settings-mobile.png')}
+          style={styles.buttonImage}
+        />
+      </TouchableOpacity>
       <View style={styles.profileInfo}>
         <Text style={styles.profileName}>John Doe</Text>
         <View style={styles.buttonContainer}>
@@ -122,6 +134,19 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold'
+  },
+  modalButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 5,
+    margin: 10,
+    padding: 2
+  },
+  buttonImage: {
+    width: 35,
+    height: 35,
   },
 });
 

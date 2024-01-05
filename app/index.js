@@ -12,6 +12,15 @@ import MerchantSignIn from './merchantSignIn';
 import MerchantDashboard from './merchantDashboard';
 import MerchantProfile from './merchantProfile';
 import MerchantDeals from './merchantDeals';
+import SettingsScreen from './UserSettings';
+import AccountSettings from '../components/UserSettings/UserAccountSettings';
+import UserNotificationSettings from '../components/UserSettings/UserNotificationSettings';
+import UserPrivacySettings from '../components/UserSettings/UserPrivacySettings';
+import UserSecuritySettings from '../components/UserSettings/UserSecuritySettings';
+import UserAppearanceSettings from '../components/UserSettings/UserAppearanceSettings';
+import UserLanguageSettings from '../components/UserSettings/UserLanguageSettings';
+import UserAccessibilitySettings from '../components/UserSettings/UserAccessibilitySettings';
+import UserGeneralSettings from '../components/UserSettings/UserGeneralSettings';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +57,16 @@ const App = () => {
           <Stack.Screen name="MerchantDashboard" component={MerchantDashboard} />
           <Stack.Screen name="MerchantProfile" component={MerchantProfile} />
           <Stack.Screen name="MerchantDeals" component={MerchantDeals} />
+          <Stack.Screen name="UserSettings" component={SettingsScreen} />
+          <Stack.Screen name="UserAccountSettings" component={AccountSettings} />
+          <Stack.Screen name="UserNotificationSettings" component={UserNotificationSettings} />
+          <Stack.Screen name="UserPrivacySettings" component={UserPrivacySettings} />
+          <Stack.Screen name="UserSecuritySettings" component={UserSecuritySettings} />
+          <Stack.Screen name="UserAppearanceSettings" component={UserAppearanceSettings} />
+          <Stack.Screen name="UserLanguageSettings" component={UserLanguageSettings} />
+          <Stack.Screen name="UserAccessabilitySettings" component={UserAccessibilitySettings} />
+          <Stack.Screen name="UserGeneralSettings" component={UserGeneralSettings} />
+
         </Stack.Navigator>
       </AuthProvider>
     </NavigationContainer>

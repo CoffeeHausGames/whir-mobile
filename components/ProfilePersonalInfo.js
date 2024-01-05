@@ -1,10 +1,13 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Modal, TouchableWithoutFeedback, Image } from 'react-native';
 import { useAuth } from '../app/authcontext'; // Import the useAuth hook
 import SignOutButton from '../app/signout';
+import { vw, vh, vmin, vmax } from 'react-native-expo-viewport-units';
+
 
 const ProfilePersonalInfo = () => {
   const { signOut, user } = useAuth(); // Get the signOut function and user data from the context
+  const [modalVisible, setModalVisible] = useState(false);
 
   const personalInfoData = [
     { label: 'Name', value: user?.name || 'John Doe' },
@@ -20,11 +23,6 @@ const ProfilePersonalInfo = () => {
     </View>
   );
 
-  const handleSignOut = () => {
-    signOut();
-    // Add any additional logic or navigation after signing out
-  };
-
   return (
     <View style={styles.container}>
       <FlatList
@@ -33,10 +31,18 @@ const ProfilePersonalInfo = () => {
         renderItem={renderPersonalInfoItem}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Settings</Text>
-        </TouchableOpacity>
-        {user && <SignOutButton onPress={handleSignOut} />}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            toggleModal();
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => toggleModal()}>
+            <View style={styles.modalOverlay} />
+          </TouchableWithoutFeedback>
+        </Modal>
       </View>
     </View>
   );
@@ -44,24 +50,25 @@ const ProfilePersonalInfo = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     height: 340,
+    width: '100%', // Set the width to 100%
+    marginTop: 20,
   },
   infoItem: {
-    marginBottom: 15,
+    marginBottom: 20,
+    alignSelf: 'flex-start',
+    width: vw(100)
   },
   label: {
     fontSize: 16,
-    fontWeight: 'bold',
     marginBottom: 5,
+    fontFamily: 'Poppins-Bold'
   },
   value: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'gray',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    fontFamily: 'Poppins-Regular'
   },
   button: {
     flex: 1,
@@ -69,11 +76,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     alignItems: 'center',
-  },
-  logoutButton: {
-    marginLeft: 10,
-    flex: 1,
-    backgroundColor: 'tomato',
   },
   buttonText: {
     fontWeight: 'bold',

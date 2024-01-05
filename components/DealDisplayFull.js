@@ -52,15 +52,20 @@ const DealDisplayFull = ({ setSelectedBusinessLocation }) => {
     'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf')
   });
 
-  const handleShare = async (text) => {
+  const handleShare = async (businessId, dealName, businessName, distance) => {
     try {
+      // Replace 'http://localhost:4444/v1/business/profile/' with your actual backend API endpoint
+      const deepLink = `http://localhost:4444/v1/business/profile/${businessId}`;
+      const message = `Deal: ${dealName}, Business: ${businessName}, Distance: ${distance}m away\n${deepLink}`;
+  
       await Share.share({
-        message: text,
+        message: message,
       });
     } catch (error) {
       console.error('Error sharing:', error.message);
     }
-  };
+  };  
+  
 
   const toggleModal = async (businessInfo) => {
     setModalVisible(!modalVisible);
@@ -206,12 +211,12 @@ const fetchBusinessDetails = async (businessId) => {
                       <Text style={styles.dealDescription}>{deal.description}</Text>
                     </View>
                     <View style={styles.expandedButtons}>
-                      <TouchableOpacity
-                        style={styles.sampleButton}
-                        onPress={() =>
-                          handleShare(`Deal: ${deal.name}, Business: ${item.business_name}`)
-                        }
-                      >
+                    <TouchableOpacity
+                      style={styles.sampleButton}
+                      onPress={() =>
+                        handleShare(item.id, deal.name, item.business_name, item.distance)
+                      }
+                    >
                         <Text style={styles.expandedButton}>Share</Text>
                       </TouchableOpacity>
                       <TouchableOpacity

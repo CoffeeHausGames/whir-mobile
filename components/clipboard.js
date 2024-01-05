@@ -28,4 +28,4 @@ useEffect(() => {
   };
 
   fetchBusinesses();
-}, [userLocation]); // Run this effect whenever userLocation changes
+}, [userLocation]); // Run this effect whenever userLocation changesb
